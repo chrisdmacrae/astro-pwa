@@ -1,0 +1,28 @@
+---
+import { createRouter } from './routing/client';
+import type { ServerRouter } from './routing/server';
+
+export interface Props {
+  router: ServerRouter<any>
+}
+
+const { router } = Astro.props
+const routeConfig = router.dehydrate()
+
+// This is a hack to have the router ready for SSR
+createRouter(routeConfig)
+---
+<div id="__astro">
+  <script type="application/json" id="__astro-data" set:html={JSON.stringify(routeConfig)} />
+  <script>
+    import { createRouter, getRouterData, routerStore } from '../lib/routing/client'
+
+    const dehydratedRouter = getRouterData()
+    const hasRouter = Object.keys(routerStore.get()).keys.length !== 0
+    
+    if (dehydratedRouter && !hasRouter) {
+      createRouter(dehydratedRouter)
+    }
+  </script>
+  <slot />
+</div>

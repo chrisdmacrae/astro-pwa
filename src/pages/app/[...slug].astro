@@ -1,0 +1,15 @@
+---
+import { CollectionEntry, getCollection } from "astro:content"
+import AppLayout from "../../layouts/AppLayout.astro"
+
+export interface Props {
+  slugs: CollectionEntry<'articles'>['slug'][]
+}
+
+export const getStaticPaths = async () => {
+  const blogs = await getCollection('articles')
+
+  return blogs.map(blog => ({ params: { slug: 'blog/' + blog.slug }, props: { slugs: blogs.map(blog => blog.slug )}}))
+}
+---
+<AppLayout title="Dynamic Route" />

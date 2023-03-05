@@ -1,0 +1,33 @@
+---
+import App, { appStore } from "../components/react/App";
+import { Nav } from "../components/react/Nav";
+import { createPageRoutes, createRouter } from "../lib/routing/server";
+import SPA from "../lib/SPA.astro";
+import type { Store } from "../lib/store";
+
+export type Props = {
+  title: string
+  stores?: Store[]
+}
+
+const { title, stores = [] } = Astro.props
+
+const router = await createRouter(Astro, {
+  routes: () => createPageRoutes(Astro.glob('../pages/app/**/*.astro')),
+  stores: [...stores, appStore]
+})
+---
+<html>
+  <head>
+    <title>{title}</title>
+  </head>
+  <body>
+    <SPA router={router}>
+      <Nav client:load />
+      {title}
+      <App client:load>
+        <slot />
+      </App>
+    </SPA>
+  </body>
+</html>

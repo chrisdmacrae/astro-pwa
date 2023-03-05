@@ -1,0 +1,8 @@
+---
+import AppLayout from "../../../layouts/AppLayout.astro";
+import { Router } from "../../../components/react/Router";
+---
+<AppLayout title="Page B">
+  <a href="/app">Back to list</a>  
+  <Router client:load />
+</AppLayout>

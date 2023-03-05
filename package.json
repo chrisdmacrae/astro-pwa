@@ -10,6 +10,24 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^2.0.17"
+    "@astrojs/react": "^2.0.2",
+    "@astrojs/vue": "^2.0.1",
+    "@nanostores/react": "^0.4.1",
+    "@nanostores/router": "^0.8.1",
+    "@nanostores/vue": "^0.7.0",
+    "@types/react": "^18.0.28",
+    "@types/react-dom": "^18.0.11",
+    "astro": "^2.0.17",
+    "dts-dom": "^3.7.0",
+    "glob": "^9.2.1",
+    "install": "^0.13.0",
+    "nanostores": "^0.7.4",
+    "npm": "^9.6.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "vue": "^3.2.47"
+  },
+  "devDependencies": {
+    "@types/node": "^18.14.6"
   }
 }

@@ -1,47 +1,121 @@
-# Astro Starter Kit: Minimal
+## Building a SPA
 
+- State management
+  - You want all islands to share state
+      - A single component that responds to the route and is SSRd;
+      - A single component that responds to the static route and data and is SSRd, or;
+      - A set of components that responds to the static route, are SSRd, and load data;
+- Routing
+  - SSR
+    - Astro has no idea what pages are what -- this needs to be delegated to the SPA
+      - Basically
+  - Link clicks to known route URLs need to be intercepted and handled via app state instead
+  - Non-known links are actual page refreshes
+  - Routes are prefetched
+  - Type-safety
+    - We know about _static_ routes via pages
+    - We don't know about dynamic routes; these instead render server-side
+      - Because of this, you can't get type-safety on these URLs without providing them ahead of time
+    - 
+- Hydration
+  - Routing
+    - The app needs to know what the current route should be, even on the server, to be able to render the right content
+  - The app needs to be able to hydrate from data
+    - This is simple with Astro: build pages that render your app, and pass the data to the app
+- 
+
+# Static route
+
+You render a static page for the SPA to load on. This is a simple route, 
+
+```astro name="index.astro"
+---
+const router = createRouter(Astro)
+const routeConfig = router.dehydrate()
+---
+<html>
+  <head>
+    <title></title>
+  </head>
+  <body>
+    <SPA routeConfig={routeConfig}>
+      <App />
+    </SPA>
+  </body>
+</html>
 ```
-npm create astro@latest -- --template minimal
+
+```tsx name="TestPage.tsx"
+import { useRouter } from 'astrospa/react'
+
+export const TestPage = () => {
+  const router = useRouter()
+}
 ```
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/minimal)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/minimal)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/minimal/devcontainer.json)
+# Dynamic static route
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+You render a series of static pages for the SPA to load on.
 
-## 🚀 Project Structure
+```astro name="[slug].astro"
+---
+export async function getStaticPaths() {
+  const pages = await async()
 
-Inside of your Astro project, you'll see the following folders and files:
+  return pages.map(page => ({
+    params: { slug: page.slug },
+    props: { page }
+  }))
+}
 
+const { page } = Astro.page
+const router = createRouter(Astro)
+---
+<html>
+  <head>
+    <title></title>
+  </head>
+  <body>
+    <SPA router={router}>
+      <App>
+        <Page data={page.data} />
+      </App>
+    </SPA>
+  </body>
+</html>
 ```
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+
+```tsx name="TestPage.tsx"
+import { useRouter } from 'astrospa/react'
+
+export const TestPage = () => {
+  const router = useRouter()
+
+  switch (router.route) {
+    case "/app/:h
+  }
+}
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Notes
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+### Astro model
 
-Any static assets, like images, can be placed in the `public/` directory.
+Astro pages do SSR. They generate HTML. The data from that SSR needs to be embedded into the page and pullable by the SPA.
 
-## 🧞 Commands
+Nano stores provide an agnostic API for pulling that data.
 
-All commands are run from the root of the project, from a terminal:
+If logic fetched the page, read the JSON, it could push that to the SPA to render instead of asking for a full page refresh.
 
-| Command                | Action                                           |
-| :--------------------- | :----------------------------------------------- |
-| `npm install`          | Installs dependencies                            |
-| `npm run dev`          | Starts local dev server at `localhost:3000`      |
-| `npm run build`        | Build your production site to `./dist/`          |
-| `npm run preview`      | Preview your build locally, before deploying     |
-| `npm run astro ...`    | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro --help` | Get help using the Astro CLI                     |
+## Isomorphic SPA
 
-## 👀 Want to learn more?
+Routing is based on the filesystem. Any in-framework abstraction would be _terrible_, full-stop. This is because you'd need
+to build and maintain a framework/library specific abstraction that makes sense for the domain of that app.
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Instead, this thing needs to be smart enough to:
+
+- Get the data for the next page on a route change
+- Get the JS for the next page on preload
+- Get the CSS for the next page on preload
+- Update the URL accordingly
+- Handle "patching" blocks of HTML that aren't client-side

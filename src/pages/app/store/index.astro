@@ -1,0 +1,8 @@
+---
+import { storePageStore, StorePage } from "../../../components/react/Store";
+import AppLayout from "../../../layouts/AppLayout.astro";
+---
+<AppLayout title="Store demo" stores={{ [storePageStore.name]: storePageStore }}>
+  <a href="/app">Back to list</a>  
+  <StorePage client:load />
+</AppLayout>
