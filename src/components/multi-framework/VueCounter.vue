@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts">
-import { useStore } from '@nanostores/vue';
+import { useStore } from '../../lib/vue';
 import { counterStore } from './counter';
 
 export default {
