@@ -1,13 +1,11 @@
 import type { PropsWithChildren } from "react"
-import { createStore } from "../../lib/store"
 import { useStore } from "../../lib/react"
-
-export const appStore = createStore<Record<string, any>>('app', { foo: "bar" })
+import { globalStore } from "../../data/globalStore"
 
 export type AppProps = PropsWithChildren
 
 export const App = ({ children }: AppProps) => {
-  const storeData = useStore(appStore)
+  const storeData = useStore(globalStore)
 
   return (
     <>

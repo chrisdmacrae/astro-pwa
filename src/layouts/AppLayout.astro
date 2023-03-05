@@ -1,37 +1,17 @@
 ---
-import App, { appStore } from "../components/react/App";
-import { Nav } from "../components/react/Nav";
-import { createPageRoutesFromGlob, createRouter } from "../lib/routing/server";
-import SPA from "../lib/SPA.astro";
+import App from "../components/react/App";
 import type { Store } from "../lib/store";
+import SpaLayout from "./SpaLayout.astro";
 
 export type Props = {
   title: string
   stores?: Store[]
 }
 
-const { title, stores = [] } = Astro.props
-
-const router = await createRouter(Astro, {
-  routes: () => createPageRoutesFromGlob(Astro.glob('../pages/app/**/*.astro')),
-  stores: [...stores, appStore]
-})
+const { title, stores } = Astro.props
 ---
-<html>
-  <head>
-    <meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-    <title>{title}</title>
-  </head>
-  <body>
-    <SPA router={router}>
-      <Nav client:load />
-      {title}
-      <App client:load>
-        <slot />
-      </App>
-    </SPA>
-  </body>
-</html>
+<SpaLayout title={title} stores={stores}>
+  <App client:load>
+    <slot />
+  </App>
+</SpaLayout>

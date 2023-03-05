@@ -1,8 +1,8 @@
 ---
-import AppLayout from "../../../layouts/AppLayout.astro";
 import { Router } from "../../../components/react/Router";
+import SpaLayout from "../../../layouts/SpaLayout.astro";
 ---
-<AppLayout title="Page B">
+<SpaLayout title="Page B">
   <a href="/app">Back to list</a>  
   <Router client:load />
-</AppLayout>
+</SpaLayout>

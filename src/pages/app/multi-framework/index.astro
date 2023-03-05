@@ -1,17 +1,11 @@
 ---
-import { createPageRoutesFromGlob, createRouter } from "../../../lib/routing/server"
-import SPA from "../../../lib/SPA.astro";
 import { counterStore } from "../../../components/multi-framework/counter";
 import { ReactCounter } from "../../../components/multi-framework/ReactCounter";
 import VueCounter from "../../../components/multi-framework/VueCounter.vue";
-
-const router = await createRouter(Astro, {
-  routes: () => createPageRoutesFromGlob(Astro.glob('../../**/*.astro')),
-  stores: [counterStore]
-})
+import SpaLayout from "../../../layouts/SpaLayout.astro";
 ---
-<SPA router={router}>
+<SpaLayout title="Multi-framework demo" stores={[counterStore]}>
   <a href="/app">Back to list</a>  
   <ReactCounter client:load />
   <VueCounter client:load />
-</SPA>
+</SpaLayout>

@@ -6,14 +6,12 @@
 </template>
 
 <script lang="ts">
-import { createStore } from '../../lib/store';
-import { useStore } from '@nanostores/vue';
-
-export const appStore = createStore<Record<string, any>>('app', { foo: "bar" })
+import { globalStore } from '../../data/globalStore';
+import { useStore } from '../../lib/vue'
 
 export default {
 	setup() {
-    const data = useStore(appStore)
+    const data = useStore(globalStore)
 
 		return {
       data

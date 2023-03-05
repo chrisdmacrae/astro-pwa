@@ -1,15 +1,15 @@
 ---
 import { CollectionEntry, getCollection } from "astro:content"
-import AppLayout from "../../layouts/AppLayout.astro"
+import SpaLayout from "../../layouts/SpaLayout.astro"
 
 export interface Props {
-  slugs: CollectionEntry<'articles'>['slug'][]
+  slugs: CollectionEntry<'pages'>['slug'][]
 }
 
 export const getStaticPaths = async () => {
-  const blogs = await getCollection('articles')
+  const blogs = await getCollection('pages')
 
-  return blogs.map(blog => ({ params: { slug: 'blog/' + blog.slug }, props: { slugs: blogs.map(blog => blog.slug )}}))
+  return blogs.map(blog => ({ params: { slug: blog.slug }, props: { slugs: blogs.map(blog => blog.slug )}}))
 }
 ---
-<AppLayout title="Dynamic Route" />
+<SpaLayout title="Dynamic Route" />

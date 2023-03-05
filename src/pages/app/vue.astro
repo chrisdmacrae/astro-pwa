@@ -1,13 +1,8 @@
 ---
 import App from "../../components/vue/App.vue";
-import { createPageRoutesFromGlob, createRouter } from "../../lib/routing/server"
-import SPA from "../../lib/SPA.astro";
-
-const router = await createRouter(Astro, {
-  routes: () => createPageRoutesFromGlob(Astro.glob('../**/*.astro'))
-})
+import SpaLayout from "../../layouts/SpaLayout.astro";
 ---
-<SPA router={router}>
+<SpaLayout title="Vue Demo">
   <a href="/app">Back to list</a>  
   <App />
-</SPA>
+</SpaLayout>
