@@ -1,4 +1,9 @@
 import type { AstroIntegration } from 'astro'
+import { routerStore } from './routing/client'
+
+export { createStore } from './store'
+
+export const router = routerStore.get()
 
 export type SpaIntegrationOptions = {
   pages: string

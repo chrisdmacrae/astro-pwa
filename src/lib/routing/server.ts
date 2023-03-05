@@ -16,7 +16,7 @@ export type ServerRouter<T extends Record<string, MapStore> | undefined> = Route
   dehydrate: () => RouteConfig
 }
 
-export const createPageRoutes = async (pages: AstroInstance[] | Promise<AstroInstance[]>): Promise<Route[]> => {
+export const createPageRoutesFromGlob = async (pages: AstroInstance[] | Promise<AstroInstance[]>): Promise<Route[]> => {
   if (!pages) return []
 
   const pageInstances = await pages
