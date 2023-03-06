@@ -1,6 +1,6 @@
 import { useStore as useNanoStore } from "@nanostores/react"
 import { useMemo } from "react";
-import { routerStore, createRouter as createVanillaRouter } from "./routing/client";
+import { routerStore } from "./routing/client";
 import type { Store } from "./store"
 import { hydrateStore } from "./store";
 

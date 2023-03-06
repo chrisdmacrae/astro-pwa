@@ -1,12 +1,8 @@
 ---
-import SpaLayout from "../../layouts/SpaLayout.astro";
+import AppLayout from "../../layouts/AppLayout.astro";
 ---
-<SpaLayout title="Astro SPA">
-  <ul>
-    <li><a href="/app/react">React demo</a></li>
-    <li><a href="/app/vue">Vue demo</a></li>
-    <li><a href="/app/store">Store demo (in React)</a></li>
-    <li><a href="/app/router/a">Router demo (in React)</a></li>
-    <li><a href="/app/multi-framework">Multiple frameworks</a></li>
-  </ul>
-</SpaLayout>
+<AppLayout title="Dashboard">
+  <main class="w-screen h-screen bg-slate-100">
+    <h1>Welcome back</h1>
+  </main>
+</AppLayout>

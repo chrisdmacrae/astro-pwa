@@ -1,14 +1,15 @@
-import type { RouteConfig, Router } from "./types"
-import { createRouter as createNanoRouter, Router as NanoRouter, Pattern } from "@nanostores/router"
+import type { DehydratedRouter, Router } from "./types"
+import { createRouter as createNanoRouter, Pattern } from "@nanostores/router"
 import { map, MapStore } from "nanostores"
+import { dehydrateStores, getStoreRegistry, Store } from "../store"
 
 export type ClientRouter = Router & {
-  rawRouter: NanoRouter
+  stores: Store[]
 }
 
 export const routerStore = map<ClientRouter>()
 
-export const createRouter = (dehydratedRouter: RouteConfig): MapStore<ClientRouter> => {
+export const createRouter = (dehydratedRouter: DehydratedRouter): MapStore<ClientRouter> => {
   const routes = dehydratedRouter?.routes.reduce((routes, route) => {
     routes[route.name] = route.pattern
 
@@ -24,36 +25,43 @@ export const createRouter = (dehydratedRouter: RouteConfig): MapStore<ClientRout
 
     if (updatedData && currentData.path !== updatedData?.path) {
       routerStore.set({
+        ...currentData,
         path: updatedData!.path,
-        route: updatedData!.route,
-        routes: router.routes.map(route => route[0]),
-        push,
-        redirect,
-        rawRouter: router
+        route: updatedData!.route
       })
     }
   }
 
   router.subscribe((routeChange) => {
-    const isNewRoute = routeChange && routeChange?.path !== routerStore.get()?.path
+    const router = routerStore.get()
+    const isNewRoute = routeChange && routeChange?.path !== router.path
 
     if (isNewRoute && !import.meta.env.SSR) {
       update()
-      getRoute(routeChange.path)
+      getRoute(routeChange.path, router.stores)
     }
   })
 
 
   if (!import.meta.env.SSR) {
     // We handle a clicks for valid routes as a SPA route
-    document.addEventListener('click', (e) => {
-      const el = e.target as HTMLAnchorElement
+    window.addEventListener('astro:hydrate', () => {
+      document.addEventListener('click', (e) => {
+        const el = e.target as HTMLAnchorElement
 
-      if (el.tagName === 'A' &&  el.href) {
-        e.preventDefault()
+        if (el.tagName === 'A' &&  el.href) {
+          const shouldCSR = Object.keys(routes).find(key => {
+            return el.href.includes(key)
+          })
 
-        push(el.href)
-      }
+
+          if (shouldCSR) {
+            e.preventDefault()
+
+            push(el.href)
+          }
+        }
+      })
     })
   }
 
@@ -66,24 +74,30 @@ export const createRouter = (dehydratedRouter: RouteConfig): MapStore<ClientRout
     path: data!.path,
     route: data!.route,
     routes: router.routes.map(route => route[0]),
+    get stores() {
+      return Object.values(getStoreRegistry().get())
+    },
     push,
-    redirect,
-    rawRouter: router
+    redirect
   })
   
   return routerStore
 }
 
-export const getRouterData = (document: Document = window.document) => {
+export const getDehydratedRouter = (document: Document = window.document) => {
   const dataEl = document.getElementById('__astro-data')
 
   if (!dataEl) return
 
-  return JSON.parse(dataEl.textContent || '{}') as RouteConfig
+  return JSON.parse(dataEl.textContent || '{}') as DehydratedRouter
 }
 
-const getRoute = async (href: string) => {
-  const page = await fetch(href)
+const getRoute = async (href: string, stores: Store[]) => {
+  const page = await fetch(href, {
+    headers: {
+      '__astro-data': stores ? JSON.stringify(dehydrateStores(stores)) : '{}'
+    }
+  })
   const body = await page.text()
   const parser = new DOMParser()
   const doc = parser.parseFromString(body, 'text/html')
@@ -99,6 +113,6 @@ const getRoute = async (href: string) => {
   document.head.replaceWith(doc.head)
 
   if (oldSpa && newSpa) {
-    oldSpa?.replaceWith(newSpa)
+    oldSpa.replaceWith(document.importNode(newSpa, true))
   }
 }

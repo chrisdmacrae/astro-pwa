@@ -1,5 +1,5 @@
 import { defineConfig } from 'astro/config';
-import { spaIntegration } from './src/lib/spa';
+import { spaIntegration } from './src/lib';
 
 // https://astro.build/config
 import react from "@astrojs/react";
@@ -11,8 +11,11 @@ import vue from "@astrojs/vue";
 import node from "@astrojs/node";
 
 // https://astro.build/config
+import tailwind from "@astrojs/tailwind";
+
+// https://astro.build/config
 export default defineConfig({
-  integrations: [spaIntegration(), react(), vue()],
+  integrations: [spaIntegration(), react(), vue(), tailwind({ applyBaseStyles: false })],
   output: "server",
   adapter: node({
     mode: "standalone"

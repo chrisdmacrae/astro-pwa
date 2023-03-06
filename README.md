@@ -339,3 +339,19 @@ Instead, this thing needs to be smart enough to:
 - Get the CSS for the next page on preload
 - Update the URL accordingly
 - Handle "patching" blocks of HTML that aren't client-side
+
+## Server routing
+
+LEAVE IT TO ASTRO
+
+## Lifecycle
+
+1. Server / pre-render
+  1. Server state is initialized from the store
+  2. Then the server has the opportunity to mutate state
+  3. Then the state is serialized to JSON and stored in DOM
+2. Client hydrate
+  1. The island is hydrated
+  2. It renders
+  3. It attempts to hydrate from the DOM state
+    4. It should only do this if it's the first page or the store is 

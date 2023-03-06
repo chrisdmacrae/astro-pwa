@@ -1,19 +1,44 @@
 import type { AstroGlobal, AstroInstance } from "astro"
 import type { MapStore } from "nanostores"
 import { join } from "path"
-import type { Store } from "../store"
-import type { Route, RouteConfig, Router } from "./types"
+import { getStoreRegistry } from "../store"
+import type { Route, DehydratedRouter } from "./types"
 
 export type ServerRouterStores<T extends Record<string, MapStore> | undefined> = T
 
-export type ServerRouterConfig = {
+export type ServerRouteConfig = {
   routes: () => Route[] | Promise<Route[]>
-  stores?: Store[]
 }
 
-export type ServerRouter<T extends Record<string, MapStore> | undefined> = Router & {
-  stores?: T
-  dehydrate: () => RouteConfig
+export const createDehydratedRouter = async (astro: AstroGlobal, config: ServerRouteConfig): Promise<DehydratedRouter> => {
+  const routes = config?.routes ? await config?.routes() : []
+  const stores = getStoreRegistry().get()
+  const requestData = astro.request.headers.get('__astro-data')
+
+  let data = requestData ? JSON.parse(requestData) : {}
+  if (stores) {
+    data = Object.values(stores).reduce((data, store) => {
+      if (store && !data[store.name]) {
+        data[store.name] = store.get()
+      }
+
+      return data
+    }, data)
+  }
+
+  Object.keys(data).forEach(name => {
+    const store = stores[name]
+
+    if (store) store.set(data[name])
+  })
+  
+  return {
+    path: astro.url.pathname,
+    params: astro.params,
+    url: astro.url,
+    routes: routes,
+    data: data
+  }
 }
 
 export const createPageRoutesFromGlob = async (pages: AstroInstance[] | Promise<AstroInstance[]>): Promise<Route[]> => {
@@ -32,49 +57,4 @@ export const createPageRoutesFromGlob = async (pages: AstroInstance[] | Promise<
         .replace(/.astro$/, '')
     }))
     .reverse()
-}
-
-export const createRouter = async <T extends Record<string, MapStore> | undefined>(astro: AstroGlobal, config: ServerRouterConfig): Promise<ServerRouter<T>> => {  
-  const routes = config?.routes ? await config?.routes() : []
-  const currentRoute = routes.find(route => 
-    astro.url.pathname === route.pattern.toString() || 
-    astro.url.pathname.includes(route.pattern.toString().replace(/\:.*/, ''))
-  )
-
-  return {
-    path: currentRoute?.pattern.toString() || '',
-    route: currentRoute?.name || '',
-    routes: routes.map(route => route.name),
-    push: (href: string) => astro.redirect(href, 302),
-    redirect: (href: string) => astro.redirect(href, 302),
-    stores: config?.stores?.reduce((stores, store) => {
-      if (stores) {
-        stores[store.name] = store
-      }
-
-      return stores
-    }, {} as T),
-    dehydrate: function(): RouteConfig {
-      let data = {}
-      if (config?.stores !== undefined) {
-        data = Object.keys(config!.stores).reduce((data, name) => {
-          const store = config.stores?.find(store => store.name === name)
-
-          if (store) {
-            data[name] = store.get()
-          }
-
-          return data
-        }, {} as Record<string, any>)
-      }
-      
-      return {
-        path: astro.url.pathname,
-        params: astro.params,
-        url: astro.url,
-        routes: routes,
-        data: data
-      }
-    }
-  }
 }

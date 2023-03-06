@@ -1,1 +1,1 @@
-export { createRouter, createPageRoutesFromGlob } from './routing/server'
+export { createDehydratedRouter, createPageRoutesFromGlob } from './routing/server'

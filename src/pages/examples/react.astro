@@ -1,0 +1,11 @@
+---
+import SpaLayout from "../../layouts/SpaLayout.astro";
+import { ReactCounter } from "../../components/multi-framework/ReactCounter";
+---
+<SpaLayout title="React demo">
+  <ReactCounter client:idle />
+  <ReactCounter client:load />
+  <ReactCounter client:visible />
+  <ReactCounter client:only="react" />
+  <ReactCounter client:media="(max-width: 50em)" />
+</SpaLayout>

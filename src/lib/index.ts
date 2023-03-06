@@ -1,9 +1,10 @@
 import type { AstroIntegration } from 'astro'
 import { routerStore } from './routing/client'
 
-export { createStore } from './store'
+export { createStore, getDehydratedStoreData as getStoreData } from './store'
+export type { Store } from './store'
 
-export const router = routerStore.get()
+export const router = routerStore
 
 export type SpaIntegrationOptions = {
   pages: string
@@ -13,7 +14,7 @@ export const spaIntegration = (options: SpaIntegrationOptions): AstroIntegration
   return {
     name: "spa",
     hooks: {
-      'astro:config:setup': async ({ config }) => {
+      'astro:config:setup': async ({ config, addRenderer }) => {
         // inject routes and scripts
         // console.log({ config })
       },
@@ -29,3 +30,5 @@ export const spaIntegration = (options: SpaIntegrationOptions): AstroIntegration
     }
   }
 }
+
+export default spaIntegration

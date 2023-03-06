@@ -1,8 +1,7 @@
 ---
-import App from "../../components/vue/App.vue";
 import SpaLayout from "../../layouts/SpaLayout.astro";
+import VueCounter from "../../components/multi-framework/VueCounter.vue";
 ---
 <SpaLayout title="Vue Demo">
-  <a href="/app">Back to list</a>  
-  <App />
+  <VueCounter client:load />
 </SpaLayout>

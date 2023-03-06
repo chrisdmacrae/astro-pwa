@@ -14,7 +14,7 @@ export type Route<P = Pattern<RouteParams>> = {
   pattern: string | P
 }
 
-export type RouteConfig = {
+export type DehydratedRouter = {
   path: slugs
   url: URL
   params: Params
