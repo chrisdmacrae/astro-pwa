@@ -1,11 +1,11 @@
-import type { PropsWithChildren } from 'react';
+import { PropsWithChildren, useEffect } from 'react';
 import { useStore } from '../../lib/react';
 import { counterStore } from './counter';
 
 export function ReactCounter({ children }: PropsWithChildren) {
   const {count} = useStore(counterStore)
 	const add = () => counterStore.setKey('count', count + 1)
-	const subtract = () => counterStore.setKey('count', count + -1)
+	const subtract = () => counterStore.setKey('count', count - 1)
 
 	return (
 		<>

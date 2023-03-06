@@ -344,7 +344,41 @@ Instead, this thing needs to be smart enough to:
 
 LEAVE IT TO ASTRO
 
-## Lifecycle
+## Modes
+
+### Server
+
+Server mode assumes that the HTML template body of different pages is _different_.
+
+In other words, `/app/a` renders different HTML and a different set of islands than `/app/b`.
+
+### Lifecycle
+
+1. Server / pre-render
+  1. Server state is initialized from the store
+  2. Then the server has the opportunity to mutate state
+  3. Then the state is serialized to JSON and stored in DOM
+2. Client hydrate
+  1. The island is hydrated
+  2. It renders
+  3. It attempts to hydrate from the DOM state    
+3. Client navigation
+  1. The route being requested is well-known;
+    1. Yes
+      1. Request the page HTML, sending client-state via headers
+      2. Patch the head
+      3. Patch the SPA
+      4. Re-render or hydrate the elements from the DOM
+    2. No
+      3. Do a full-page refresh
+
+### Client
+
+Client mode assumes that the HTML template body of different pages is _the same_.
+
+In other words, `/app/a` renders the same HTML and the same set of islands as `/app/b`.
+
+### Lifecycle
 
 1. Server / pre-render
   1. Server state is initialized from the store
@@ -354,4 +388,45 @@ LEAVE IT TO ASTRO
   1. The island is hydrated
   2. It renders
   3. It attempts to hydrate from the DOM state
-    4. It should only do this if it's the first page or the store is 
+3. Client navigation
+  1. The route being requested is well-known;
+    1. Yes
+        1. Request the page as JSON, sending client-state via headers
+        2. Patch the DOM state
+        3. Re-render the router, triggering a DOM update
+    2. No
+      3. Do a full-page refresh
+
+# Hybrid
+
+Hybrid mode assumes that the HTML template body of different pages will have consistency, but change.
+
+This requires more configuration than server or client mode, but offers the most freedom.
+
+You instruct `astro-pwa` on what content is server-rendered and what server-rendered content to patch into the DOM on a route change
+with an `astro-island` attribute. Any server content without this attribute will be ignored.
+
+Example:
+
+```
+---
+import App from '../components/App'
+import Microfrontend from '../components/Microfrontend'
+import SPA from '../lib/SPA.astro'
+
+const isHome = Astro.url.pathname = "/app"
+const data = await data
+const router = createDehydratedRouter(Astro, { routes: Astro.glob('../app/**/*.astro') })
+---
+<SPA mode="hybrid" router={router}>
+  <nav class="classes" data-astro-island="nav">
+    <ul><li class={isHome ? 'active' : 'inactive'}>Home</li></ul>
+  </nav>
+  <App client:load />
+  <Microfrontend client:hybrid>
+    <section data-astro-island="microfrontend">
+      <p>I am a server-rendered island</p>
+    </section>
+  </Microfrontend>
+</SPA
+```

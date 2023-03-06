@@ -29,6 +29,7 @@ export const createStore = <T extends Record<string, any> = any>(name: string, v
   }
   const registry = getStoreRegistry().get()
 
+  // Maybe this should scream in case you actually have two stores with same name
   if (registry[name]) {
     return registry[name] as Store<T>
   }

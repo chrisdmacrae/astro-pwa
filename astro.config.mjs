@@ -18,6 +18,6 @@ export default defineConfig({
   integrations: [spaIntegration(), react(), vue(), tailwind({ applyBaseStyles: false })],
   output: "server",
   adapter: node({
-    mode: "standalone"
+    mode: "middleware"
   })
 });
