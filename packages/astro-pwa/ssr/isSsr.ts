@@ -1,0 +1,1 @@
+export const isSSR = (import.meta as any).env.SSR as boolean

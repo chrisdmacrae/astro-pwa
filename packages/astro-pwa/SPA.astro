@@ -1,0 +1,59 @@
+---
+import type { Route } from './routing/types';
+import { createRouter } from './routing/client';
+import { createDehydratedRouter } from './routing/server';
+import type { Store } from './stores/store';
+
+export interface Props {
+  routes: Route[]
+  stores?: Store<any>[]
+  [key: string]: any
+}
+
+const { routes, stores, ...props } = Astro.props
+const router = await createDehydratedRouter(Astro, { routes: routes })
+
+// Ensure the stores are "immutable" per request
+if (stores) {
+  stores.forEach(store => store.set(store.defaultValue))
+
+  // Restore the store data from the request
+  Object.keys(router.data).forEach(name => {
+    const store = stores.find(store => store.name === name)
+
+    if (store) {
+      const currentData = store.get()
+      const routerData = router.data[name]
+      const hydrationData = { ...currentData, ...routerData }
+
+      store.set(hydrationData)
+    }
+  })
+}
+
+// This is a hack to have the router ready for SSR
+createRouter(router)
+---
+<div id="__astro" {...props}>
+  <script type="application/json" id="__astro-data" set:html={JSON.stringify(router)} />
+  <script>
+    import { createRouter, getDehydratedRouter, routerStore } from 'astro-pwa/routing/client'
+    import { createClientStoreRegistry } from 'astro-pwa/stores/clientStoreRegistry'
+
+    const dehydratedRouter = getDehydratedRouter()
+    const hasRouter = Object.keys(routerStore.get()).keys.length !== 0
+    
+    createClientStoreRegistry()
+
+    if (dehydratedRouter && !hasRouter) {
+      createRouter(dehydratedRouter)
+    }
+  </script>
+  <!-- TODO: don't harcode -->
+  <script is:inline>(self.Astro=self.Astro||{}).load=a=>{(async()=>await(await a())())()},window.dispatchEvent(new Event("astro:load"));</script>
+  <script is:inline>(self.Astro=self.Astro||{}).idle=t=>{const e=async()=>{await(await t())()};"requestIdleCallback"in window?window.requestIdleCallback(e):setTimeout(e,200)},window.dispatchEvent(new Event("astro:idle"));</script>
+  <script is:inline>(self.Astro=self.Astro||{}).visible=(s,c,n)=>{const r=async()=>{await(await s())()};let i=new IntersectionObserver(e=>{for(const t of e)if(!!t.isIntersecting){i.disconnect(),r();break}});for(let e=0;e<n.children.length;e++){const t=n.children[e];i.observe(t)}},window.dispatchEvent(new Event("astro:visible"));</script>
+  <script is:inline>(self.Astro=self.Astro||{}).only=t=>{(async()=>await(await t())())()},window.dispatchEvent(new Event("astro:only"));</script>
+  <script is:inline>(self.Astro=self.Astro||{}).media=(s,a)=>{const t=async()=>{await(await s())()};if(a.value){const e=matchMedia(a.value);e.matches?t():e.addEventListener("change",t,{once:!0})}},window.dispatchEvent(new Event("astro:media"));</script>
+  <slot />
+</div>

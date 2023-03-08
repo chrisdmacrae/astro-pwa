@@ -1,0 +1,7 @@
+---
+import SpaLayout from "../layouts/SpaLayout.astro";
+import { ReactCounter } from "../components/react/ReactCounter";
+---
+<SpaLayout title="React demo">
+  <ReactCounter client:load />
+</SpaLayout>

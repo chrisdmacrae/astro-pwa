@@ -1,36 +1,26 @@
 {
-  "name": "spa-example",
-  "type": "module",
-  "version": "0.0.1",
+  "private": true,
+  "version": "1.0.0",
+  "name": "astro-pwa-monorepo",
   "scripts": {
-    "dev": "astro dev",
-    "start": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro"
+    "postinstall": "lerna bootstrap"
   },
-  "dependencies": {
-    "@astrojs/node": "^5.0.4",
-    "@astrojs/react": "^2.0.2",
-    "@astrojs/tailwind": "^3.0.1",
-    "@astrojs/vue": "^2.0.1",
-    "@nanostores/react": "^0.4.1",
-    "@nanostores/router": "^0.8.1",
-    "@nanostores/vue": "^0.7.0",
-    "@types/react": "^18.0.28",
-    "@types/react-dom": "^18.0.11",
-    "astro": "^2.0.17",
-    "dts-dom": "^3.7.0",
-    "glob": "^9.2.1",
-    "install": "^0.13.0",
-    "nanostores": "^0.7.4",
-    "npm": "^9.6.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "tailwindcss": "^3.2.7",
-    "vue": "^3.2.47"
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ],
+    "nohoist": [
+      "**/@nanostores/react",
+      "**/@nanostores/vue",
+      "**/@nanostores/router",
+      "**/nanostores",
+      "**/use-sync-external-store"
+    ]
   },
+  "repository": "git@github.com:chrisdmacrae/astro-spa-playground.git",
+  "author": "chrisdmacrae",
+  "license": "MIT",
   "devDependencies": {
-    "@types/node": "^18.14.6"
+    "lerna": "^6.5.1"
   }
 }

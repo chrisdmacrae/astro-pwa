@@ -1,0 +1,21 @@
+---
+import { Test } from "../components/Test";
+
+export const prerender = true
+---
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Astro</title>
+	</head>
+	<body>
+		<h1>Astro</h1>
+    <p>This is a standard SSG page from Astro</p>
+    <p><a href="/app">Head to the example app</a></p>
+    <p><a href="/">Head to the SPA Examples</a></p>
+    <Test client:load />
+	</body>
+</html>
