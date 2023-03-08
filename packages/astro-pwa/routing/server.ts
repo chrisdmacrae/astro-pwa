@@ -1,4 +1,3 @@
-import { join } from "path"
 import type { AstroGlobal, AstroInstance } from "astro"
 import type { MapStore } from "nanostores"
 import type { Route, DehydratedRouter } from "./types"
@@ -28,7 +27,7 @@ export const createPageRoutesFromGlob = async (pages: AstroInstance[] | Promise<
   if (!pages) return []
 
   const pageInstances = await pages
-  const fileBase = join(process.cwd(), 'src/pages')
+  const fileBase = [process.cwd(), 'src/pages'].join('/')
   return pageInstances
     .filter(p => p !== undefined && p.url !== undefined)
     .map(page => ({
