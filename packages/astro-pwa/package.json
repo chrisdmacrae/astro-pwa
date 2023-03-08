@@ -5,12 +5,15 @@
   "repository": "git@github.com:chrisdmacrae/astro-spa-playground.git",
   "main": "./index.ts",
   "files": [
+    "integration",
     "routing",
-    "store",
+    "ssr",
+    "stores",
     "index.ts",
     "react.ts",
     "vue.ts",
-    "server.ts",
+    "SPA.astro",
+    "tsconfig.json",
     "package.json"
   ],
   "dependencies": {
