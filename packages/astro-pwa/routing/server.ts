@@ -28,6 +28,7 @@ export const createPageRoutesFromGlob = async (pages: AstroInstance[] | Promise<
 
   const pageInstances = await pages
   const fileBase = [process.cwd(), 'src/pages'].join('/')
+  console.log(process.cwd(), fileBase)
   return pageInstances
     .filter(p => p !== undefined && p.url !== undefined)
     .map(page => ({
