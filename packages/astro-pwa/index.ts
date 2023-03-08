@@ -6,7 +6,7 @@ export type { PwaIntegrationOptions as SpaIntegrationOptions } from './integrati
 export { createPageRoutesFromGlob } from './routing/server'
 export const router = routerStore
 
-export { createStore } from './stores/store'
+export { createStore, useStore } from './stores/store'
 export { getDehydratedStoreData as getStoreData } from './stores/hydration'
 export type { Store } from './stores/store'
 
