@@ -1,10 +1,10 @@
 import type { AstroIntegration } from 'astro'
 
-export type SpaIntegrationOptions = {
+export type PwaIntegrationOptions = {
   pages: string
 }
 
-export const spaIntegration = (options: SpaIntegrationOptions): AstroIntegration => {
+export const pwaIntegration = (options: PwaIntegrationOptions): AstroIntegration => {
   return {
     name: "spa",
     hooks: {
@@ -25,4 +25,4 @@ export const spaIntegration = (options: SpaIntegrationOptions): AstroIntegration
   }
 }
 
-export default spaIntegration
+export default pwaIntegration

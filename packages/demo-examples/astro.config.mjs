@@ -1,5 +1,5 @@
 import { defineConfig } from 'astro/config';
-import { spaIntegration } from 'astro-pwa';
+import { pwaIntegration } from 'astro-pwa';
 
 import react from "@astrojs/react";
 
@@ -14,7 +14,7 @@ import vercel from "@astrojs/vercel/serverless";
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [spaIntegration(), react(), vue(), tailwind({
+  integrations: [pwaIntegration(), react(), vue(), tailwind({
     applyBaseStyles: false
   })],
   output: "server",

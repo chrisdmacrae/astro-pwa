@@ -1,5 +1,5 @@
 import { defineConfig } from 'astro/config';
-import { spaIntegration } from 'astro-pwa';
+import { pwaIntegration } from 'astro-pwa';
 import react from "@astrojs/react";
 
 // https://astro.build/config
@@ -13,7 +13,7 @@ import node from "@astrojs/node";
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [spaIntegration(), react(), tailwind({
+  integrations: [pwaIntegration(), react(), tailwind({
     applyBaseStyles: false
   })],
   // output: "server",

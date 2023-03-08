@@ -1,7 +1,7 @@
 import { routerStore } from './routing/client'
 
-export { spaIntegration } from './integration/pwa'
-export type { SpaIntegrationOptions } from './integration/pwa'
+export { pwaIntegration } from './integration/pwa'
+export type { PwaIntegrationOptions as SpaIntegrationOptions } from './integration/pwa'
 
 export { createPageRoutesFromGlob } from './routing/server'
 export const router = routerStore
