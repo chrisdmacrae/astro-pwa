@@ -53,6 +53,11 @@ Then, create a root for your new app at `src/pages/app/index.astro`:
 
 ```
 ---
+
+Next, create a home for your app `src/pages/app/index.astro`, importing `AppLayout` from `'src/layouts/AppLayout.astro`:
+
+```
+---
 import AppLayout from '../layouts/AppLayout.astro'
 ---
 <AppLayout>
@@ -65,6 +70,4 @@ At this point, you have everything "plumbed" to work, but nothing really interes
 
 At this point you can do a variety of things, follow the tutorial that makes the most sense to you:
 
-- a
-- b
-- c
+- Coming soon...
