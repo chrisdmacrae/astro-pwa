@@ -48,6 +48,7 @@ export const createRouter = (dehydratedRouter: DehydratedRouter): MapStore<Route
 
       if (el.tagName === 'A' && el.href) {
         const shouldCSR = Object.keys(routes).find(key => {
+          console.log(el.href, key)
           return el.href.includes(key)
         })
 
