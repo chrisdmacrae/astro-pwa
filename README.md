@@ -47,12 +47,11 @@ const routes = await getPageRoutesFromGlob('../pages/app/**/*.astro')
 ---
 <SPA routes={routes}>
 </SPA>
-``
+```
 
 Then, create a root for your new app at `src/pages/app/index.astro`:
 
 ```
----
 
 Next, create a home for your app `src/pages/app/index.astro`, importing `AppLayout` from `'src/layouts/AppLayout.astro`:
 
