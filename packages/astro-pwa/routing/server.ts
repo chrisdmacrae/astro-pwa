@@ -36,7 +36,7 @@ export const createPageRoutesFromGlob = async (pages: AstroInstance[] | Promise<
         .replace(/^.*?src\/pages/, '')
         .replace(/index.astro$/, '')
         .replace(/.astro$/, '')
-        .replace(/\/$/, '')
+        .replace(/\/$/, (match, _, original) => original.length > 1 ? match : original)
     }))
     .reverse()
 }
