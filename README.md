@@ -36,7 +36,7 @@ export default defineConfig({
 })
 ```
 
-Then create a layout for your PWA at `src/layouts/AppLayout.astro:
+Then create a layout for your PWA at `src/layouts/AppLayout.astro`:
 
 ```
 ---
