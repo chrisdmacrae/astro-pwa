@@ -1,11 +1,13 @@
-
-import { createStore } from 'astro-pwa'
-import { useStore } from 'astro-pwa/react'
-
-const testStore = createStore('test', {})
+import { useStore } from "astro-pwa/react"
+import { appStore } from "../stores/app"
 
 export const Test = () => {
-  const data = useStore(testStore)
+  const [appState] = useStore(appStore)
 
-  return null
+  return (
+    <div>
+      <p>{appState.on ? 'true' : 'false'}</p>
+      <button onClick={() => appStore.setKey('on', !appState.on)}>dfghdfsghj</button>
+    </div>
+  )
 }

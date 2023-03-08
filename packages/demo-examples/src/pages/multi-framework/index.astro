@@ -1,10 +1,10 @@
 ---
-import SpaLayout from "../../layouts/SpaLayout.astro";
+import AppLayout from "../../layouts/AppLayout.astro";
 import { ReactCounter } from "../../components/react/ReactCounter";
 import VueCounter from "../../components/vue/VueCounter.vue";
 ---
-<SpaLayout title="Multi-framework demo">
-  <a href="/app">Back to list</a>  
+<AppLayout title="Multi-framework demo">
+  <a href="/app">Back to list</a>
   <ReactCounter client:load />
   <VueCounter client:load />
-</SpaLayout>
+</AppLayout>

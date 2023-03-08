@@ -1,0 +1,26 @@
+---
+import Card from "../../components/Cards/Card.astro";
+import { Test2 } from "../../components/Test2";
+import AppLayout from "../../layouts/AppLayout.astro";
+---
+<AppLayout title="Astro PWA Demo App">
+  <div class="w-full h-16 p-4 bg-white shadow-md">
+    sdfhdfshkj
+  </div>
+
+  <Card variant="featured">
+    <h2 class="font-bold text-xl text-gray-700 flex gap-2 items-center">
+      Welcome to the demo app
+    </h2>
+    <p class="text-gray-600">
+      This simple application illustrates how Astro PWA supercharges Astro, allowing you to build
+      dynamic application functionality to your Astro sites.
+
+      <a href="/app/test">To test</a>
+    </p>
+  </Card>
+
+    <script is:inline>
+      console.log('home')
+    </script>
+</AppLayout>

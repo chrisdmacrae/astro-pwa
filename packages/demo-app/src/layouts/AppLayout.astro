@@ -1,0 +1,26 @@
+---
+import SPA from "astro-pwa/SPA.astro"
+import { createPageRoutesFromGlob } from "astro-pwa"
+
+export type Props = {
+  title: string
+}
+
+const { title } = Astro.props
+const isHome = Astro.url.pathname === "/"
+const routes = await createPageRoutesFromGlob(Astro.glob('../pages/app/**/*.astro'))
+---
+<html>
+  <head>
+    <meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+  </head>
+  <body class="bg-zinc-100">
+    <SPA routes={routes} output="static" class="w-full min-h-screen gap-4 flex flex-col items-center h-full">
+      <slot />
+    </SPA>
+  </body>
+</html>

@@ -2,24 +2,19 @@ import type { DehydratedRouter, Router } from "./types"
 import { createRouter as createNanoRouter, Pattern } from "@nanostores/router"
 import { map, MapStore } from "nanostores"
 import { isSSR } from "../ssr/isSsr"
-import type { Store } from "../stores/store"
 import { dehydrateStores } from "../stores/hydration"
 import { getClientStoreRegistry } from "../stores/clientStoreRegistry"
 
-export type ClientRouter = Router & {
-  stores: Store[]
-}
+export const routerStore = map<Router>()
 
-export const routerStore = map<ClientRouter>()
-
-export const createRouter = (dehydratedRouter: DehydratedRouter): MapStore<ClientRouter> => {
+export const createRouter = (dehydratedRouter: DehydratedRouter): MapStore<Router> => {
   const routes = dehydratedRouter?.routes.reduce((routes, route) => {
     routes[route.name] = route.pattern
 
     return routes
   }, {} as Record<string, string | Pattern<any>>) || {}
   const router = createNanoRouter(routes, { links: false })
-  
+
   const push = (href: string) => router.open(new URL(href).pathname)
   const redirect = (href: string) => router.open(new URL(href).pathname, true)
   const update = () => {
@@ -41,7 +36,7 @@ export const createRouter = (dehydratedRouter: DehydratedRouter): MapStore<Clien
 
     if (isNewRoute && !isSSR) {
       update()
-      getRoute(routeChange.path, router.stores)
+      getRoute(routeChange.path, router)
     }
   })
 
@@ -51,11 +46,10 @@ export const createRouter = (dehydratedRouter: DehydratedRouter): MapStore<Clien
     document.addEventListener('click', (e) => {
       const el = e.target as HTMLAnchorElement
 
-      if (el.tagName === 'A' &&  el.href) {
+      if (el.tagName === 'A' && el.href) {
         const shouldCSR = Object.keys(routes).find(key => {
           return el.href.includes(key)
         })
-
 
         if (shouldCSR) {
           e.preventDefault()
@@ -75,9 +69,10 @@ export const createRouter = (dehydratedRouter: DehydratedRouter): MapStore<Clien
     path: data!.path,
     route: data!.route,
     routes: router.routes.map(route => route[0]),
+    config: dehydratedRouter.config,
     get stores() {
       const storeRegistry = getClientStoreRegistry()
-      
+
       if (!storeRegistry) return []
 
       return storeRegistry
@@ -85,7 +80,7 @@ export const createRouter = (dehydratedRouter: DehydratedRouter): MapStore<Clien
     push,
     redirect
   })
-  
+
   return routerStore
 }
 
@@ -97,33 +92,46 @@ export const getDehydratedRouter = (document: Document = window.document) => {
   return JSON.parse(dataEl.textContent || '{}') as DehydratedRouter
 }
 
-const getRoute = async (href: string, stores: Store[]) => {
+const getRoute = async (href: string, router: Router) => {
   const dehydratedRouter = getDehydratedRouter() || {}
-  const dehydratedStores = dehydrateStores(stores)
-
-  const page = await fetch(href, {
-    headers: {
+  const dehydratedStores = dehydrateStores(router.stores)
+  const isServer = router.config.output === "server"
+  const headers = isServer
+    ? {
       '__astro-data': JSON.stringify({
         ...dehydratedRouter,
         data: dehydratedStores
       })
-    }
+    } : undefined
+
+    const page = await fetch(href, {
+    headers: headers
   })
   const body = await page.text()
   const parser = new DOMParser()
   const doc = parser.parseFromString(body, 'text/html')
-  const oldSpa = document.getElementById('__astro')
-  const newSpa = doc.getElementById('__astro')
+  const oldEl = document.getElementById('__astro')
+  const newEl = doc.getElementById('__astro')
 
-  // TODO:
-  // - properly fetch and patch JS
-  // - properly fetch and patch server HTML (not part of the spa?)
-  // - properly hydrate the necessary store for the page components
-  
-  // Patch the DOM head with the new page
   document.head.replaceWith(doc.head)
 
-  if (oldSpa && newSpa) {
-    oldSpa.replaceWith(document.importNode(newSpa, true))
+  let importedEl
+  if (oldEl && newEl) {
+    importedEl = document.importNode(newEl, true)
+    oldEl.replaceWith(importedEl)
   }
+
+  if (!importedEl) return
+
+  const scripts = importedEl.querySelectorAll('script')
+  scripts.forEach(script => {
+    const el = document.createElement('script')
+
+    if (script.textContent) el.textContent = script.textContent
+    Array.from(script.attributes).forEach(attr => {
+      el.setAttribute(attr.name, attr.value)
+    })
+
+    script.replaceWith(el)
+  })
 }

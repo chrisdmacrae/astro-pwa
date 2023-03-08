@@ -1,5 +1,6 @@
 ---
-import { Test } from "../components/Test";
+import ArrowRight from "../components/ArrowRight.astro";
+import Card from "../components/Cards/Card.astro";
 
 export const prerender = true
 ---
@@ -11,11 +12,54 @@ export const prerender = true
 		<meta name="generator" content={Astro.generator} />
 		<title>Astro</title>
 	</head>
-	<body>
-		<h1>Astro</h1>
-    <p>This is a standard SSG page from Astro</p>
-    <p><a href="/app">Head to the example app</a></p>
-    <p><a href="/">Head to the SPA Examples</a></p>
-    <Test client:load />
+	<body class="bg-zinc-100 p-10">
+		<main class="max-w-prose mx-auto flex flex-col gap-4">
+			<h1 class="text-5xl font-bold">
+				Welcome to <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-pink-400">Astro PWA</span>
+			</h1>
+
+			<Card variant="featured">
+				<p>
+					To get started, open the directory <code class="text-sm font-bold px-2 py-1 rounded-lg text-purple-500 bg-purple-200">src/pages</code>
+					in your project.
+				</p>
+			</Card>
+			<ul class="grid grid-cols-1 md:grid-cols-2 gap-3">
+				<Card as="li" href="#">
+					<h2 class="font-bold text-xl text-gray-700 flex gap-2 items-center">
+						Documentation
+						<ArrowRight />
+					</h2>
+					<p class="text-gray-600">
+						Learn how Astro PWA works and explore the official API docs.
+					</p>
+				</Card>
+
+				<Card as="li" href="#">
+					<h2 class="font-bold text-xl text-gray-700 flex gap-2 items-center">
+						Examples
+						<ArrowRight />
+					</h2>
+					<p class="text-gray-600">
+						Explore the examples and learn how to supercharge your Astro sites.
+					</p>
+				</Card>
+
+
+				<li class="col-span-2">
+					<Card as="div" href="/app">
+						<h2 class="font-bold text-xl text-gray-700 flex gap-2 items-center">
+							Check out the demo app
+							<ArrowRight />
+						</h2>
+						<p>
+							Check out the demo PWA right now, and experience Astro supercharged. <br />
+							<span class="font-bold text-purple-600">Code challenge:</span> open up <code class="text-sm font-bold px-2 py-1 rounded-lg text-purple-500 bg-purple-200">src/pages/app</code>
+							to begin experimenting with the power of Astro PWA.
+						</p>
+					</Card>
+				</li>
+			</ul>
+		</main>
 	</body>
 </html>

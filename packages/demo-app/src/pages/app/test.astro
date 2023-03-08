@@ -1,0 +1,25 @@
+---
+import Card from "../../components/Cards/Card.astro";
+import { Test } from "../../components/Test";
+import AppLayout from "../../layouts/AppLayout.astro";
+---
+<AppLayout title="Astro PWA Demo App">
+  <div class="w-full h-16 p-4 bg-white shadow-md">
+    sdfhdfshkj
+  </div>
+
+  <Card variant="featured">
+    <h2 class="font-bold text-xl text-gray-700 flex gap-2 items-center">
+      Welcome to the test page
+    </h2>
+    <p class="text-gray-600">
+      <a href="/app">To home</a>
+    </p>
+    <Test client:only />
+
+  </Card>
+
+  <script is:inline>
+    console.log('test')
+  </script>
+</AppLayout>

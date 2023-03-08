@@ -1,8 +1,8 @@
 ---
 import { StorePage } from "../../components/react/Store";
-import SpaLayout from "../../layouts/SpaLayout.astro";
+import AppLayout from "../../layouts/AppLayout.astro";
 ---
-<SpaLayout title="Store demo">
-  <a href="/app">Back to list</a>  
+<AppLayout title="Store demo">
+  <a href="/app">Back to list</a>
   <StorePage client:load />
-</SpaLayout>
+</AppLayout>

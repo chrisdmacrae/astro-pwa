@@ -1,9 +1,9 @@
 ---
 import { router } from 'astro-pwa'
-import SpaLayout from "../layouts/SpaLayout.astro";
+import AppLayout from '../layouts/AppLayout.astro';
 import { globalStore } from "../stores/globalStore";
 ---
-<SpaLayout title="Astro Demo">
+<AppLayout title="Astro Demo">
   <p>Current route: <span id="currentRoute">{router.get().route}</span></p>
   <p>Current global data: <span id="storeState">{JSON.stringify(globalStore.get())}</span></p>
   <script>
@@ -19,4 +19,4 @@ import { globalStore } from "../stores/globalStore";
     const storeStateEl = document.querySelector('#storeState')
     if (storeStateEl) storeStateEl.textContent = JSON.stringify(globalStore.get())
   </script>
-</SpaLayout>
+</AppLayout>
