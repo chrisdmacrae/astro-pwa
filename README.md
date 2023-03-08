@@ -41,11 +41,17 @@ Then create a layout for your PWA at `src/layouts/AppLayout.astro`:
 ```
 ---
 import SPA from 'astro-pwa/SPA.astro'
-import { getPageRoutesFromGlob } from 'astro-pwa'
+import { createPageRoutesFromGlob } from 'astro-pwa'
 
-const routes = await getPageRoutesFromGlob('../pages/app/**/*.astro')
+const routes = await createPageRoutesFromGlob(Astro.glob('../pages/app/**/*.astro'))
 ---
-<SPA routes={routes}>
+<html>
+<head>
+  <title>My new app</title>
+</head>
+<body>
+  <SPA routes={routes}>
+</body>
 </SPA>
 ```
 
