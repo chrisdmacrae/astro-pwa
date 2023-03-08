@@ -27,15 +27,13 @@ export const createPageRoutesFromGlob = async (pages: AstroInstance[] | Promise<
   if (!pages) return []
 
   const pageInstances = await pages
-  const fileBase = [process.cwd(), 'src/pages'].join('/')
-  console.log(process.cwd(), fileBase)
   return pageInstances
     .filter(p => p !== undefined && p.url !== undefined)
     .map(page => ({
       pattern: page.url!
         .replace(/\[[.]*(.*?)\]/, (match, m1) => m1 ? `:${m1}` : match),
       name: page.file
-        .replace(fileBase, '')
+        .replace(/^.*?src\/pages/, '')
         .replace(/index.astro$/, '')
         .replace(/.astro$/, '')
         .replace(/\/$/, '')
