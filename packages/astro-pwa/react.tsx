@@ -2,8 +2,8 @@ import { useEffect, useMemo } from "react";
 import { isSSR } from "./ssr/isSsr";
 import { useStore as useNanoStore } from "@nanostores/react"
 import { Store, useStore as useAstroStore } from './stores/store'
-import { hydrateStore } from "./stores/hydration";
-import { routerStore } from "./routing/client";
+import { hydrateClientStore } from "./stores/hydration";
+import { routerStore } from "./routing/router";
 
 export const useStore = <T extends object = any>(store: Store<T>) => {
   useEffect(() => {
@@ -12,7 +12,7 @@ export const useStore = <T extends object = any>(store: Store<T>) => {
 
   if (!isSSR) {
     useMemo(() => {
-      hydrateStore(store)
+      hydrateClientStore(store)
     }, [])
   }
 

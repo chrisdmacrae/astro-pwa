@@ -1,11 +1,23 @@
 import type { AllKeys } from 'nanostores/atom'
-import { getDehydratedRouter } from '../routing/client'
+import { getClientStoreData, getDehydratedData } from '../session/temporary'
 import type { Store } from './store'
 
 export type DehydratedStore = Pick<Store, 'name' | 'defaultValue'> & { [key: string]: any }
 export type DehydratedStores = Record<string, DehydratedStore>
 
-export const hydrateStore = <T extends object = any>(store: Store<T>) => {
+export const hydrateServerStore = (store: Store<any>, request: Request) => {
+  // Ensure the stores are "immutable" per request
+  store.set(store.defaultValue)
+  
+  const {data} = getClientStoreData(request)
+  const currentData = store.get()
+  const routerData = data[store.name]
+  const hydrationData = { ...currentData, ...routerData }
+
+   store.set(hydrationData)
+}
+
+export const hydrateClientStore = <T extends object = any>(store: Store<T>) => {
   const serverData = getDehydratedStoreData(store.name)
   const clientData = store.get()
 
@@ -25,7 +37,7 @@ export const dehydrateStores = (stores: Store[]) => stores.reduce((map, store) =
 }, {} as DehydratedStores)
 
 export const getDehydratedStoreData = (name: string, document: Document = window.document) => {
-  const routerData = getDehydratedRouter(document)
+  const dehydratedData = getDehydratedData(document)
 
-  return routerData?.['data']?.[name]
+  return dehydratedData?.['data']?.[name]
 }

@@ -1,16 +1,39 @@
-import type { DehydratedRouter, Router } from "./types"
+import type { Params } from "astro"
+import { map } from "nanostores"
 import { createRouter as createNanoRouter, Pattern } from "@nanostores/router"
-import { map, MapStore } from "nanostores"
 import { isSSR } from "../ssr/isSsr"
 import { dehydrateStores } from "../stores/hydration"
 import { getClientStoreRegistry } from "../stores/clientStoreRegistry"
-import { sendClientStoreData } from "../stores/persistence"
+import type { Store } from "../stores/store"
+import { getDehydratedData, sendClientStoreData } from "../session/temporary"
 
 export const routerStore = map<Router>()
 
-export const useRouter = () => routerStore
+export const useRouter = () => routerStore.get()
 
-export const createRouter = (dehydratedRouter: DehydratedRouter): MapStore<Router> => {
+export type Router = {
+  path: string
+  route: string
+  params: Params
+  routes: Route[]
+  stores: Store[]
+  push: (href: string, as: string) => void
+  redirect: (href: string) => void
+  dehydrate: () => DehydratedRouter
+}
+
+export type Route<P = Pattern<any>> = {
+  name: string
+  pattern: string | P
+}
+
+export type DehydratedRouter = {
+  path: string
+  params: Params
+  routes: Route[]
+}
+
+export const createRouter = (dehydratedRouter: DehydratedRouter): Router => {
   const routes = dehydratedRouter?.routes.reduce((routes, route) => {
     routes[route.name] = route.pattern
 
@@ -50,7 +73,6 @@ export const createRouter = (dehydratedRouter: DehydratedRouter): MapStore<Route
       const el = e.target as HTMLAnchorElement
 
       if (el.tagName === 'A' && el.href) {
-        console.log({ routes })
         const shouldCSR = Object.keys(routes).find(key => {
           return el.href.includes(key)
         })
@@ -72,8 +94,8 @@ export const createRouter = (dehydratedRouter: DehydratedRouter): MapStore<Route
   routerStore.set({
     path: data!.path,
     route: data!.route,
-    routes: router.routes.map(route => route[0]),
-    config: dehydratedRouter.config,
+    params: data!.params,
+    routes: dehydratedRouter.routes,
     push,
     redirect,
     get stores() {
@@ -82,25 +104,27 @@ export const createRouter = (dehydratedRouter: DehydratedRouter): MapStore<Route
       if (!storeRegistry) return []
 
       return storeRegistry
+    },
+    dehydrate: () => {
+      const router = routerStore.get()
+      const dehydratedRouter: DehydratedRouter = {
+        path: router.path,
+        params: router.params,
+        routes: router.routes
+      }
+
+      return dehydratedRouter
     }
   })
 
-  return routerStore
-}
-
-export const getDehydratedRouter = (document: Document = window.document) => {
-  const dataEl = document.getElementById('__astro-data')
-
-  if (!dataEl) return
-
-  return JSON.parse(dataEl.textContent || '{}') as DehydratedRouter
+  return routerStore.get()
 }
 
 const getRoute = async (href: string, router: Router) => {
-  const dehydratedRouter = getDehydratedRouter() || {} as DehydratedRouter
+  const dehydratedData = getDehydratedData()
   const dehydratedStores = dehydrateStores(router.stores)
 
-  const page = await sendClientStoreData(href, router.config.output, dehydratedStores, dehydratedRouter)
+  const page = await sendClientStoreData(href, { ...dehydratedData, data: dehydratedStores})
   const body = await page.text()
   const parser = new DOMParser()
   const doc = parser.parseFromString(body, 'text/html')

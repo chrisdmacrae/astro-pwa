@@ -46,19 +46,25 @@ export const prerender = true
 					</p>
 				</Card>
 
+        <Card as="li" href="#">
+					<h2 class="font-bold text-xl text-gray-700 flex gap-2 items-center">
+						Documentation
+						<ArrowRight />
+					</h2>
+					<p class="text-gray-600">
+						Learn how Astro PWA works and explore the official API docs.
+					</p>
+				</Card>
 
-				<li class="col-span-2">
-					<Card as="div" href="/server">
-						<h2 class="font-bold text-xl text-gray-700 flex gap-2 items-center">
-							Server-rendered application
-							<ArrowRight />
-						</h2>
-						<p>
-							A traditional server-rendered application. Every page route is a full page refresh, but client state is kept in sync with the server
-							and client-side logic is rehydrated every page load.
-						</p>
-					</Card>
-				</li>
+				<Card as="li" href="https://github.com/chrisdmacrae/astro-pwa">
+					<h2 class="font-bold text-xl text-gray-700 flex gap-2 items-center">
+						More on Github
+						<ArrowRight />
+					</h2>
+					<p class="text-gray-600">
+						Submit feedback, ask questions, and learn more on Github
+					</p>
+				</Card>
 			</ul>
 		</main>
 	</body>
