@@ -1,32 +1,35 @@
 ---
-import type { Route } from './routing/types';
-import { createDehydratedRouter } from './routing/server';
+import { createRouter, Route } from './routing/router';
 import type { Store } from './stores/store';
-import Stores from './Stores.astro';
+import AstroData from './AstroData.astro';
 
 export interface Props {
   routes: Route[]
-  // TODO: decide if this API should exist, or an imperative one
-  // using useStore and useStores should be used instead
   stores?: Store<any>[]
   output?: "server" | "static"
   [key: string]: any
 }
 
 const { routes, stores = [], output = "static", ...props } = Astro.props
-const router = await createDehydratedRouter(Astro, { routes: routes, output: output })
+
+const router = createRouter({
+  path: Astro.url.pathname,
+  params: Astro.params,
+  routes: routes
+})
 ---
 <div id="__astro" {...props}>
-  <Stores stores={stores} output={output} data={router.data} router={router} />
-    <script>
-      import { createRouter, getDehydratedRouter, routerStore } from 'astro-pwa/routing/client'
+  <AstroData stores={stores} router={router.dehydrate()} output={output} />
+  <script>
+    import { createRouter, routerStore, DehydratedRouter } from 'astro-pwa/routing/router'
+    import { getDehydratedData } from './session/temporary'
 
-      const dehydratedRouter = getDehydratedRouter()
-      const hasRouter = Object.keys(routerStore.get()).keys.length !== 0
+    const dehydratedData = getDehydratedData()
+    const hasRouter = Object.keys(routerStore.get()).keys.length !== 0
 
-      if (dehydratedRouter && !hasRouter) {
-        createRouter(dehydratedRouter)
-      }
-    </script>
-    <slot />
+    if (dehydratedData.path && !hasRouter) {
+      createRouter(dehydratedData as DehydratedRouter)
+    }
+  </script>
+  <slot />
 </div>

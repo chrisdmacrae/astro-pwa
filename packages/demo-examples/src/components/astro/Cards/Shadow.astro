@@ -8,9 +8,10 @@ const { as = "section", href } = Astro.props
 
 const Tag = as
 const InnerTag = href ? 'a' : 'div'
+const target = href?.startsWith('http') ? "_blank" : undefined
 ---
 <Tag class="card flex bg-white shadow-md rounded-xl p-1">
-  <InnerTag href={href} class="w-full flex flex-col gap-2 bg-white p-4 rounded-lg bg-opacity-80">
+  <InnerTag href={href} target={target} class="w-full flex flex-col gap-2 bg-white p-4 rounded-lg bg-opacity-80">
     <slot />
   </InnerTag>
 </Tag>
