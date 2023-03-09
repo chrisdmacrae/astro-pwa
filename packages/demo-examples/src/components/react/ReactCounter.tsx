@@ -1,13 +1,11 @@
 import type { PropsWithChildren } from 'react'
 import { useStore } from 'astro-pwa/react'
-import { counterStore } from '../../stores/counter'
+import { counterStore, add, subtract } from '../../stores/counter'
 
 export function ReactCounter({ children }: PropsWithChildren) {
-  const [{count}, store] = useStore(counterStore)
-	const add = () => store.setKey('count', count + 1)
-	const subtract = () => store.setKey('count', count - 1)
+  const {count} = useStore(counterStore)
 
-	return (
+  return (
 		<>
       <div className="flex flex-col gap-2">
         <h2 className="text-md slate-500">A counter in React, sharing global state with all other frameworks</h2>

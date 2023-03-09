@@ -1,21 +1,65 @@
 ---
-import AppLayout from "../layouts/AppLayout.astro";
+import ArrowRight from "../components/astro/ArrowRight.astro";
+import Card from "../components/astro/Cards/Card.astro";
+
+export const prerender = true
 ---
-<AppLayout title="Astro SPA Examples">
-  <main class="flex flex-col gap-4">
-  <p class="text-md text-slate-500">
-    Welcome to the Astro SPA Examples. These live demos illustrate how to use this integration to use Astro to build
-    single page applications and collaborative microfrontends with Astro.
-  </p>
-  </main>
-  <section class="flex flex-col gap-2">
-    <h4 class="text-md font-bold">All demos</h4>
-    <ul class="list-disc list-inside text-md [&>li>a]:text-sky-600 [&>li>a:hover]:text-sky-500">
-      <li><a href="/react">React demo</a></li>
-      <li><a href="/vue">Vue demo</a></li>
-      <li><a href="/store">Store demo (in React)</a></li>
-      <li><a href="/router/a">Router demo (in React)</a></li>
-      <li><a href="/multi-framework">Multiple frameworks</a></li>
-    </ul>
-  </section>
-</AppLayout>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Astro</title>
+	</head>
+	<body class="bg-zinc-100 p-10">
+		<main class="max-w-prose mx-auto flex flex-col gap-4">
+			<h1 class="text-5xl font-bold">
+				Welcome to <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-pink-400">Astro PWA</span>
+			</h1>
+
+			<Card variant="featured">
+				<p>
+					This is a demo repo to show examples of how Astro PWA can be used to build complex applications.
+				</p>
+			</Card>
+			<ul class="grid grid-cols-1 md:grid-cols-2 gap-3">
+				<Card as="li" href="/server-spa">
+					<h2 class="font-bold text-xl text-gray-700 flex gap-2 items-center">
+						Server-rendered Single Page Application
+						<ArrowRight />
+					</h2>
+					<p class="text-gray-600">
+						A single page application that server-renders each page, keeping user state
+						in sync for the duration of the session.
+					</p>
+				</Card>
+
+				<Card as="li" href="/client-spa">
+					<h2 class="font-bold text-xl text-gray-700 flex gap-2 items-center">
+						Client-rendered Single Page Application
+						<ArrowRight />
+					</h2>
+					<p class="text-gray-600">
+						A single page application that is statically generated at build time. It client-renders each page, keeping user state
+						in sync for the duration of the session.
+					</p>
+				</Card>
+
+
+				<li class="col-span-2">
+					<Card as="div" href="/server">
+						<h2 class="font-bold text-xl text-gray-700 flex gap-2 items-center">
+							Server-rendered application
+							<ArrowRight />
+						</h2>
+						<p>
+							A traditional server-rendered application. Every page route is a full page refresh, but client state is kept in sync with the server
+							and client-side logic is rehydrated every page load.
+						</p>
+					</Card>
+				</li>
+			</ul>
+		</main>
+	</body>
+</html>

@@ -1,0 +1,9 @@
+---
+import ClientSPALayout from "../../../layouts/ClientSPALayout.astro";
+import { Router } from "../../../components/react/Router";
+
+export const prerender = true
+---
+<ClientSPALayout title="Page A">
+  <Router client:only="react" />
+</ClientSPALayout>

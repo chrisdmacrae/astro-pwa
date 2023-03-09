@@ -13,10 +13,13 @@ import tailwind from "@astrojs/tailwind";
 import vercel from "@astrojs/vercel/serverless";
 
 // https://astro.build/config
+import node from "@astrojs/node";
+
+// https://astro.build/config
 export default defineConfig({
   integrations: [pwaIntegration(), react(), vue(), tailwind({
     applyBaseStyles: false
   })],
   output: "server",
-  adapter: vercel()
+  adapter: node({ mode: "standalone" })
 });

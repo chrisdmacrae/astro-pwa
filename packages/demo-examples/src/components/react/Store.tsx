@@ -3,22 +3,23 @@ import { useStore } from 'astro-pwa/react'
 import { storePageStore } from '../../stores/storePage'
 
 export const StorePage = () => {
-  const [data, store] = useStore(storePageStore)
+  const data = useStore(storePageStore)
+
   const showState = () => {
     alert(`State is: ${JSON.stringify(data)}}`)
   }
   const addState = () => {
-    store.setKey('added', 'some new state')
+    storePageStore.setKey('added', 'some new state')
   }
   const removeState = () => {
-    store.setKey('added', null)
+    storePageStore.setKey('added', null)
   }
 
   useEffect(() => {
-    store.setKey('renderedBy', 'client')
+    storePageStore.setKey('renderedBy', 'client')
 
     return () => {
-      store.set(store.defaultValue)
+      storePageStore.set(storePageStore.defaultValue)
     }
   }, [])
 

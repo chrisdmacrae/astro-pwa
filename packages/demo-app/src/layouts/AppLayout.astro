@@ -7,7 +7,6 @@ export type Props = {
 }
 
 const { title } = Astro.props
-const isHome = Astro.url.pathname === "/"
 const routes = await createPageRoutesFromGlob(Astro.glob('../pages/app/**/*.astro'))
 ---
 <html>

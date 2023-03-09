@@ -1,0 +1,13 @@
+---
+import ClientSPALayout from "../../../layouts/ClientSPALayout.astro";
+import Counter from "../../../components/astro/Counter.astro";
+import { ReactCounter } from "../../../components/react/ReactCounter";
+import VueCounter from "../../../components/vue/VueCounter.vue";
+
+export const prerender = true
+---
+<ClientSPALayout title="Multi-framework demo">
+  <Counter />
+  <ReactCounter client:only="react" />
+  <VueCounter client:only="vue" />
+</ClientSPALayout>

@@ -4,8 +4,11 @@ import { map, MapStore } from "nanostores"
 import { isSSR } from "../ssr/isSsr"
 import { dehydrateStores } from "../stores/hydration"
 import { getClientStoreRegistry } from "../stores/clientStoreRegistry"
+import { sendClientStoreData } from "../stores/persistence"
 
 export const routerStore = map<Router>()
+
+export const useRouter = () => routerStore
 
 export const createRouter = (dehydratedRouter: DehydratedRouter): MapStore<Router> => {
   const routes = dehydratedRouter?.routes.reduce((routes, route) => {
@@ -47,8 +50,8 @@ export const createRouter = (dehydratedRouter: DehydratedRouter): MapStore<Route
       const el = e.target as HTMLAnchorElement
 
       if (el.tagName === 'A' && el.href) {
+        console.log({ routes })
         const shouldCSR = Object.keys(routes).find(key => {
-          console.log(el.href, key)
           return el.href.includes(key)
         })
 
@@ -71,15 +74,15 @@ export const createRouter = (dehydratedRouter: DehydratedRouter): MapStore<Route
     route: data!.route,
     routes: router.routes.map(route => route[0]),
     config: dehydratedRouter.config,
+    push,
+    redirect,
     get stores() {
       const storeRegistry = getClientStoreRegistry()
 
       if (!storeRegistry) return []
 
       return storeRegistry
-    },
-    push,
-    redirect
+    }
   })
 
   return routerStore
@@ -94,37 +97,29 @@ export const getDehydratedRouter = (document: Document = window.document) => {
 }
 
 const getRoute = async (href: string, router: Router) => {
-  const dehydratedRouter = getDehydratedRouter() || {}
+  const dehydratedRouter = getDehydratedRouter() || {} as DehydratedRouter
   const dehydratedStores = dehydrateStores(router.stores)
-  const isServer = router.config.output === "server"
-  const headers = isServer
-    ? {
-      '__astro-data': JSON.stringify({
-        ...dehydratedRouter,
-        data: dehydratedStores
-      })
-    } : undefined
 
-    const page = await fetch(href, {
-    headers: headers
-  })
+  const page = await sendClientStoreData(href, router.config.output, dehydratedStores, dehydratedRouter)
   const body = await page.text()
   const parser = new DOMParser()
   const doc = parser.parseFromString(body, 'text/html')
   const oldEl = document.getElementById('__astro')
   const newEl = doc.getElementById('__astro')
 
-  document.head.replaceWith(doc.head)
-
   let importedEl
   if (oldEl && newEl) {
     importedEl = document.importNode(newEl, true)
-    oldEl.replaceWith(importedEl)
   }
 
-  if (!importedEl) return
+  if (!oldEl || !importedEl) return
 
-  const scripts = importedEl.querySelectorAll('script')
+  oldEl.replaceWith(importedEl)
+  hydrateScripts(Array.from(document.head.querySelectorAll('script')))
+  hydrateScripts(Array.from(importedEl.querySelectorAll('script')))
+}
+
+export const hydrateScripts = (scripts: HTMLScriptElement[]) => {
   scripts.forEach(script => {
     const el = document.createElement('script')
 

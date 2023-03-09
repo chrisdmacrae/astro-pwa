@@ -1,0 +1,7 @@
+---
+import ClientSPALayout from "../../../layouts/ClientSPALayout.astro";
+import { StorePage } from "../../../components/react/Store";
+---
+<ClientSPALayout title="Store demo">
+  <StorePage client:only="react" />
+</ClientSPALayout>
