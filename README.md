@@ -51,6 +51,8 @@ const routes = await createPageRoutesFromGlob(Astro.glob('../pages/app/**/*.astr
 </head>
 <body>
   <SPA routes={routes}>
+    <slot />
+  </SPA>
 </body>
 </SPA>
 ```
