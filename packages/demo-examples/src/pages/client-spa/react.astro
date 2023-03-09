@@ -1,0 +1,9 @@
+---
+import ClientSPALayout from "../../layouts/ClientSPALayout.astro";
+import { ReactCounter } from "../../components/react/ReactCounter";
+
+export const prerender = true
+---
+<ClientSPALayout title="React demo">
+  <ReactCounter client:only="react" />
+</ClientSPALayout>

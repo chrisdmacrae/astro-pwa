@@ -13,6 +13,7 @@
     "react.ts",
     "vue.ts",
     "SPA.astro",
+    "Stores.astro",
     "tsconfig.json",
     "package.json"
   ],

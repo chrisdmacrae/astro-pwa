@@ -1,54 +1,32 @@
 ---
 import type { Route } from './routing/types';
-import { createRouter } from './routing/client';
 import { createDehydratedRouter } from './routing/server';
 import type { Store } from './stores/store';
+import Stores from './Stores.astro';
 
 export interface Props {
   routes: Route[]
+  // TODO: decide if this API should exist, or an imperative one
+  // using useStore and useStores should be used instead
   stores?: Store<any>[]
   output?: "server" | "static"
   [key: string]: any
 }
 
-const { routes, stores, output = "server", ...props } = Astro.props
+const { routes, stores = [], output = "static", ...props } = Astro.props
 const router = await createDehydratedRouter(Astro, { routes: routes, output: output })
-
-// Ensure the stores are "immutable" per request
-if (stores) {
-  stores.forEach(store => store.set(store.defaultValue))
-
-  // Restore the store data from the request
-  Object.keys(router.data).forEach(name => {
-    const store = stores.find(store => store.name === name)
-
-    if (store) {
-      const currentData = store.get()
-      const routerData = router.data[name]
-      const hydrationData = { ...currentData, ...routerData }
-
-      store.set(hydrationData)
-    }
-  })
-}
-
-// This is a hack to have the router ready for SSR
-createRouter(router)
 ---
 <div id="__astro" {...props}>
-  <script type="application/json" id="__astro-data" set:html={JSON.stringify(router)} />
-  <script>
-    import { createRouter, getDehydratedRouter, routerStore } from 'astro-pwa/routing/client'
-    import { createClientStoreRegistry } from 'astro-pwa/stores/clientStoreRegistry'
+  <Stores stores={stores} output={output} data={router.data} router={router} />
+    <script>
+      import { createRouter, getDehydratedRouter, routerStore } from 'astro-pwa/routing/client'
 
-    const dehydratedRouter = getDehydratedRouter()
-    const hasRouter = Object.keys(routerStore.get()).keys.length !== 0
+      const dehydratedRouter = getDehydratedRouter()
+      const hasRouter = Object.keys(routerStore.get()).keys.length !== 0
 
-    createClientStoreRegistry()
-
-    if (dehydratedRouter && !hasRouter) {
-      createRouter(dehydratedRouter)
-    }
-  </script>
-  <slot />
+      if (dehydratedRouter && !hasRouter) {
+        createRouter(dehydratedRouter)
+      }
+    </script>
+    <slot />
 </div>

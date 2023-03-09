@@ -1,0 +1,22 @@
+---
+import ServerSPALayout from "../../layouts/ServerSPALayout.astro";
+---
+<ServerSPALayout title="Astro SPA Examples">
+  <main class="flex flex-col gap-4">
+  <p class="text-md text-slate-500">
+    Welcome to the Astro SPA Examples. These live demos illustrate how to use this integration to use Astro to build
+    single page applications and collaborative microfrontends with Astro.
+  </p>
+  </main>
+  <section class="flex flex-col gap-2">
+    <h4 class="text-md font-bold">All demos</h4>
+    <ul class="list-disc list-inside text-md [&>li>a]:text-sky-600 [&>li>a:hover]:text-sky-500">
+      <li><a href="/server-spa/astro">Astro demo</a></li>
+      <li><a href="/server-spa/react">React demo</a></li>
+      <li><a href="/server-spa/vue">Vue demo</a></li>
+      <li><a href="/server-spa/store">Store demo (in React)</a></li>
+      <li><a href="/server-spa/router/a">Router demo (in React)</a></li>
+      <li><a href="/server-spa/multi-framework">Multiple frameworks</a></li>
+    </ul>
+  </section>
+</ServerSPALayout>

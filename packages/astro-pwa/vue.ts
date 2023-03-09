@@ -5,13 +5,13 @@ import { hydrateStore } from "./stores/hydration"
 import { routerStore } from "./routing/client"
 
 export const useStore = <T extends object = any>(store: Store<T>) => {
-  const router = useRouter()
+  useAstroStore(store)
 
-  if (!isSSR && router.config.output === "server") {
+  if (!isSSR) {
     hydrateStore(store)
   }
 
-  return [useNanoStore(store), useAstroStore(store)] as const
+  return useNanoStore(store)
 }
 
 export const useRouter = () => useNanoStore(routerStore).value

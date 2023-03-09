@@ -1,0 +1,9 @@
+---
+import ClientSPALayout from "../../layouts/ClientSPALayout.astro";
+import VueCounter from "../../components/vue/VueCounter.vue";
+
+export const prerender = true
+---
+<ClientSPALayout title="Vue Demo">
+  <VueCounter client:only="vue" />
+</ClientSPALayout>

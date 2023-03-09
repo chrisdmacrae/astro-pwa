@@ -9,7 +9,7 @@ export const createClientStoreRegistry = () => {
 }
 
 export const getClientStoreRegistry = () => {
-  return clientRegistry?.get()
+  return clientRegistry?.get() || []
 }
 
 export const getClientStoreRegistryStore = () => {
@@ -24,7 +24,7 @@ export const registerStore = (store: Store<any>) => {
     if (existingStore) {
       return existingStore
     }
-    
+
     clientRegistry.set([...currentStores, store])
   }
 }

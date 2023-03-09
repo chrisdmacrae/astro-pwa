@@ -26,15 +26,15 @@
 
 <script lang="ts">
 import { useStore } from 'astro-pwa/vue';
-import { counterStore } from '../../stores/counter';
+import { counterStore, add, subtract } from '../../stores/counter';
 
 export default {
   setup: () => {
-    const [counter, store] = useStore(counterStore)
+    const counter = useStore(counterStore)
 
     return {
-      add() { store.setKey('count', counter.value.count + 1) },
-      subtract() { store.setKey('count', counter.value.count + -1) },
+      add() { add() },
+      subtract() { subtract() },
       counter
     }
   },

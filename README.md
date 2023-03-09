@@ -46,12 +46,12 @@ import { createPageRoutesFromGlob } from 'astro-pwa'
 const routes = await createPageRoutesFromGlob(Astro.glob('../pages/app/**/*.astro'))
 ---
 <html>
-<head>
-  <title>My new app</title>
-</head>
-<body>
-  <SPA routes={routes}>
-</body>
+  <head>
+    <title>My new app</title>
+  </head>
+  <body>
+    <SPA routes={routes}>
+  </body>
 </SPA>
 ```
 
