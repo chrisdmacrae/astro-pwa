@@ -1,11 +1,8 @@
-export { pwaIntegration } from './integration/pwa'
-export type { PwaIntegrationOptions as SpaIntegrationOptions } from './integration/pwa'
+export { pwaIntegration } from './src/integration/pwa'
+export type { PwaIntegrationOptions as SpaIntegrationOptions } from './src/integration/pwa'
 
-export { getClientStoreData } from './session/temporary'
+export { createPageRoutesFromGlob } from './src/routing/createPageRoutesFromGlob'
+export { useRouter } from './src/routing/router'
 
-export { createPageRoutesFromGlob } from './routing/createPageRoutesFromGlob'
-export { useRouter } from './routing/router'
-
-export { createStore, useStore } from './stores/store'
-export { getDehydratedStoreData as getStoreData } from './stores/hydration'
-export type { Store } from './stores/store'
+export { createStore, useStore } from './src/stores/store'
+export type { Store } from './src/stores/store'

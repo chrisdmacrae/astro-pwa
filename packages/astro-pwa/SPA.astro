@@ -1,7 +1,7 @@
 ---
-import { createRouter, Route } from './routing/router';
-import type { Store } from './stores/store';
-import AstroData from './AstroData.astro';
+import { createRouter, Route } from './src/routing/router';
+import type { Store } from './src/stores/store';
+import Island from './Island.astro';
 
 export interface Props {
   routes: Route[]
@@ -12,24 +12,24 @@ export interface Props {
 
 const { routes, stores = [], output = "static", ...props } = Astro.props
 
-const router = createRouter({
+// Generate server-side router context
+createRouter({
   path: Astro.url.pathname,
   params: Astro.params,
   routes: routes
 })
 ---
-<div id="__astro" {...props}>
-  <AstroData stores={stores} router={router.dehydrate()} output={output} />
+<Island id="__astro" stores={stores} {...props}>
+  <slot />
   <script>
-    import { createRouter, routerStore, DehydratedRouter } from 'astro-pwa/routing/router'
-    import { getDehydratedData } from './session/temporary'
+    import { createRouter, routerStore, DehydratedRouter } from './src/routing/router'
+    import { getDehydratedData } from './src/session/temporary'
 
-    const dehydratedData = getDehydratedData()
+    const dehydratedData = getDehydratedData(document.getElementById('__astro'))
     const hasRouter = Object.keys(routerStore.get()).keys.length !== 0
 
     if (dehydratedData.path && !hasRouter) {
       createRouter(dehydratedData as DehydratedRouter)
     }
   </script>
-  <slot />
-</div>
+</Island>

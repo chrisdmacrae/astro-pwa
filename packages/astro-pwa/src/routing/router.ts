@@ -7,18 +7,28 @@ import { getClientStoreRegistry } from "../stores/clientStoreRegistry"
 import type { Store } from "../stores/store"
 import { getDehydratedData, sendClientStoreData } from "../session/temporary"
 
-export const routerStore = map<Router>()
+export const routerStore = map<PrivateRouter>()
 
-export const useRouter = () => routerStore.get()
+export const useRouter = () => routerStore.get() as Router
+
+export type RouteChange = {
+  path: string
+  route: string
+  params: any
+}
 
 export type Router = {
   path: string
   route: string
   params: Params
-  routes: Route[]
-  stores: Store[]
+  on: <T = RouteChange>(event: 'change', cb: (change: RouteChange | undefined) => void) => () => void
   push: (href: string, as: string) => void
   redirect: (href: string) => void
+}
+
+export type PrivateRouter = Router & {
+  routes: Route[]
+  stores: Store[]
   dehydrate: () => DehydratedRouter
 }
 
@@ -91,6 +101,7 @@ export const createRouter = (dehydratedRouter: DehydratedRouter): Router => {
 
   // Initialize first state of router
   const data = router.get()
+  router.lc
   routerStore.set({
     path: data!.path,
     route: data!.route,
@@ -98,6 +109,9 @@ export const createRouter = (dehydratedRouter: DehydratedRouter): Router => {
     routes: dehydratedRouter.routes,
     push,
     redirect,
+    on: (event, cb) => {
+      return router.subscribe(cb)
+    },
     get stores() {
       const storeRegistry = getClientStoreRegistry()
 
@@ -120,8 +134,8 @@ export const createRouter = (dehydratedRouter: DehydratedRouter): Router => {
   return routerStore.get()
 }
 
-const getRoute = async (href: string, router: Router) => {
-  const dehydratedData = getDehydratedData()
+const getRoute = async (href: string, router: PrivateRouter) => {
+  const dehydratedData = getDehydratedData(document.body.querySelector('astro-island'))
   const dehydratedStores = dehydrateStores(router.stores)
 
   const page = await sendClientStoreData(href, { ...dehydratedData, data: dehydratedStores})

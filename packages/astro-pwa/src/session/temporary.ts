@@ -7,8 +7,8 @@ export type DehydratedData = Partial<DehydratedRouter> & {
   data: DehydratedStores
 }
 
-export const getDehydratedData = (document: Document = window.document) => {
-  const dataEl = document.getElementById('__astro-data')
+export const getDehydratedData = (el?: Element | null) => {
+  const dataEl = el?.querySelector(':scope > script[data-astro]') as HTMLScriptElement | null | undefined
 
   if (!dataEl) return {} as DehydratedData
 
