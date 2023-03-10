@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "starter",
+  "name": "demo-app",
   "type": "module",
   "version": "0.0.1",
   "scripts": {

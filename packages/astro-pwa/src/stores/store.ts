@@ -1,7 +1,5 @@
 import { map, MapStore } from 'nanostores'
-import type { DehydratedRouter } from '../routing/types'
 import { registerStore } from './clientStoreRegistry'
-import type { DehydratedStores } from './hydration'
 
 export type Store<T extends object = any> = MapStore<T> & {
   name: string

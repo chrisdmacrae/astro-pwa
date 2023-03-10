@@ -1,7 +1,9 @@
 ---
+import Island from 'astro-pwa/Island.astro'
+import AppLayout from "../../layouts/AppLayout.astro";
 import Card from "../../components/Cards/Card.astro";
 import { Test } from "../../components/Test";
-import AppLayout from "../../layouts/AppLayout.astro";
+import { appStore, testStore } from '../../stores/app';
 ---
 <AppLayout title="Astro PWA Demo App">
   <div class="w-full h-16 p-4 bg-white shadow-md">
@@ -15,7 +17,10 @@ import AppLayout from "../../layouts/AppLayout.astro";
     <p class="text-gray-600">
       <a href="/app">To home</a>
     </p>
-    <Test client:only />
+
+    <Island id="test" stores={[appStore, testStore]}>
+      <Test client:only />
+    </Island>
 
   </Card>
 
