@@ -1,0 +1,11 @@
+---
+import { useForm } from "astro-pwa";
+import ClientSPALayout from "../../../layouts/ClientSPALayout.astro";
+import Form from "../../../components/astro/Form.astro";
+import { schema } from "../api/forms/test";
+
+const form = await useForm('test', { astro: Astro, schema: schema })
+---
+<ClientSPALayout title="Example client form">
+    <Form action="/client-spa/api/forms/test" form={form} />
+</ClientSPALayout>

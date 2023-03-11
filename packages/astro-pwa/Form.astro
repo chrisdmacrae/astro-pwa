@@ -1,0 +1,16 @@
+---
+import type { FormHTMLAttributes } from "react";
+
+// TODO: XSRF
+export type Props = Omit<FormHTMLAttributes<unknown>, 'role'> & {
+    id: string
+    role?: astroHTML.JSX.AriaRole | null | undefined
+}
+
+const {id, action = Astro.request.url, method = "POST", ...props } = Astro.props
+---
+<form id={id} action={action} method={method} {...props}>
+    <input type="hidden" name="referrer" value={Astro.url.href} />
+    <input type="hidden" name="__astro-form" value={id} />
+    <slot />
+</form>

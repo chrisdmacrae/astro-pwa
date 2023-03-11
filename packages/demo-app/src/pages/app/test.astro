@@ -1,28 +1,30 @@
 ---
-import Frame from 'astro-pwa/Frame.astro'
+import { z } from "astro:content"
+import { useForm } from 'astro-pwa';
 import AppLayout from "../../layouts/AppLayout.astro";
 import Card from "../../components/Cards/Card.astro";
-import { Test } from "../../components/Test";
-import { appStore, testStore } from '../../stores/app';
+import TestForm from '../../components/Forms/TestForm.astro';
+
+const form = await useForm('test', { astro: Astro, schema: z.object({
+  test: z.string(),
+  email: z.string().email()
+}) })
+
+if (form.submitting) {
+    return await form.submit(data => console.log(data))
+}
 ---
-<AppLayout>
+<AppLayout title="Form example">
   <div class="w-full h-16 p-4 bg-white shadow-md">
     sdfhdfshkj
   </div>
 
   <Card variant="featured">
     <h2 class="font-bold text-xl text-gray-700 flex gap-2 items-center">
-      Welcome to the test page
+      Welcome to the example server form page
     </h2>
-    <Frame id="butts">
-      <p class="text-gray-600">
-        <a href="/app">To home</a>
-      </p>
+    <p>This form submits </p>
 
-      <Frame id="test" stores={[appStore, testStore]}>
-        <Test client:load />
-      </Frame>
-    </Frame>
-
+    <TestForm form={form} />
   </Card>
 </AppLayout>
