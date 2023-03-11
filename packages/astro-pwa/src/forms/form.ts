@@ -3,25 +3,25 @@ import type { typeToFlattenedError } from "zod"
 
 export type FormOptions<T> = {
     astro: Pick<AstroGlobal, 'request' | 'redirect' | 'url'>
-    schema?: Zod.Schema<T>
+    fields?: Zod.Schema<T>
     redirect?: string
 }
 
-export type FormErrors = {
+export type FormErrors<T extends Record<string, any> = any> = {
     message: string
     form?: string[]
-    fields?: Record<string, string>
+    fields?: T
 }
 
 export type FormReturn<T extends Record<string, any> = any> = {
     submitting: boolean,
     successful: boolean
-    error?: FormErrors,
+    error?: FormErrors<T>,
     submit: (cb: (formData: T) => void) => Promise<Response>
 }
 
 // TODO: XSRF
-export const useForm = async <T extends Record<string, any> = any>(id: string, { astro, schema, redirect }: FormOptions<T>): Promise<FormReturn<T>> => {
+export const useForm = async <T extends Record<string, any> = any>(id: string, { astro, fields, redirect }: FormOptions<T>): Promise<FormReturn<T>> => {
     const data = astro.request.method === 'POST' ? await astro.request.formData() : new FormData()
     const referrerUrl = data.get('referrer')
     const error = astro.request.headers.get('__astro-form-error')
@@ -62,8 +62,8 @@ export const useForm = async <T extends Record<string, any> = any>(id: string, {
             try {  
                 const submission = serializeForm<T>(data)
 
-                if (schema) {
-                    const validation = schema.safeParse(submission)
+                if (fields) {
+                    const validation = fields.safeParse(submission)
 
                     if (!validation.success) return handleError("Form is not valid", validation.error.flatten())
                 }

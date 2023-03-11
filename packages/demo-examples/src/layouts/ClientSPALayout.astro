@@ -2,6 +2,7 @@
 import { createPageRoutesFromGlob } from "astro-pwa"
 import SPA from "astro-pwa/SPA.astro"
 import { stores } from "../stores"
+import { execSync } from 'child_process'
 
 export type Props = {
   title: string
@@ -10,6 +11,7 @@ export type Props = {
 const { title } = Astro.props
 const isHome = Astro.url.pathname === '/client-spa'
 const routes = await createPageRoutesFromGlob(Astro.glob('../pages/client-spa/**/*.astro'))
+const branch = execSync('git branch --show-current').toString()
 ---
 <html>
   <head>
@@ -36,6 +38,11 @@ const routes = await createPageRoutesFromGlob(Astro.glob('../pages/client-spa/**
           <h3 class="font-bold text-lg">{title}</h3>
         </section>
         <slot />
+        <footer class="flex justify-center text-sm text-slate-500 pt-4">
+          <a href={Astro.self.moduleId?.replace(process.cwd(), `https://github.com/chrisdmacrae/astro-pwa/tree/${branch}/packages/demo-examples`)}>
+            View on Github
+          </a>
+        </footer>
       </div>
     </SPA>
   </body>
