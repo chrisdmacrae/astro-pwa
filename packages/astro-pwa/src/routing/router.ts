@@ -2,7 +2,7 @@ import type { Params } from "astro"
 import { map } from "nanostores"
 import { createRouter as createNanoRouter, Pattern } from "@nanostores/router"
 import { isSSR } from "../ssr/isSsr"
-import { getRoute } from "../session/temporary"
+import { getRoute } from "./spa"
 
 export const routerStore = map<Router>()
 

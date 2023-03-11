@@ -1,17 +1,18 @@
 import type { AllKeys } from 'nanostores/atom'
+import type { StoreValues } from 'nanostores/computed'
 import { getClientStoreData, getDehydratedData } from '../session/temporary'
-import type { State, Store } from './store'
+import type { Store } from './store'
 
-export type DehydratedStore = Pick<Store, 'name' | 'defaultValue'> & { [key: string]: any }
+export type DehydratedStore<T extends object = any>  = Pick<Store, 'name' | 'defaultValue'> & T
 export type DehydratedStores = Record<string, DehydratedStore>
 
-export const hydrateServerStore = (store: Store<any> | State<any>, request: Request) => {
+export const hydrateServerStore = (store: Store<any>, request: Request) => {
   // Ensure the stores are "immutable" per request
   store.set(store.defaultValue)
 
-  const {data} = getClientStoreData(request)
+  console.log(request.headers)
 
-  console.log({ data })
+  const {data} = getClientStoreData(request)
   
   if (data) {
     const currentData = store.get()
@@ -22,7 +23,7 @@ export const hydrateServerStore = (store: Store<any> | State<any>, request: Requ
   }
 }
 
-export const hydrateClientStore = <T extends object = any>(el: Element, store: Store<T> | State<T>) => {
+export const hydrateClientStore = <T = StoreValues<any>>(el: Element, store: Store<T>) => {
   const serverData = getDehydratedStoreData(el, store.name)
   const clientData = store.get()
 
@@ -40,7 +41,7 @@ export const hydrateClientStore = <T extends object = any>(el: Element, store: S
   return store
 }
 
-export const dehydrateStores = (stores: (Store | State)[]) => stores.reduce((dehydratedStores, store) => {
+export const dehydrateStores = (stores: Store[]) => stores.reduce((dehydratedStores, store) => {
   dehydratedStores[store.name] = store.get()
 
   return dehydratedStores

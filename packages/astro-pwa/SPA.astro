@@ -1,7 +1,7 @@
 ---
 import { createRouter, Route } from './src/routing/router';
 import type { Store } from './src/stores/store';
-import Island from './Island.astro';
+import Frame from './Frame.astro';
 
 export interface Props {
   routes: Route[]
@@ -19,8 +19,7 @@ const router = createRouter({
   routes: routes
 })
 ---
-<Island id="__astro" stores={stores} router={JSON.stringify(router.dehydrate())} output={output} {...props}>
-  <slot />
+<Frame id="__astro" stores={stores} router={JSON.stringify(router.dehydrate())} output={output} {...props}>
   <script>
     import type { AstroFrame } from './Island.astro.__script1'
     import { createRouter, routerStore, DehydratedRouter } from './src/routing/router'
@@ -33,12 +32,15 @@ const router = createRouter({
       if (dehydratedRouter && !hasRouter) {
         const router = createRouter(dehydratedRouter)
 
-        router.on('change', () => {
-          const astroSpa: AstroFrame = document.getElementById('__astro')
+        customElements.whenDefined('astro-frame').then(() => {
+          router.on('change', () => {
+            const astroSpa: AstroFrame = document.querySelector('#__astro')
 
-          astroSpa.readyForRouting()
+            astroSpa.readyForRouting()
+          })
         })
       }
     }
   </script>
-</Island>
+  <slot />
+</Frame>

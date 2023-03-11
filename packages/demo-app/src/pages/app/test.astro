@@ -1,5 +1,5 @@
 ---
-import Island from 'astro-pwa/Island.astro'
+import Frame from 'astro-pwa/Frame.astro'
 import AppLayout from "../../layouts/AppLayout.astro";
 import Card from "../../components/Cards/Card.astro";
 import { Test } from "../../components/Test";
@@ -14,15 +14,15 @@ import { appStore, testStore } from '../../stores/app';
     <h2 class="font-bold text-xl text-gray-700 flex gap-2 items-center">
       Welcome to the test page
     </h2>
-    <Island id="butts">
+    <Frame id="butts">
       <p class="text-gray-600">
         <a href="/app">To home</a>
       </p>
 
-      <Island id="test" stores={[appStore, testStore]}>
+      <Frame id="test" stores={[appStore, testStore]}>
         <Test client:load />
-      </Island>
-    </Island>
+      </Frame>
+    </Frame>
 
   </Card>
 </AppLayout>

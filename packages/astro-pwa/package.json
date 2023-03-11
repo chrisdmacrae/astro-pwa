@@ -21,11 +21,11 @@
     "@nanostores/react": "^0.4.1",
     "@nanostores/router": "^0.8.1",
     "@nanostores/vue": "^0.7.0",
-    "dts-dom": "^3.7.0",
-    "nanostores": "^0.7.4"
+    "dts-dom": "^3.7.0"
   },
   "peerDependencies": {
     "astro": "^2.0.17",
+    "nanostores": "^0.7.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "vue": "^3.2.47"
