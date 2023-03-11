@@ -1,4 +1,5 @@
 ---
+import Island from "astro-pwa/Island.astro";
 import Card from "../../components/Cards/Card.astro";
 import AppLayout from "../../layouts/AppLayout.astro";
 ---
@@ -11,11 +12,13 @@ import AppLayout from "../../layouts/AppLayout.astro";
     <h2 class="font-bold text-xl text-gray-700 flex gap-2 items-center">
       Welcome to the demo app
     </h2>
-    <p class="text-gray-600">
-      This simple application illustrates how Astro PWA supercharges Astro, allowing you to build
-      dynamic application functionality to your Astro sites.
+    <Island id="butts">
+      <p class="text-gray-600">
+        This simple application illustrates how Astro PWA supercharges Astro, allowing you to build
+        dynamic application functionality to your Astro sites.
 
-      <a href="/app/test">To test</a>
-    </p>
+        <a href="/app/test">To test</a>
+      </p>
+    </Island>
   </Card>
 </AppLayout>

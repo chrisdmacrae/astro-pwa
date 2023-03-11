@@ -1,4 +1,5 @@
-import { createStore } from "astro-pwa";
+import { map } from "nanostores"
+import { createStore } from "astro-pwa/src/stores/store"
 
-export const appStore = createStore('app', { on: false })
-export const testStore = createStore('test', { on: false })
+export const appStore = createStore('app', map({ on: false }))
+export const testStore = createStore('test', map({ on: false }))

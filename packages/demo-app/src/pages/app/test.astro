@@ -5,7 +5,7 @@ import Card from "../../components/Cards/Card.astro";
 import { Test } from "../../components/Test";
 import { appStore, testStore } from '../../stores/app';
 ---
-<AppLayout title="Astro PWA Demo App">
+<AppLayout>
   <div class="w-full h-16 p-4 bg-white shadow-md">
     sdfhdfshkj
   </div>
@@ -14,17 +14,15 @@ import { appStore, testStore } from '../../stores/app';
     <h2 class="font-bold text-xl text-gray-700 flex gap-2 items-center">
       Welcome to the test page
     </h2>
-    <p class="text-gray-600">
-      <a href="/app">To home</a>
-    </p>
+    <Island id="butts">
+      <p class="text-gray-600">
+        <a href="/app">To home</a>
+      </p>
 
-    <Island id="test" stores={[appStore, testStore]}>
-      <Test client:only />
+      <Island id="test" stores={[appStore, testStore]}>
+        <Test client:load />
+      </Island>
     </Island>
 
   </Card>
-
-  <script is:inline>
-    console.log('test')
-  </script>
 </AppLayout>
