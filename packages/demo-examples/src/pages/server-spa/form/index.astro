@@ -1,15 +1,9 @@
 ---
 import { useForm, z } from "astro-pwa";
 import ServerSPALayout from "../../../layouts/ServerSPALayout.astro";
-import Form from "../../../components/astro/Form.astro";
+import Form, { fields } from "../../../components/astro/Form.astro";
 
-const schema = z.object({
-    firstName: z.string(),
-    lastName: z.string(),
-    email: z.string().email()
-})
-
-const form = await useForm('test', { astro: Astro, schema: schema })
+const form = await useForm('test', { astro: Astro, fields: fields })
 
 if (form.submitting) {
     return form.submit(data => console.log({ data }))

@@ -1,8 +1,7 @@
 ---
 import { useForm } from "astro-pwa";
 import ClientSPALayout from "../../../layouts/ClientSPALayout.astro";
-import Form from "../../../components/astro/Form.astro";
-import { schema } from "../api/forms/test";
+import Form, { schema } from "../../../components/astro/Form.astro";
 
 const form = await useForm('test', { astro: Astro, schema: schema })
 ---
