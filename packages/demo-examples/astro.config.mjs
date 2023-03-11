@@ -21,5 +21,5 @@ export default defineConfig({
     applyBaseStyles: false
   })],
   output: "server",
-  adapter: node({ mode: "standalone" })
+  adapter: vercel() // node({ mode: "standalone" })
 });
