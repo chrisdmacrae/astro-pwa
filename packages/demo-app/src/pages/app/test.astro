@@ -5,7 +5,7 @@ import AppLayout from "../../layouts/AppLayout.astro";
 import Card from "../../components/Cards/Card.astro";
 import TestForm from '../../components/Forms/TestForm.astro';
 
-const form = await useForm('test', { astro: Astro, schema: z.object({
+const form = await useForm('test', { astro: Astro, fields: z.object({
   test: z.string(),
   email: z.string().email()
 }) })
