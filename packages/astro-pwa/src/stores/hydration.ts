@@ -10,8 +10,6 @@ export const hydrateServerStore = (store: Store<any>, request: Request) => {
   // Ensure the stores are "immutable" per request
   store.set(store.defaultValue)
 
-  console.log(request.headers)
-
   const {data} = getClientStoreData(request)
   
   if (data) {

@@ -1,10 +1,11 @@
 ---
 import ClientSPALayout from "../../../layouts/ClientSPALayout.astro";
 import { Router } from "../../../components/react/Router";
-import { routes } from './index.astro'
+
+export const routes = ['c', 'd']
 
 export const prerender = true
 ---
-<ClientSPALayout title="Page B">
+<ClientSPALayout title="Routing Root">
   <Router baseUrl="/client-spa" routes={routes} client:only="react" />
 </ClientSPALayout>

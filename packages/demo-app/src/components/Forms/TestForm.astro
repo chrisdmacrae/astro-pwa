@@ -1,0 +1,20 @@
+---
+import Form from 'astro-pwa/Form.astro';
+import type { FormReturn } from 'astro-pwa/src/forms/form';
+
+export type Props = {
+    form: FormReturn
+}
+
+const { form } = Astro.props
+---
+<Form id="test">
+    {form.success && (
+        <h2>Thanks for submitting!</h2>
+    )}
+    {form.error && (
+        <p>form.error.message</p>
+    )}
+    <input type="text" name="test" />
+    <button type="submit">Submit</button>
+</Form>

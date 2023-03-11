@@ -1,0 +1,35 @@
+---
+import Form from 'astro-pwa/Form.astro';
+import type { FormReturn } from 'astro-pwa/src/forms/form';
+
+export type Props = {
+    form: FormReturn
+    action?: string
+}
+
+const { form, action } = Astro.props
+---
+<Form action={action} id="test" class="flex flex-col gap-2">
+    {form.successful && (
+        <h2>Thanks for submitting!</h2>
+    )}
+    {form.error?.message && (
+        <p>{form.error.message}</p>
+    )}
+    <div class="flex flex-col">
+        <label for="firstName">First name</label>
+        <input type="text" name="firstName" id="firstName" class="px-4 py-2 rounded-ld shadow-md" required />
+        {form.error?.fields?.['firstName'] && (<span class="text-red-500">{form.error?.fields?.['firstName']}</span>)}
+    </div>
+    <div class="flex flex-col">
+        <label for="lastName">Last name</label>
+        <input type="text" name="lastName" id="lastName" class="px-4 py-2 rounded-ld shadow-md" required />
+        {form.error?.fields?.['lastName'] && (<span class="text-red-500">{form.error?.fields?.['lastName']}</span>)}
+    </div>
+    <div class="flex flex-col">
+        <label for="email">Email</label>
+        <input type="text" name="email" id="email" class="px-4 py-2 rounded-ld shadow-md" required />
+        {form.error?.fields?.['email'] && (<span class="text-red-500">{form.error?.fields?.['email']}</span>)}
+    </div>
+    <button type="submit">Submit</button>
+</Form>
