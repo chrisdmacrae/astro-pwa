@@ -5,60 +5,43 @@
 // It will also serialize the data for a given frame into the frame
 // To allow for server-side persistence and hydration
 
-import { getClientStoreData } from './src/session/temporary';
 import { dehydrateStores } from './src/stores/hydration';
+import { hydrateServerStore } from './src/stores/hydration';
 import type { Store } from './src/stores/store';
 
 export interface Props {
   id: string
-  stores: Store[]
+  stores?: Store<any>[]
   [key: string]: any
 }
 
 const { id, stores = [], ...props } = Astro.props
 
-// Ensure the stores are "immutable" per request
-const {data = {}} = getClientStoreData(Astro.request)
 if (stores) {
-  stores.forEach(store => store.set(store.defaultValue))
-
-  // Restore the store data from the request
-  Object.keys(data).forEach(name => {
-    const store = stores.find(store => store.name === name)
-
-    if (store) {
-      const currentData = store.get()
-      const routerData = data[name]
-      const hydrationData = { ...currentData, ...routerData }
-
-      store.set(hydrationData)
-    }
+  stores.forEach(store => {
+    hydrateServerStore(store, Astro.request)
   })
 }
 
 const dehydratedStores = dehydrateStores(stores)
-const astroData = {data: dehydratedStores}
+const astroData = { data: dehydratedStores }
 ---
 <astro-frame id={id} stores={stores.map(store => store.name)} {...props}>
   <script type="application/json" set:html={JSON.stringify(astroData)} data-astro />
-  <slot />
   <script>
     import type { Store } from './src/stores/store'
-    import { useRouter, Router } from "./src/routing/router"
+    import { useRouter } from "./src/routing/router"
     import { createClientStoreRegistry, getClientStoreRegistryStore } from './src/stores/clientStoreRegistry'
     import { hydrateClientStore } from './src/stores/hydration'
 
     createClientStoreRegistry()
 
     export class AstroFrame extends HTMLElement {
-      public router: Router
       public stores: Store[] = []
       private listeners: Function[] = []
 
       constructor() {
         super()
-
-        this.router = useRouter()
       }
 
       connectedCallback() {
@@ -66,29 +49,62 @@ const astroData = {data: dehydratedStores}
 
         if (registry) {
           registry.listen(stores => {
-            console.log(stores, this.stores)
-            stores.forEach(store => {
-              if (!this.stores.includes(store)) {
-                hydrateClientStore(this, store)
+            const myStores = this.getAttribute('stores')?.split(',') || []
 
-                console.log(store.get())
+            stores.forEach(store => {
+              if (myStores.includes(store.name) && !this.stores.includes(store)) {
+                hydrateClientStore(this, store)
 
                 this.stores.push(store)
               }
             })
           })
         }
-
-        if (this.router.on) {
-          this.listeners.push(this.router.on('change', params => console.log({ params })))
-        }
       }
 
       disconnectedCallback() {
-        this.listeners.forEach(cb => cb())
+        this.listeners.forEach((cb, i) => {
+          cb()
+        })
+      }
+
+      readyForRouting() {
+        const router = useRouter()
+        const children = this.querySelectorAll<AstroFrame>('astro-frame')
+
+        if (children) {
+          Array.from(children).reverse().forEach(child => child.readyForRouting())
+        }
+
+        const handleRoute = async (e: Event) => {
+          const el = e.target as HTMLAnchorElement
+
+          if (el.tagName === 'A' && el.href) {
+            const path = new URL(el.href).pathname
+            const shouldCSR = router.routes.find(route => {
+              let exp = Array.isArray(route.pattern) ? route.pattern[0]: route.pattern
+
+              if (typeof exp === typeof RegExp && new RegExp(exp).test(path)) return true
+              else if (typeof exp === 'string' && exp.includes(path)) return true
+
+              return false
+            })
+
+            if (shouldCSR) {
+              e.stopPropagation()
+              e.preventDefault()
+              router.push(el.href)
+            }
+          }
+        }
+
+        // We handle a clicks for valid routes as a SPA route
+        this.addEventListener('click', handleRoute)
+        this.listeners.push(() => this.removeEventListener('click', handleRoute)) 
       }
     }
 
     customElements.define('astro-frame', AstroFrame)
   </script>
+  <slot />
 </astro-frame>

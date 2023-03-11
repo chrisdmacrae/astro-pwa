@@ -13,23 +13,32 @@ export interface Props {
 const { routes, stores = [], output = "static", ...props } = Astro.props
 
 // Generate server-side router context
-createRouter({
+const router = createRouter({
   path: Astro.url.pathname,
   params: Astro.params,
   routes: routes
 })
 ---
-<Island id="__astro" stores={stores} {...props}>
+<Island id="__astro" stores={stores} router={JSON.stringify(router.dehydrate())} output={output} {...props}>
   <slot />
   <script>
+    import type { AstroFrame } from './Island.astro.__script1'
     import { createRouter, routerStore, DehydratedRouter } from './src/routing/router'
-    import { getDehydratedData } from './src/session/temporary'
+    
+    const astroSpa: AstroFrame = document.getElementById('__astro')
+    if (astroSpa) {
+      const dehydratedRouter = JSON.parse(astroSpa.getAttribute('router') || '{}') as DehydratedRouter
+      const hasRouter = Object.keys(routerStore.get()).keys.length !== 0
+      
+      if (dehydratedRouter && !hasRouter) {
+        const router = createRouter(dehydratedRouter)
 
-    const dehydratedData = getDehydratedData(document.getElementById('__astro'))
-    const hasRouter = Object.keys(routerStore.get()).keys.length !== 0
+        router.on('change', () => {
+          const astroSpa: AstroFrame = document.getElementById('__astro')
 
-    if (dehydratedData.path && !hasRouter) {
-      createRouter(dehydratedData as DehydratedRouter)
+          astroSpa.readyForRouting()
+        })
+      }
     }
   </script>
 </Island>

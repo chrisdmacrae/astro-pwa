@@ -2,12 +2,9 @@ import type { Params } from "astro"
 import { map } from "nanostores"
 import { createRouter as createNanoRouter, Pattern } from "@nanostores/router"
 import { isSSR } from "../ssr/isSsr"
-import { dehydrateStores } from "../stores/hydration"
-import { getClientStoreRegistry } from "../stores/clientStoreRegistry"
-import type { Store } from "../stores/store"
-import { getDehydratedData, sendClientStoreData } from "../session/temporary"
+import { getRoute } from "../session/temporary"
 
-export const routerStore = map<PrivateRouter>()
+export const routerStore = map<Router>()
 
 export const useRouter = () => routerStore.get() as Router
 
@@ -21,14 +18,10 @@ export type Router = {
   path: string
   route: string
   params: Params
-  on: <T = RouteChange>(event: 'change', cb: (change: RouteChange | undefined) => void) => () => void
-  push: (href: string, as: string) => void
-  redirect: (href: string) => void
-}
-
-export type PrivateRouter = Router & {
   routes: Route[]
-  stores: Store[]
+  on: <T = RouteChange>(event: 'change' | 'changed', cb: (change: RouteChange | undefined) => void) => () => void
+  push: (href: string) => void
+  redirect: (href: string) => void
   dehydrate: () => DehydratedRouter
 }
 
@@ -72,37 +65,16 @@ export const createRouter = (dehydratedRouter: DehydratedRouter): Router => {
 
     if (isNewRoute && !isSSR) {
       update()
-      getRoute(routeChange.path, router)
+      getRoute(routeChange.path)
     }
   })
-
-
-  if (!isSSR) {
-    // We handle a clicks for valid routes as a SPA route
-    document.addEventListener('click', (e) => {
-      const el = e.target as HTMLAnchorElement
-
-      if (el.tagName === 'A' && el.href) {
-        const shouldCSR = Object.keys(routes).find(key => {
-          return el.href.includes(key)
-        })
-
-        if (shouldCSR) {
-          e.preventDefault()
-
-          push(el.href)
-        }
-      }
-    })
-  }
 
   // The router is too stupid to know what to do at init
   router.open(dehydratedRouter?.path)
 
   // Initialize first state of router
   const data = router.get()
-  router.lc
-  routerStore.set({
+  const api: Router = {
     path: data!.path,
     route: data!.route,
     params: data!.params,
@@ -110,14 +82,14 @@ export const createRouter = (dehydratedRouter: DehydratedRouter): Router => {
     push,
     redirect,
     on: (event, cb) => {
-      return router.subscribe(cb)
-    },
-    get stores() {
-      const storeRegistry = getClientStoreRegistry()
-
-      if (!storeRegistry) return []
-
-      return storeRegistry
+      switch (event) {
+        case "change":
+          return router.subscribe(cb)
+        case "changed":
+          return router.listen(cb)
+        default:
+          return () => null
+      }
     },
     dehydrate: () => {
       const router = routerStore.get()
@@ -129,43 +101,9 @@ export const createRouter = (dehydratedRouter: DehydratedRouter): Router => {
 
       return dehydratedRouter
     }
-  })
-
-  return routerStore.get()
-}
-
-const getRoute = async (href: string, router: PrivateRouter) => {
-  const dehydratedData = getDehydratedData(document.body.querySelector('astro-island'))
-  const dehydratedStores = dehydrateStores(router.stores)
-
-  const page = await sendClientStoreData(href, { ...dehydratedData, data: dehydratedStores})
-  const body = await page.text()
-  const parser = new DOMParser()
-  const doc = parser.parseFromString(body, 'text/html')
-  const oldEl = document.getElementById('__astro')
-  const newEl = doc.getElementById('__astro')
-
-  let importedEl
-  if (oldEl && newEl) {
-    importedEl = document.importNode(newEl, true)
   }
 
-  if (!oldEl || !importedEl) return
+  routerStore.set(api)
 
-  oldEl.replaceWith(importedEl)
-  hydrateScripts(Array.from(document.head.querySelectorAll('script')))
-  hydrateScripts(Array.from(importedEl.querySelectorAll('script')))
-}
-
-export const hydrateScripts = (scripts: HTMLScriptElement[]) => {
-  scripts.forEach(script => {
-    const el = document.createElement('script')
-
-    if (script.textContent) el.textContent = script.textContent
-    Array.from(script.attributes).forEach(attr => {
-      el.setAttribute(attr.name, attr.value)
-    })
-
-    script.replaceWith(el)
-  })
+  return routerStore.get()
 }

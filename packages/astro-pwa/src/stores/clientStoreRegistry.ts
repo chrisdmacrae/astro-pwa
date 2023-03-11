@@ -5,7 +5,9 @@ export type ClientRegistry = MapStore<Store[]>
 
 let clientRegistry: ClientRegistry | undefined
 export const createClientStoreRegistry = () => {
-  clientRegistry = map([]) as ClientRegistry
+  if (!clientRegistry) {
+    clientRegistry = map([]) as ClientRegistry
+  }
 }
 
 export const getClientStoreRegistry = () => {

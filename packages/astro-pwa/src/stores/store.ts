@@ -1,24 +1,21 @@
-import { map, MapStore } from 'nanostores'
+import type { MapStore, Store as NanoStore } from 'nanostores'
 import { registerStore } from './clientStoreRegistry'
 
-export type Store<T extends object = any> = MapStore<T> & {
+type AstroStoreData<T = any> = {
   name: string
   defaultValue: T
 }
 
-export const useStore = <T extends object = any>(store: Store<T>) => {
-  registerStore(store)
+export type StoreValues = string | number | Array<any> | object
 
-  return store
+export type Store<T = StoreValues> = (T extends object ? MapStore<T> : NanoStore<T>) & AstroStoreData<T>
+
+export const createStore = <T extends StoreValues = any>(name: string, store: T extends object ? MapStore<T> : NanoStore<T>) => {
+  return { ...store, name, defaultValue: store.get() } as Store<T>
 }
 
-export const createStore = <T extends object = any>(name: string, value: T):Store<T> => {
-  const mapStore = map<T>(value)
-  const store = {
-    ...mapStore,
-    defaultValue: value,
-    name
-  }
+export const useStore = <T extends StoreValues>(store: Store<T>) => {
+  registerStore(store)
 
   return store
 }
