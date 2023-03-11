@@ -4,5 +4,5 @@ export type { PwaIntegrationOptions as SpaIntegrationOptions } from './src/integ
 export { createPageRoutesFromGlob } from './src/routing/createPageRoutesFromGlob'
 export { useRouter } from './src/routing/router'
 
-export { useStore } from './src/stores/store'
+export { createStore, useStore } from './src/stores/store'
 export type { Store } from './src/stores/store'

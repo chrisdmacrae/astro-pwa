@@ -13,7 +13,6 @@
       "**/@nanostores/react",
       "**/@nanostores/vue",
       "**/@nanostores/router",
-      "**/nanostores",
       "**/use-sync-external-store"
     ]
   },

@@ -1,5 +1,4 @@
 import { createStore } from "astro-pwa";
+import { map } from "nanostores";
 
-const DEFAULT_STATE = { renderedBy: "server" }
-
-export const storePageStore = createStore<Record<string, any>>('storePage', DEFAULT_STATE)
+export const storePageStore = createStore<Record<string, any>>('storePage', map({ renderedBy: "server" }))
