@@ -1,10 +1,10 @@
 ---
-import ClientSPALayout from "../../../layouts/ClientSPALayout.astro";
+import ServerSPALayout from "../../../layouts/ServerSPALayout.astro";
 import { Router } from "../../../components/react/Router";
 import { routes } from './index.astro'
 
 const { slug } = Astro.params
 ---
-<ClientSPALayout title={`Dynamic Route: ${slug}`} filePath={Astro.self.moduleId!.replace(process.cwd(), `https://github.com/chrisdmacrae/astro-pwa/tree/main/packages/examples`)}>
+<ServerSPALayout title={`Dynamic Route: ${slug}`} filePath={Astro.self.moduleId!.replace(process.cwd(), `https://github.com/chrisdmacrae/astro-pwa/tree/main/packages/examples`)}>
   <Router baseUrl="/server-spa" routes={routes} client:load />
-</ClientSPALayout>
+</ServerSPALayout>

@@ -1,11 +1,9 @@
 ---
-import { useForm } from "astro-pwa";
+import { createForm } from "astro-pwa";
 import ClientSPALayout from "../../../layouts/ClientSPALayout.astro";
 import Form, { fields } from "../../../components/astro/Form.astro";
 
-const form = await useForm('test', { astro: Astro, fields: fields })
-
-form.submit(d => d.email)
+const form = await createForm('test', { astro: Astro, fields: fields })
 ---
 <ClientSPALayout title="Example client form" filePath={Astro.self.moduleId!.replace(process.cwd(), `https://github.com/chrisdmacrae/astro-pwa/tree/main/packages/examples`)}>
     <Form action="/client-spa/api/forms/test" form={form} />

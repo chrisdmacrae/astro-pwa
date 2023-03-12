@@ -1,11 +1,11 @@
 ---
-import ClientSPALayout from "../../../layouts/ClientSPALayout.astro";
+import ServerSPALayout from "../../../layouts/ServerSPALayout.astro";
 import { Router } from "../../../components/react/Router";
 
 export const routes = ['c', 'd']
 
 export const prerender = true
 ---
-<ClientSPALayout title="Routing Root" filePath={Astro.self.moduleId!.replace(process.cwd(), `https://github.com/chrisdmacrae/astro-pwa/tree/main/packages/examples`)}>
+<ServerSPALayout title="Routing Root" filePath={Astro.self.moduleId!.replace(process.cwd(), `https://github.com/chrisdmacrae/astro-pwa/tree/main/packages/examples`)}>
   <Router baseUrl="/server-spa" routes={routes} client:load />
-</ClientSPALayout>
+</ServerSPALayout>

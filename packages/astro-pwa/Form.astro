@@ -1,7 +1,11 @@
 ---
+import type { AstroForm } from 'astro-pwa'
+import type { AstroFormFields } from './src/forms/form'
+
 // TODO: XSRF
-export type Props = astroHTML.JSX.FormHTMLAttributes & {
+export type Props<T extends AstroFormFields = AstroFormFields> =  astroHTML.JSX.FormHTMLAttributes & {
     id: string
+    form?: AstroForm<T>
 }
 
 const {id, action = Astro.request.url, method = "POST", ...props } = Astro.props

@@ -8,5 +8,5 @@ export { createStore, useStore } from './src/stores/store'
 export type { Store } from './src/stores/store'
 
 export { z } from 'zod'
-export { useForm } from './src/forms/form'
-export type { AstroForm } from './src/forms/form'
+export { createForm, submitForm } from './src/forms/form'
+export type { AstroForm, AstroFormErrors, AstroFormOptions } from './src/forms/form'

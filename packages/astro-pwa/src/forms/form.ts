@@ -1,36 +1,59 @@
 import type { AstroGlobal } from "astro"
 import type { z, typeToFlattenedError } from "zod"
 
-export type FormOptions<T extends z.ZodType> = {
+export type AstroFormOptions<T extends AstroFormFields> = {
     astro: Pick<AstroGlobal, 'request' | 'redirect' | 'url'>
     fields?: T
     redirect?: string
 }
 
-export type FormErrors<T extends z.ZodType> = {
+export type AstroFormErrors<T extends AstroFormFields> = {
     message: string
     form?: string[]
     fields?: z.infer<T>
 }
 
-export type AstroForm<T extends z.ZodType> = {
-    submitting: boolean,
+export type AstroFormFields = z.ZodType<Record<string, any>, any, any>
+
+export type AstroForm<T extends AstroFormFields> = {
+    id: string
+    action: string
+    submitting: boolean
     successful: boolean
-    error?: FormErrors<T>
-    submit: (cb: (formData: z.infer<T>) => void) => Promise<Response>
+    errors?: AstroFormErrors<T>
+    fields?: T
+    submit: (cb: (formData: z.infer<T>) => void | Promise<void>) => Promise<void> | Promise<Response>
+}
+
+export const submitForm = async <T extends AstroFormFields>(form: AstroForm<T>, values: FormData | Record<string, any>) => {
+    const response = await fetch(form.action, {
+        method: "POST",
+        body: values instanceof FormData ? values : JSON.stringify(values),
+        headers: {
+            "Accept": "application/json"
+        }
+    })
+    const json = await response.json()
+
+    return json as AstroForm<T>['errors']
 }
 
 // TODO: XSRF
-export const useForm = async <T extends z.ZodType = any>(id: string, { astro, fields, redirect }: FormOptions<T>): Promise<AstroForm<T>> => {
+export const createForm = async <T extends AstroFormFields>(id: string, { astro, fields, redirect }: AstroFormOptions<T>): Promise<AstroForm<T>> => {
     const data = astro.request.method === 'POST' ? await astro.request.json() : {}
     const error = astro.request.headers.get('__astro-form-error')
-    const isSubmitting = data['__astro-form'] === id || astro.request.headers.get('__astro-form') === id || false
+    const hasFormId = data['__astro-form'] === id || astro.request.headers.get('__astro-form') === id
+    const isSubmitting = hasFormId || false
     const isSubmitted = astro.request.headers.get('__astro-form-submitted') === 'true'
     const isSuccessful = !error && isSubmitting && isSubmitted
     const url = astro.url.href
 
     const handleSuccess = async () => {
         if (redirect) return astro.redirect(redirect, 301)
+
+        if (astro.request.headers.get('accept') === 'application/json') {
+            return new Response(null, { status: 204, headers: { "Content-Type": "application/json" }})
+        }
         
         const response = await fetch(url.toString(), { 
             method: "GET",
@@ -44,43 +67,53 @@ export const useForm = async <T extends z.ZodType = any>(id: string, { astro, fi
     }
 
     const handleError = async (message: string, errors?: typeToFlattenedError<any>) => {
+        const errorPayload = JSON.stringify({
+            message,
+            form: errors?.formErrors,
+            fields: errors?.fieldErrors
+        })
+
+        if (astro.request.headers.get('accept') === 'application/json') {
+            return new Response(errorPayload, { status: 200, headers: { "Content-Type": "application/json" }})
+        }
+
         const errorResponse = await fetch(url.toString(), { 
             method: "GET",
             headers: {
                 '__astro-form': id,
-                '__astro-form-error': JSON.stringify({
-                    ...Object.fromEntries(astro.request.headers),
-                    message,
-                    form: errors?.formErrors,
-                    fields: errors?.fieldErrors
-                })
+                '__astro-form-error': errorPayload
             }
         })
     
         return new Response(await errorResponse.text(), { status: 200, headers: { "Content-Type": "text/html" } })
     }
 
+    const submit = async (cb: (formData: T) => void | Promise<void>) => {
+        try {
+            const submission = data
+
+            if (fields) {
+                const validation = fields.safeParse(submission)
+
+                if (!validation.success) return handleError("Form is not valid", validation.error.flatten())
+            }
+
+            await cb(submission)
+            
+            return handleSuccess()
+        }
+        catch (error) {
+            return handleError((error as Error).message)
+        }
+    }
+
     return {
+        id,
+        action: astro.url.href,
         submitting: isSubmitting && !isSubmitted && !error,
         successful: isSuccessful,
-        error: error ? JSON.parse(error) : null,
-        submit: async (cb: (formData: T) => void | Promise<void>) => {
-            try {  
-                const submission = data
-
-                if (fields) {
-                    const validation = fields.safeParse(submission)
-
-                    if (!validation.success) return handleError("Form is not valid", validation.error.flatten())
-                }
-
-                await cb(submission)
-                
-                return handleSuccess()
-            }
-            catch (error) {
-                return handleError((error as Error).message)
-            }
-        }
+        errors: error ? JSON.parse(error) : null,
+        fields,
+        submit
     }
 }
