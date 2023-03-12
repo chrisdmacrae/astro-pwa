@@ -17,9 +17,9 @@ import { counterStore } from '../../stores/counter'
   import { useStore, useRouter } from 'astro-pwa'
   import { counterStore, add, subtract } from '../../stores/counter'
 
-  const router = useRouter()
+  document.addEventListener('DOMContentLoaded', () => {
+    const router = useRouter()
 
-  if (router) {
     router.on('change', () => {
       const store = useStore(counterStore)
       const countEl = window.document.querySelector('[data-count]')
@@ -33,5 +33,5 @@ import { counterStore } from '../../stores/counter'
       const addEl = window.document.querySelector('[data-add]')
       if (addEl) addEl.addEventListener('click', add)
     })
-  }
+  })
 </script>
