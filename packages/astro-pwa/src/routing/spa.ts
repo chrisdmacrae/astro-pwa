@@ -37,6 +37,8 @@ export const listen = (router: Router, frame: HTMLElement = document.body) => {
       const to = new URL(anchor.href)
       const isValidRoute = router.routes.find(route => route.match(to.pathname)) !== undefined
 
+      console.log(from, to, isValidRoute)
+
       if (from === to || !isValidRoute) return
 
       e.stopPropagation()
