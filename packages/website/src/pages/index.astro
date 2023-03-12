@@ -3,14 +3,16 @@ import { createForm } from "astro-pwa";
 import AlphaForm, { fields } from "../components/forms/AlphaForm.astro";
 import Layout from "../layouts/Layout.astro";
 import * as shiki from 'shiki'
+import theme from 'shiki/themes/monokai.json'
+import grammar from 'shiki/languages/astro.tmLanguage.json'
 
 shiki.setWasm(process.cwd() + '/packages/website/public/shiki/dist/onigasm.wasm')
 shiki.setCDN(process.cwd() + '/packages/website/public/shiki/')
 
-const highlighter = await shiki.getHighlighter({ langs: ['astro'] })
+const highlighter = await shiki.getHighlighter({ langs: [{ id: 'astro', scopeName: 'source.astro', grammar }], theme })
 
 const title = "Astro PWA Demo App";
-const alphaForm = await createForm('alpha', { astro: Astro, fields: fields })
+const alphaForm = await createForm('alpha', { fields: fields, astro: Astro })
 const code = highlighter.codeToHtml(`
 ---
 import { createForm } from 'astro-pwa'
