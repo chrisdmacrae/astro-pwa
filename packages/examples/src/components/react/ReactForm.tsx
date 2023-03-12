@@ -17,7 +17,6 @@ export const ReactForm: React.FC<ReactFormProps> = ({ form }) => {
         const errors = await submitForm(form, values)
 
         if (errors) {
-            console.log(errors.fields)
             return {
                 ...errors.fields,
                 [FORM_ERROR]: [errors.message, ...errors.form || []].join(', '),

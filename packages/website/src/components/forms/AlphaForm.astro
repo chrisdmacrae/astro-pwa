@@ -1,0 +1,80 @@
+---
+import { AstroForm, z } from "astro-pwa";
+import Form from "astro-pwa/Form.astro";
+import Frame from "astro-pwa/Frame.astro";
+
+export const fields = z.object({
+    email: z.string().email().nonempty(),
+});
+
+export type Props = {
+    form: AstroForm<typeof fields>;
+};
+
+const { form } = Astro.props;
+---
+<Frame id="alpha_frame">
+    <section>
+        <div class="p-8 md:p-12 py-24 lg:px-16 lg:py-36">
+            <div class="mx-auto max-w-lg text-center">
+                <h2 class="text-2xl font-bold text-gray-900 md:text-3xl">
+                    Interested? Get alpha access
+                </h2>
+
+                <p class="text-gray-500 sm:mt-4">
+                    Those that request alpha access get a 1:1 call with the creator to best understand
+                    how to use Astro PWA to solve your needs, and learn how it needs to improve to
+                    grow with you.
+                </p>
+            </div>
+
+            <div class="mx-auto mt-8 max-w-xl">
+                {!form.successful && (
+                    <Form id="alpha" class="sm:flex sm:gap-4">
+                        <div class="sm:flex-1">
+                            <label for="email" class="sr-only">Email</label>
+
+                            <input
+                                type="email"
+                                name="email"
+                                placeholder="Email address"
+                                class="w-full rounded-md border-gray-200 bg-white p-3 text-gray-700 shadow-sm transition focus:border-white focus:outline-none focus:ring focus:ring-yellow-400"
+                            />
+                        </div>
+
+                        <button
+                            type="submit"
+                            class="group mt-4 flex w-full items-center justify-center gap-2 rounded-md bg-indigo-600 hover:bg-indigo-500 px-5 py-3 text-white transition focus:outline-none focus:ring focus:ring-yellow-400 sm:mt-0 sm:w-auto"
+                        >
+                            <span class="text-sm font-medium">
+                                Sign Up
+                            </span>
+
+                            <svg
+                                class="h-5 w-5"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                            </svg>
+                        </button>
+                    </Form>
+                )}
+
+                {form.successful && (
+                    <p class="font-bold text-3xl text-center">
+                        We'll be in touch soon, 
+                        <span class="bg-gradient-to-r from-purple-300 to-pink-500 bg-clip-text text-transparent">{form.data?.email}</span>
+                    </p>
+                )}
+            </div>
+        </div>
+    </section>
+</Frame>
+

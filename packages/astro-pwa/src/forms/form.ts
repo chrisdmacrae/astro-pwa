@@ -23,7 +23,7 @@ export type AstroForm<T extends AstroFormFields> = {
     data?: z.infer<T>
     errors?: AstroFormErrors<T>
     fields?: T
-    submit: (cb: (formData: z.infer<T>) => void | Promise<void>) => Promise<void> | Promise<Response>
+    submit: (cb: (formData: z.infer<T>) => void | Promise<void>) => Promise<Response>
 }
 
 export const submitForm = async <T extends AstroFormFields>(form: AstroForm<T>, values: FormData | Record<string, any>) => {
@@ -44,7 +44,7 @@ export const createForm = async <T extends Record<string, any> | { [k: string]: 
     const headerData = astro.request.headers.get('__astro-form-data')
 
     let data = {} as T
-    if (astro.request.method === "POST" && astro.request.headers.get('accept') === 'application/json') {
+    if (astro.request.method === "POST" && (astro.request.headers.get('accept') === 'application/json' || astro.request.headers.get('content-type') === 'application/json')) {
         data = await astro.request.json()
     }
     else if (astro.request.method === "POST") {

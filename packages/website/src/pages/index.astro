@@ -1,67 +1,113 @@
 ---
+import { createForm } from "astro-pwa";
+import AlphaForm, { fields } from "../components/forms/AlphaForm.astro";
 import Layout from "../layouts/Layout.astro";
 
 const title = "Astro PWA Demo App";
+const alphaForm = await createForm('alpha', { astro: Astro, fields: fields })
+const code = `
+---
+import { createForm } from 'astro-pwa'
+import SPA from 'astro-pwa/SPA.astro'
+import Form, { fields } from '../components/Form.astro'
+
+const form = await createForm('example', { 
+    fields: fields, 
+    astro: Astro 
+})
+
+if (form.submitting) {
+    return form.submit(data => console.log(data))
+}
+---
+<html>
+<head>
+    <title>My new app</title>
+</head>
+<body>
+  <SPA>
+    <Form form={form} />
+  </SPA>
+</body>
+</html>
+`
+
+if (alphaForm.submitting) {
+    return alphaForm.submit(data => console.log({ data }))
+}
 ---
 
 <Layout title={title}>
-    <header class="relative text-white">
-        <div class="absolute top-0 left-0 bottom-0 right-0 overflow-hidden bg-[conic-gradient(at_top_right,_var(--tw-gradient-stops))] from-purple-100 via-purple-100 to-pink-100">
+    <header class="relative bg-indigo-900 text-white">
+        <div class="absolute top-0 left-0 bottom-0 right-0 overflow-hidden bg-[conic-gradient(at_top_right,_var(--tw-gradient-stops))] from-black-900 via-indigo-900 to-pink-900">
             <div class="absolute inset-0 bg-[url(https://grainy-gradients.vercel.app/noise.svg)] opacity-25 brightness-100 contrast-150"></div>
         </div>
-        <div
-            class="relative mx-auto max-w-screen-xl px-4 py-32 lg:flex lg:h-screen lg:items-center"
-        >
-            <div class="flex flex-col gap-4 mx-auto max-w-3xl text-center">
-                <svg
-                    class="h-8 sm:h-10"
-                    viewBox="0 0 28 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                >
-                    <defs>
-                        <linearGradient id="gradient">
-                            <stop stop-color="#6366f1" offset="0%"></stop>
-                            <stop stop-color="#f472b6" offset="100%"></stop>
-                        </linearGradient>
-                    </defs>
-                    <path
-                        d="M0.41 10.3847C1.14777 7.4194 2.85643 4.7861 5.2639 2.90424C7.6714 1.02234 10.6393 0 13.695 0C16.7507 0 19.7186 1.02234 22.1261 2.90424C24.5336 4.7861 26.2422 7.4194 26.98 10.3847H25.78C23.7557 10.3549 21.7729 10.9599 20.11 12.1147C20.014 12.1842 19.9138 12.2477 19.81 12.3047H19.67C19.5662 12.2477 19.466 12.1842 19.37 12.1147C17.6924 10.9866 15.7166 10.3841 13.695 10.3841C11.6734 10.3841 9.6976 10.9866 8.02 12.1147C7.924 12.1842 7.8238 12.2477 7.72 12.3047H7.58C7.4762 12.2477 7.376 12.1842 7.28 12.1147C5.6171 10.9599 3.6343 10.3549 1.61 10.3847H0.41ZM23.62 16.6547C24.236 16.175 24.9995 15.924 25.78 15.9447H27.39V12.7347H25.78C24.4052 12.7181 23.0619 13.146 21.95 13.9547C21.3243 14.416 20.5674 14.6649 19.79 14.6649C19.0126 14.6649 18.2557 14.416 17.63 13.9547C16.4899 13.1611 15.1341 12.7356 13.745 12.7356C12.3559 12.7356 11.0001 13.1611 9.86 13.9547C9.2343 14.416 8.4774 14.6649 7.7 14.6649C6.9226 14.6649 6.1657 14.416 5.54 13.9547C4.4144 13.1356 3.0518 12.7072 1.66 12.7347H0V15.9447H1.61C2.39051 15.924 3.154 16.175 3.77 16.6547C4.908 17.4489 6.2623 17.8747 7.65 17.8747C9.0377 17.8747 10.392 17.4489 11.53 16.6547C12.1468 16.1765 12.9097 15.9257 13.69 15.9447C14.4708 15.9223 15.2348 16.1735 15.85 16.6547C16.9901 17.4484 18.3459 17.8738 19.735 17.8738C21.1241 17.8738 22.4799 17.4484 23.62 16.6547ZM23.62 22.3947C24.236 21.915 24.9995 21.664 25.78 21.6847H27.39V18.4747H25.78C24.4052 18.4581 23.0619 18.886 21.95 19.6947C21.3243 20.156 20.5674 20.4049 19.79 20.4049C19.0126 20.4049 18.2557 20.156 17.63 19.6947C16.4899 18.9011 15.1341 18.4757 13.745 18.4757C12.3559 18.4757 11.0001 18.9011 9.86 19.6947C9.2343 20.156 8.4774 20.4049 7.7 20.4049C6.9226 20.4049 6.1657 20.156 5.54 19.6947C4.4144 18.8757 3.0518 18.4472 1.66 18.4747H0V21.6847H1.61C2.39051 21.664 3.154 21.915 3.77 22.3947C4.908 23.1889 6.2623 23.6147 7.65 23.6147C9.0377 23.6147 10.392 23.1889 11.53 22.3947C12.1468 21.9165 12.9097 21.6657 13.69 21.6847C14.4708 21.6623 15.2348 21.9135 15.85 22.3947C16.9901 23.1884 18.3459 23.6138 19.735 23.6138C21.1241 23.6138 22.4799 23.1884 23.62 22.3947Z"
-                        fill="url(#gradient)"></path>
-                </svg>
-                <h1
-                    class="bg-gradient-to-r from-indigo-500 to-pink-400 bg-clip-text text-3xl font-extrabold text-transparent sm:text-5xl"
-                >
-                    Astro PWA
-                    <span class="sm:block"> Demo App.</span>
-                </h1>
-
-                <p
-                    class="mx-auto font-bold text-indigo-500 mt-4 max-w-xl sm:text-xl sm:leading-relaxed"
-                >
-                    A simple demo application to show off using Astro PWA to
-                    build a simple and fully functioning webapp with Astro
-                </p>
-
-                <div class="mt-8 flex flex-wrap justify-center gap-4">
-                    <a
-                        class="block w-full rounded border border-indigo-600 bg-indigo-600 px-12 py-3 text-sm font-medium text-white hover:bg-transparent hover:text-indigo-600 focus:outline-none focus:ring active:text-opacity-75 sm:w-auto"
-                        href="/app/register"
+        <div class="relative mx-auto max-w-screen-xl px-8 pb-24 lg:pb-0 lg:min-h-screen lg:items-center">
+            <nav class="py-8 flex flex-row justify-between">
+                <a href="/" class="relative">
+                    <span class="sr-only">Homepage</span>
+                    <svg
+                        class="h-8 sm:h-10 text-white"
+                        viewBox="0 0 28 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
                     >
-                        Try it out
-                    </a>
+                        <path
+                            d="M0.41 10.3847C1.14777 7.4194 2.85643 4.7861 5.2639 2.90424C7.6714 1.02234 10.6393 0 13.695 0C16.7507 0 19.7186 1.02234 22.1261 2.90424C24.5336 4.7861 26.2422 7.4194 26.98 10.3847H25.78C23.7557 10.3549 21.7729 10.9599 20.11 12.1147C20.014 12.1842 19.9138 12.2477 19.81 12.3047H19.67C19.5662 12.2477 19.466 12.1842 19.37 12.1147C17.6924 10.9866 15.7166 10.3841 13.695 10.3841C11.6734 10.3841 9.6976 10.9866 8.02 12.1147C7.924 12.1842 7.8238 12.2477 7.72 12.3047H7.58C7.4762 12.2477 7.376 12.1842 7.28 12.1147C5.6171 10.9599 3.6343 10.3549 1.61 10.3847H0.41ZM23.62 16.6547C24.236 16.175 24.9995 15.924 25.78 15.9447H27.39V12.7347H25.78C24.4052 12.7181 23.0619 13.146 21.95 13.9547C21.3243 14.416 20.5674 14.6649 19.79 14.6649C19.0126 14.6649 18.2557 14.416 17.63 13.9547C16.4899 13.1611 15.1341 12.7356 13.745 12.7356C12.3559 12.7356 11.0001 13.1611 9.86 13.9547C9.2343 14.416 8.4774 14.6649 7.7 14.6649C6.9226 14.6649 6.1657 14.416 5.54 13.9547C4.4144 13.1356 3.0518 12.7072 1.66 12.7347H0V15.9447H1.61C2.39051 15.924 3.154 16.175 3.77 16.6547C4.908 17.4489 6.2623 17.8747 7.65 17.8747C9.0377 17.8747 10.392 17.4489 11.53 16.6547C12.1468 16.1765 12.9097 15.9257 13.69 15.9447C14.4708 15.9223 15.2348 16.1735 15.85 16.6547C16.9901 17.4484 18.3459 17.8738 19.735 17.8738C21.1241 17.8738 22.4799 17.4484 23.62 16.6547ZM23.62 22.3947C24.236 21.915 24.9995 21.664 25.78 21.6847H27.39V18.4747H25.78C24.4052 18.4581 23.0619 18.886 21.95 19.6947C21.3243 20.156 20.5674 20.4049 19.79 20.4049C19.0126 20.4049 18.2557 20.156 17.63 19.6947C16.4899 18.9011 15.1341 18.4757 13.745 18.4757C12.3559 18.4757 11.0001 18.9011 9.86 19.6947C9.2343 20.156 8.4774 20.4049 7.7 20.4049C6.9226 20.4049 6.1657 20.156 5.54 19.6947C4.4144 18.8757 3.0518 18.4472 1.66 18.4747H0V21.6847H1.61C2.39051 21.664 3.154 21.915 3.77 22.3947C4.908 23.1889 6.2623 23.6147 7.65 23.6147C9.0377 23.6147 10.392 23.1889 11.53 22.3947C12.1468 21.9165 12.9097 21.6657 13.69 21.6847C14.4708 21.6623 15.2348 21.9135 15.85 22.3947C16.9901 23.1884 18.3459 23.6138 19.735 23.6138C21.1241 23.6138 22.4799 23.1884 23.62 22.3947Z"
+                            fill="currentColor"></path>
+                    </svg>
+                    <span class="absolute -bottom-4 -right-4 -rotate-12 whitespace-nowrap rounded-full bg-purple-100 px-2.5 py-0.5 text-sm text-purple-700">
+                        Alpha
+                    </span>
+                </a>
+                <ul class="flex flex-row gap-4">
+                    <li><a href="https://github.com/chrisdmacrae/astro-pwa/wiki">Docs</a></li>
+                    <li>
+                        <a href="https://github.com/chrisdmacrae/astro-pwa">
+                            <span class="sr-only">Github</span>
+                            <svg viewBox="0 0 24 24" aria-hidden="true" class="h-6 w-6 fill-slate-900" fill="currentColor"><path fill-rule="evenodd" fill="currentColor" clip-rule="evenodd" d="M12 2C6.477 2 2 6.463 2 11.97c0 4.404 2.865 8.14 6.839 9.458.5.092.682-.216.682-.48 0-.236-.008-.864-.013-1.695-2.782.602-3.369-1.337-3.369-1.337-.454-1.151-1.11-1.458-1.11-1.458-.908-.618.069-.606.069-.606 1.003.07 1.531 1.027 1.531 1.027.892 1.524 2.341 1.084 2.91.828.092-.643.35-1.083.636-1.332-2.22-.251-4.555-1.107-4.555-4.927 0-1.088.39-1.979 1.029-2.675-.103-.252-.446-1.266.098-2.638 0 0 .84-.268 2.75 1.022A9.607 9.607 0 0 1 12 6.82c.85.004 1.705.114 2.504.336 1.909-1.29 2.747-1.022 2.747-1.022.546 1.372.202 2.386.1 2.638.64.696 1.028 1.587 1.028 2.675 0 3.83-2.339 4.673-4.566 4.92.359.307.678.915.678 1.846 0 1.332-.012 2.407-.012 2.734 0 .267.18.577.688.48 3.97-1.32 6.833-5.054 6.833-9.458C22 6.463 17.522 2 12 2Z"></path></svg>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="flex flex-col lg:flex-row gap-4 mr-auto lg:pt-20">
+                <div class="flex flex-col gap-4 max-w-3xl">
+                    <h1 class="text-3xl font-extrabold sm:text-5xl lg:text-7xl">
+                        Build better 
+                        <span class="bg-gradient-to-r from-purple-300 to-pink-500 bg-clip-text text-transparent">websites, web applications, and digital products</span> 
+                        <span class="lg:block">with web standards.</span>
+                    </h1>
 
-                    <a
-                        class="block w-full rounded border border-indigo-600 px-12 py-3 text-sm font-medium text-indigo-600 hover:bg-indigo-600 hover:text-white focus:outline-none focus:ring active:bg-indigo-500 sm:w-auto"
-                        target="_blank"
-                        href="https://github.com/chrisdmacrae/astro-pwa"
-                    >
-                        Learn More
-                    </a>
+                    <p class="text-indigo-100 lg:mt-4 max-w-xl text-lg sm:text-xl sm:leading-relaxed">
+                        Astro PWA is a full-stack application framework built for Astro that let's you focus on the UI and the problems you're solving.
+                        Built on web standards, if you build using Astro PWA you learning how to build for the web.
+                    </p>
+
+                    <div class="mt-8 flex flex-wrap gap-4">
+                        <a
+                            class="block w-full rounded border border-indigo-600 bg-indigo-600 px-6 lg:px-12 py-5 text-sm font-medium text-white hover:bg-indigo-500 focus:outline-none focus:ring active:text-opacity-75 sm:w-auto"
+                            href="/app/register"
+                        >
+                            Try the demo app
+                        </a>
+
+                        <a
+                            class="block w-full rounded border border-indigo-200 px-6 lg:px-12 py-5 text-sm font-medium text-indigo-200 hover:bg-indigo-200 hover:text-indigo-600 focus:outline-none focus:ring active:bg-indigo-500 sm:w-auto"
+                            target="_blank"
+                            href="https://github.com/chrisdmacrae/astro-pwa"
+                        >
+                            Read the docs
+                        </a>
+                    </div>
+                </div>
+                <div class="flex flex-row items-center justify-center basis-[42rem] grow-0 lg:-mt-24 p-8 rounded-3xl overflow-hidden bg-[conic-gradient(at_top_right,_var(--tw-gradient-stops))] from-indigo-500 via-indigo-500 to-pink-400">
+                    <pre class="text-xs bg-purple-900 bg-opacity-70 rounded-2xl p-10">
+                        <code set:text={code} />                            
+                    </pre>
                 </div>
             </div>
-            <div class="absolute bottom-5 left-1/2 -translate-x-1/2">
-                <div class="rounded-full w-10 h-10 bg-purple-500 animate-bounce text-purple-300 flex justify-center items-center">
+            <div class="absolute bottom-5 left-1/2 -translate-x-1/2 lg:hidden">
+                <div class="rounded-full w-10 h-10 bg-indigo-500 animate-bounce text-indigo-300 flex justify-center items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m0 0l6.75-6.75M12 19.5l-6.75-6.75" />
                       </svg>                      
@@ -70,77 +116,81 @@ const title = "Astro PWA Demo App";
         </div>
     </header>
     <main class="p-4 md:p-8">
-        <div class="mx-auto max-w-prose text-center py-8">
-            <h2 class="text-3xl font-bold text-gray-900 sm:text-4xl">
-              Everyone's workflow, covered
-            </h2>
-      
-            <p class="mt-4 text-gray-500 sm:text-xl">
-              Astro PWA turns Astro into a simple framework for building applications the way you want. Forget framework lock-in.
-            </p>
-          </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div
-                class="group rounded-2xl bg-gradient-to-r from-indigo-500 to-pink-400 p-1 shadow-xl bg-[length:400%] hover:bg-[length:100%] transition-[background-size]"
-            >
-                <a class="block rounded-xl bg-white p-4 sm:p-6 lg:p-8 h-full hover:bg-opacity-80 transition-all" href="">
-                    <div class="mt-16">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-20 h-20 group-hover:stroke-purple-500">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 14.25h13.5m-13.5 0a3 3 0 01-3-3m3 3a3 3 0 100 6h13.5a3 3 0 100-6m-16.5-3a3 3 0 013-3h13.5a3 3 0 013 3m-19.5 0a4.5 4.5 0 01.9-2.7L5.737 5.1a3.375 3.375 0 012.7-1.35h7.126c1.062 0 2.062.5 2.7 1.35l2.587 3.45a4.5 4.5 0 01.9 2.7m0 0a3 3 0 01-3 3m0 3h.008v.008h-.008v-.008zm0-6h.008v.008h-.008v-.008zm-3 6h.008v.008h-.008v-.008zm0-6h.008v.008h-.008v-.008z" />
-                          </svg>
-
-                        
-                        <h3 class="text-lg font-bold text-gray-900 group-hover:text-purple-500 sm:text-xl">
-                            Server-side applications
-                        </h3>
-
-                        <p class="mt-2 text-sm text-gray-500">
-                            Build traditional server-rendered applications using Astro Frames and Astro Forms
-                        </p>
-                    </div>
-                </a>
+        <div class="mx-auto max-w-screen-xl text-center">
+            <div class="max-w-prose mx-auto py-8">
+                <h2 class="text-3xl font-bold text-gray-900 sm:text-4xl">
+                Everyone's workflow, covered
+                </h2>
+        
+                <p class="mt-4 text-gray-500 sm:text-xl">
+                Astro PWA turns Astro into a simple framework for building applications the way you want. Forget framework lock-in.
+                </p>
             </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div
+                    class="group rounded-2xl bg-gradient-to-r from-indigo-500 to-pink-400 p-1 shadow-xl bg-[length:400%] hover:bg-[length:100%] transition-[background-size]"
+                >
+                    <a class="block rounded-xl bg-white p-4 sm:p-6 lg:p-8 h-full hover:bg-opacity-80 transition-all" href="">
+                        <div class="mt-16 flex flex-col items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-20 h-20 group-hover:stroke-purple-500">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 14.25h13.5m-13.5 0a3 3 0 01-3-3m3 3a3 3 0 100 6h13.5a3 3 0 100-6m-16.5-3a3 3 0 013-3h13.5a3 3 0 013 3m-19.5 0a4.5 4.5 0 01.9-2.7L5.737 5.1a3.375 3.375 0 012.7-1.35h7.126c1.062 0 2.062.5 2.7 1.35l2.587 3.45a4.5 4.5 0 01.9 2.7m0 0a3 3 0 01-3 3m0 3h.008v.008h-.008v-.008zm0-6h.008v.008h-.008v-.008zm-3 6h.008v.008h-.008v-.008zm0-6h.008v.008h-.008v-.008z" />
+                            </svg>
 
-            <div
-                class="group rounded-2xl bg-gradient-to-r from-indigo-500 to-pink-400 p-1 shadow-xl bg-[length:400%] hover:bg-[length:100%] transition-[background-size]"
-            >
-                <a class="block rounded-xl bg-white p-4 sm:p-6 lg:p-8 h-full hover:bg-opacity-80 transition-all" href="">
-                    <div class="mt-16">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-20 h-20 group-hover:stroke-purple-500">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 8.25V18a2.25 2.25 0 002.25 2.25h13.5A2.25 2.25 0 0021 18V8.25m-18 0V6a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 6v2.25m-18 0h18M5.25 6h.008v.008H5.25V6zM7.5 6h.008v.008H7.5V6zm2.25 0h.008v.008H9.75V6z" />
-                          </svg>
-                          
-                        <h3 class="text-lg font-bold text-gray-900 group-hover:text-purple-500 sm:text-xl">
-                            Client-side SPAs
-                        </h3>
+                            
+                            <h3 class="text-lg font-bold text-gray-900 group-hover:text-purple-500 sm:text-xl">
+                                Server-side applications
+                            </h3>
 
-                        <p class="mt-2 text-sm text-gray-500">
-                            Build traditional client-rendered applications using Astro SPA
-                        </p>
-                    </div>
-                </a>
-            </div>
+                            <p class="mt-2 text-sm text-gray-500">
+                                Build traditional server-rendered applications using Astro Frames and Astro Forms
+                            </p>
+                        </div>
+                    </a>
+                </div>
 
-            <div
-                class="group rounded-2xl bg-gradient-to-r from-indigo-500 to-pink-400 p-1 shadow-xl bg-[length:400%] hover:bg-[length:100%] transition-[background-size]"
-            >
-                <a class="block rounded-xl bg-white p-4 sm:p-6 lg:p-8 h-full hover:bg-opacity-80 transition-all" href="">
-                    <div class="mt-16">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-20 h-20 group-hover:stroke-purple-500">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 7.5l-2.25-1.313M21 7.5v2.25m0-2.25l-2.25 1.313M3 7.5l2.25-1.313M3 7.5l2.25 1.313M3 7.5v2.25m9 3l2.25-1.313M12 12.75l-2.25-1.313M12 12.75V15m0 6.75l2.25-1.313M12 21.75V19.5m0 2.25l-2.25-1.313m0-16.875L12 2.25l2.25 1.313M21 14.25v2.25l-2.25 1.313m-13.5 0L3 16.5v-2.25" />
-                          </svg>
-                          
+                <div
+                    class="group rounded-2xl bg-gradient-to-r from-indigo-500 to-pink-400 p-1 shadow-xl bg-[length:400%] hover:bg-[length:100%] transition-[background-size]"
+                >
+                    <a class="block rounded-xl bg-white p-4 sm:p-6 lg:p-8 h-full hover:bg-opacity-80 transition-all" href="">
+                        <div class="mt-16 flex flex-col items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-20 h-20 group-hover:stroke-purple-500">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 8.25V18a2.25 2.25 0 002.25 2.25h13.5A2.25 2.25 0 0021 18V8.25m-18 0V6a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 6v2.25m-18 0h18M5.25 6h.008v.008H5.25V6zM7.5 6h.008v.008H7.5V6zm2.25 0h.008v.008H9.75V6z" />
+                            </svg>
+                            
+                            <h3 class="text-lg font-bold text-gray-900 group-hover:text-purple-500 sm:text-xl">
+                                Client-side SPAs
+                            </h3>
 
-                        <h3 class="text-lg font-bold text-gray-900 group-hover:text-purple-500 sm:text-xl">
-                            Server-side SPAs
-                        </h3>
+                            <p class="mt-2 text-sm text-gray-500">
+                                Build traditional client-rendered applications using Astro SPA
+                            </p>
+                        </div>
+                    </a>
+                </div>
 
-                        <p class="mt-2 text-sm text-gray-500">
-                            Build hybrid server-rendered and client applications using the whole Astro PWA suite
-                        </p>
-                    </div>
-                </a>
+                <div
+                    class="group rounded-2xl bg-gradient-to-r from-indigo-500 to-pink-400 p-1 shadow-xl bg-[length:400%] hover:bg-[length:100%] transition-[background-size]"
+                >
+                    <a class="block rounded-xl bg-white p-4 sm:p-6 lg:p-8 h-full hover:bg-opacity-80 transition-all" href="">
+                        <div class="mt-16 flex flex-col items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-20 h-20 group-hover:stroke-purple-500">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 7.5l-2.25-1.313M21 7.5v2.25m0-2.25l-2.25 1.313M3 7.5l2.25-1.313M3 7.5l2.25 1.313M3 7.5v2.25m9 3l2.25-1.313M12 12.75l-2.25-1.313M12 12.75V15m0 6.75l2.25-1.313M12 21.75V19.5m0 2.25l-2.25-1.313m0-16.875L12 2.25l2.25 1.313M21 14.25v2.25l-2.25 1.313m-13.5 0L3 16.5v-2.25" />
+                            </svg>
+                            
+
+                            <h3 class="text-lg font-bold text-gray-900 group-hover:text-purple-500 sm:text-xl">
+                                Server-side SPAs
+                            </h3>
+
+                            <p class="mt-2 text-sm text-gray-500">
+                                Build hybrid server-rendered and client applications using the whole Astro PWA suite
+                            </p>
+                        </div>
+                    </a>
+                </div>
             </div>
         </div>
+
+        <AlphaForm form={alphaForm} />
     </main>
 </Layout>

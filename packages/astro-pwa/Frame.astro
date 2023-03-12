@@ -67,15 +67,29 @@ const astroData = { data: dehydratedStores }
             e.stopImmediatePropagation()
             e.stopPropagation()
 
-            const data = new FormData(form)
+            const formData = new FormData(form)
+            const data = Object.fromEntries(formData)
             const frame = form.closest('astro-frame') as AstroFrame
 
             if (!frame) return
 
-            frame.reload(this.src, {
+            const dehydratedStores = dehydrateStores(frame.stores)
+            const response = await fetchWithClientStoreData(this.src, { data: dehydratedStores, output: "server" }, {
               method: "POST",
-              body: JSON.stringify(Object.fromEntries(data))
+              body: JSON.stringify(data),
+              headers: {
+                "Content-Type": "application/json"
+              }
             })
+            const page = await response.text()
+            const parser = new DOMParser()
+            const doc = parser.parseFromString(page, "text/html")
+            const newFrame = doc.getElementById(this.id) as Node
+
+            if (newFrame) {
+              this.replaceWith(newFrame)
+            }
+            
           }
         })
       })
@@ -84,7 +98,7 @@ const astroData = { data: dehydratedStores }
     // TODO: handle loading data from src
     static get observedAttributes() { return ['src']; }
     public attributeChangedCallback(name: string, oldValue: any, newValue: any) {
-
+      if (name === 'src') this.reload(newValue)
     }
 
     public async reload(src?: string, init: RequestInit = {}) {
