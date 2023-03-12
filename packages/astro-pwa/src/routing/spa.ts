@@ -1,33 +1,89 @@
+import diff from 'micromorph'
+import { map } from 'nanostores'
 import { sendClientStoreData } from "../session/temporary"
 import { dehydrateStores } from "../stores/hydration"
+import type { Router } from './router'
 
-export const getRoute = async (path: string, frame?: HTMLElement) => {
+const spaStore = map({ back: null, forward: null })
+export const listen = (router: Router, frame: HTMLElement = document.body) => {
+  if (window && 'navigation' in window && frame === document.documentElement) {
+    const navigation = window.navigation as any
+
+    navigation.addEventListener('navigate', (e: any) => {
+      if (!e.canTransition || e.hashChange || e.downloadRequest !== null) {
+        return;
+      }
+      
+      const from = new URL(location.toString())
+      const to = new URL(e.destination.url)
+      const isValidRoute = router.routes.find(route => route.match(to.pathname)) !== undefined
+
+      if (from === to || !isValidRoute) return
+
+      getUrl(to.pathname, frame)
+      router.go(to.pathname)
+      spaStore.setKey('back', from.pathname)
+    })
+  }
+  
+  frame.addEventListener('click', (e) => {
+    const el = e.target as HTMLAnchorElement
+
+    if (el.nodeType !== 1) return
+
+    const anchor: HTMLAnchorElement | null = el.tagName === 'A' ? el : el.closest('a')
+
+    if (!anchor) return
+
+    const from = new URL(location.toString())
+    const to = new URL(anchor.href)
+    const isValidRoute = router.routes.find(route => route.match(to.pathname)) !== undefined
+
+    if (from === to || !isValidRoute) return
+
+    e.stopPropagation()
+    e.preventDefault()
+    getUrl(to.pathname, frame)
+    router.go(to.pathname)
+
+    const shouldScroll = anchor.getAttribute('data-scroll') !== 'false'
+    if (shouldScroll) {
+      window.scrollTo({ top: 0 })
+    }
+  })
+
+  window.addEventListener('popstate', function(event) {
+    if (window.location.hash) return
+
+    event.preventDefault()
+
+    getUrl(window.location.pathname)
+    router.go(window.location.pathname)
+  }, false)
+}
+
+export const getUrl = async (path: string, frame: HTMLElement = document.body) => {
     const output = document.getElementById('__astro')?.getAttribute('output') as "server" | "static" || "static"
     const islands = document.body.querySelectorAll('astro-frame')
     const dehydratedStores = dehydrateStores(Array.from(islands).flatMap(island => (island as any).stores).filter(s => s !== undefined))
-  
+    const isDocument = frame == document.body
+
+    if (!frame || !isDocument && !frame.id) return window.location.href = path
+
     const page = await sendClientStoreData(path, { data: dehydratedStores, output: output })
     const body = await page.text()
     const parser = new DOMParser()
     const doc = parser.parseFromString(body, 'text/html')
-  
-    const oldParentFrame = frame || document.querySelector('astro-frame')
-  
-    if (!oldParentFrame) return window.location.href = path
-  
-    const newParentFrame = doc.getElementById(oldParentFrame.id)
-  
-    if (!newParentFrame) return window.location.href = path
-  
-    let importedFrame
-    if (oldParentFrame && newParentFrame) {
-      importedFrame = document.importNode(newParentFrame, true)
+    const newFrame = isDocument ? doc.body : doc.getElementById(frame.id)
+
+    if (!newFrame) return window.location.href = path
+
+    diff(frame, newFrame)
+    diff(document.head, doc.head)
+
+    if (frame !== document.documentElement) {
+      hydrateAstroIslands(document, doc)
     }
-  
-    oldParentFrame.replaceChildren(...Array.from(newParentFrame.childNodes))
-    hydrateScripts(Array.from(document.head.querySelectorAll('script')))
-    hydrateScripts(Array.from(newParentFrame.querySelectorAll('script')))
-    hydrateAstroIslands(document, doc)
   }
   
   // This is nasty
@@ -71,25 +127,14 @@ export const getRoute = async (path: string, frame?: HTMLElement) => {
     if (newScripts && style) {
       newScripts.forEach(script => {
         const existing = oldScripts?.find(s => s.textContent === script.textContent)
-  
-        if (!existing) style.after(script)
-  
-        return script
+        const node = document.importNode(script)
+
+        if (!existing) {
+          style.after(node)
+        }
+        else {
+          diff(existing, script)
+        }
       })
-  
-      hydrateScripts(Array.from(getSiblings(style).filter((node) => node.tagName === 'SCRIPT')) as HTMLScriptElement[])
     }
-  }
-  
-  export const hydrateScripts = (scripts: HTMLScriptElement[]) => {
-    scripts.forEach(script => {
-      const el = document.createElement('script')
-  
-      if (script.textContent) el.textContent = script.textContent
-      Array.from(script.attributes).forEach(attr => {
-        el.setAttribute(attr.name, attr.value)
-      })
-  
-      script.replaceWith(el)
-    })
   }

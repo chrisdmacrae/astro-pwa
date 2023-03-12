@@ -2,7 +2,6 @@ import type { Params } from "astro"
 import { map } from "nanostores"
 import { createRouter as createNanoRouter, Pattern } from "@nanostores/router"
 import { isSSR } from "../ssr/isSsr"
-import { getRoute } from "./spa"
 
 export const routerStore = map<Router>()
 
@@ -19,8 +18,10 @@ export type Router = {
   route: string
   params: Params
   routes: Route[]
-  on: <T = RouteChange>(event: 'change' | 'changed', cb: (change: RouteChange | undefined) => void) => () => void
-  push: (href: string) => void
+  on: (event: 'change' | 'changed', cb: (change: RouteChange | undefined) => void) => () => void
+  go: (path: string) => void
+  forward: () => void
+  back: () => void
   redirect: (href: string) => void
   dehydrate: () => DehydratedRouter
 }
@@ -28,6 +29,7 @@ export type Router = {
 export type Route<P = Pattern<any>> = {
   name: string
   pattern: string | P
+  match: (url: string) => boolean
 }
 
 export type DehydratedRouter = {
@@ -44,7 +46,15 @@ export const createRouter = (dehydratedRouter: DehydratedRouter): Router => {
   }, {} as Record<string, string | Pattern<any>>) || {}
   const router = createNanoRouter(routes, { links: false })
 
-  const push = (href: string) => router.open(new URL(href).pathname)
+  const go = (path: string) => router.open(path)
+  const forward = () => {
+    if ('navigation' in window) return (window.navigation as any).forward()
+    else return window.history.forward()
+  }
+  const back = () => {
+    if ('navigation' in window) return (window.navigation as any).back()
+    else return window.history.forward()
+  }
   const redirect = (href: string) => router.open(new URL(href).pathname, true)
   const update = () => {
     const updatedData = router.get()
@@ -58,6 +68,26 @@ export const createRouter = (dehydratedRouter: DehydratedRouter): Router => {
       })
     }
   }
+  const on: Router['on'] = (event, cb) => {
+    switch (event) {
+      case "change":
+        return router.subscribe(cb)
+      case "changed":
+        return router.listen(cb)
+      default:
+        return () => null
+    }
+  }
+  const dehydrate = () => {
+    const router = routerStore.get()
+    const dehydratedRouter: DehydratedRouter = {
+      path: router.path,
+      params: router.params,
+      routes: router.routes
+    }
+
+    return dehydratedRouter
+  }
 
   router.subscribe((routeChange) => {
     const router = routerStore.get()
@@ -65,7 +95,6 @@ export const createRouter = (dehydratedRouter: DehydratedRouter): Router => {
 
     if (isNewRoute && !isSSR) {
       update()
-      getRoute(routeChange.path)
     }
   })
 
@@ -78,29 +107,23 @@ export const createRouter = (dehydratedRouter: DehydratedRouter): Router => {
     path: data!.path,
     route: data!.route,
     params: data!.params,
-    routes: dehydratedRouter.routes,
-    push,
-    redirect,
-    on: (event, cb) => {
-      switch (event) {
-        case "change":
-          return router.subscribe(cb)
-        case "changed":
-          return router.listen(cb)
-        default:
-          return () => null
-      }
-    },
-    dehydrate: () => {
-      const router = routerStore.get()
-      const dehydratedRouter: DehydratedRouter = {
-        path: router.path,
-        params: router.params,
-        routes: router.routes
-      }
+    routes: dehydratedRouter.routes.map(route => ({
+      ...route,
+      match: (url: string) => {
+        let exp = Array.isArray(route.pattern) ? route.pattern[0]: route.pattern
 
-      return dehydratedRouter
-    }
+        if (typeof exp === 'string' && url.toString().includes(exp)) return true
+        else if (new RegExp(exp).test(url)) return true
+
+        return false
+      }
+    })),
+    go,
+    forward,
+    back,
+    redirect,
+    on,
+    dehydrate
   }
 
   routerStore.set(api)

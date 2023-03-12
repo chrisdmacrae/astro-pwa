@@ -4595,6 +4595,11 @@ micromatch@^4.0.2, micromatch@^4.0.4, micromatch@^4.0.5:
     braces "^3.0.2"
     picomatch "^2.3.1"
 
+micromorph@^0.4.2:
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/micromorph/-/micromorph-0.4.2.tgz#23318b4f23c9bbafb3879ed80cb12aff200192da"
+  integrity sha512-gk2LfQ4t+thXtoIPSPBCHab/Yy2F8NlyE9FUgt5VBeQU/85DREA7ifTZR8/Z8arotnwYF4apcluOoMFiqExBXw==
+
 mime-db@1.52.0:
   version "1.52.0"
   resolved "https://registry.yarnpkg.com/mime-db/-/mime-db-1.52.0.tgz#bbabcdc02859f4987301c856e3387ce5ec43bf70"

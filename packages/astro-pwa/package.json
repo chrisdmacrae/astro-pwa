@@ -22,6 +22,7 @@
     "@nanostores/router": "^0.8.1",
     "@nanostores/vue": "^0.7.0",
     "dts-dom": "^3.7.0",
+    "micromorph": "^0.4.2",
     "zod": "^3.21.4"
   },
   "peerDependencies": {

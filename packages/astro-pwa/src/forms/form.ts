@@ -1,27 +1,27 @@
 import type { AstroGlobal } from "astro"
-import type { typeToFlattenedError } from "zod"
+import type { z, typeToFlattenedError } from "zod"
 
-export type FormOptions<T> = {
+export type FormOptions<T extends z.ZodType> = {
     astro: Pick<AstroGlobal, 'request' | 'redirect' | 'url'>
-    fields?: Zod.Schema<T>
+    fields?: T
     redirect?: string
 }
 
-export type FormErrors<T extends Record<string, any> = any> = {
+export type FormErrors<T extends z.ZodType> = {
     message: string
     form?: string[]
-    fields?: T
+    fields?: z.infer<T>
 }
 
-export type FormReturn<T extends Record<string, any> = any> = {
+export type AstroForm<T extends z.ZodType> = {
     submitting: boolean,
     successful: boolean
-    error?: FormErrors<T>,
-    submit: (cb: (formData: T) => void) => Promise<Response>
+    error?: FormErrors<T>
+    submit: (cb: (formData: z.infer<T>) => void) => Promise<Response>
 }
 
 // TODO: XSRF
-export const useForm = async <T extends Record<string, any> = any>(id: string, { astro, fields, redirect }: FormOptions<T>): Promise<FormReturn<T>> => {
+export const useForm = async <T extends z.ZodType = any>(id: string, { astro, fields, redirect }: FormOptions<T>): Promise<AstroForm<T>> => {
     const data = astro.request.method === 'POST' ? await astro.request.formData() : new FormData()
     const referrerUrl = data.get('referrer')
     const error = astro.request.headers.get('__astro-form-error')

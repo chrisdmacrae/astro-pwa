@@ -1,7 +1,6 @@
 ---
-import { z } from 'astro-pwa';
+import { z, AstroForm } from 'astro-pwa';
 import Form from 'astro-pwa/Form.astro';
-import type { FormReturn } from 'astro-pwa/src/forms/form';
 
 export const fields = z.object({
     firstName: z.string(),
@@ -10,7 +9,7 @@ export const fields = z.object({
 })
 
 export type Props = {
-    form: FormReturn<typeof fields.shape>
+    form: AstroForm<typeof fields>
     action?: string
 }
 
