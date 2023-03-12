@@ -4,6 +4,9 @@ import AlphaForm, { fields } from "../components/forms/AlphaForm.astro";
 import Layout from "../layouts/Layout.astro";
 import * as shiki from 'shiki'
 
+shiki.setWasm('/shiki/dist/onigasm.wasm')
+shiki.setCDN('/shiki/')
+
 const highlighter = await shiki.getHighlighter({ langs: ['astro'] })
 
 const title = "Astro PWA Demo App";
