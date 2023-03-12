@@ -17,19 +17,19 @@ import { counterStore } from '../../stores/counter'
   import { useStore, useRouter } from 'astro-pwa'
   import { counterStore, add, subtract } from '../../stores/counter'
 
-  const router = useRouter()
+  // const router = useRouter()
 
-  router.on('change', () => {
-    const store = useStore(counterStore)
-    const countEl = window.document.querySelector('[data-count]')
-    store.subscribe(({ count }) => {
-      if (countEl) countEl.textContent = count.toString()
-    })
+  // router.on('change', () => {
+  //   const store = useStore(counterStore)
+  //   const countEl = window.document.querySelector('[data-count]')
+  //   store.subscribe(({ count }) => {
+  //     if (countEl) countEl.textContent = count.toString()
+  //   })
 
-    const subtractEl = window.document.querySelector('[data-subtract]')
-    if (subtractEl) subtractEl.addEventListener('click', subtract)
+  //   const subtractEl = window.document.querySelector('[data-subtract]')
+  //   if (subtractEl) subtractEl.addEventListener('click', subtract)
 
-    const addEl = window.document.querySelector('[data-add]')
-    if (addEl) addEl.addEventListener('click', add)
-  })
+  //   const addEl = window.document.querySelector('[data-add]')
+  //   if (addEl) addEl.addEventListener('click', add)
+  // })
 </script>
