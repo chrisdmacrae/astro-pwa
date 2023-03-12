@@ -39,6 +39,6 @@ const { form, action } = Astro.props
             <input type="text" name="email" id="email" class="px-5 py-3 border border-slate-100 rounded-lg shadow-md" required />
             {form.errors?.fields?.email && (<span class="text-red-500">{form.errors?.fields?.email}</span>)}
         </div>
-        <button type="submit">Submit</button>
+        <button type="submit" class="bg-indigo-500 hover:bg-indigo-400 px-4 py-2 rounded-xl text-white">Submit</button>
     </Form>
 </Frame>

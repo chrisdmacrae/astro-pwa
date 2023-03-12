@@ -10,3 +10,5 @@ export type { Store } from './src/stores/store'
 export { z } from 'zod'
 export { createForm, submitForm } from './src/forms/form'
 export type { AstroForm, AstroFormErrors, AstroFormOptions } from './src/forms/form'
+
+export type { AstroFrame } from './src/frames/frame'
