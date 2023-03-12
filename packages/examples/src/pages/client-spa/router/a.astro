@@ -5,6 +5,6 @@ import { routes } from './index.astro'
 
 export const prerender = true
 ---
-<ClientSPALayout title="Page A" filePath={Astro.self.moduleId!}>
+<ClientSPALayout title="Page A" filePath={Astro.self.moduleId!.replace(process.cwd(), `https://github.com/chrisdmacrae/astro-pwa/tree/main/packages/examples`)}>
   <Router baseUrl="/client-spa" routes={routes} client:only="react" />
 </ClientSPALayout>

@@ -6,7 +6,7 @@ import VueCounter from "../../../components/vue/VueCounter.vue";
 
 export const prerender = true
 ---
-<ClientSPALayout title="Multi-framework demo" filePath={Astro.self.moduleId!}>
+<ClientSPALayout title="Multi-framework demo" filePath={Astro.self.moduleId!.replace(process.cwd(), `https://github.com/chrisdmacrae/astro-pwa/tree/main/packages/examples`)}>
   <Counter />
   <ReactCounter client:only="react" />
   <VueCounter client:only="vue" />

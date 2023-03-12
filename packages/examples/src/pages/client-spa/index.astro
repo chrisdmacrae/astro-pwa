@@ -41,7 +41,7 @@ const demos = [
   },
 ]
 ---
-<ClientSPALayout title="Astro SPA Examples" filePath={Astro.self.moduleId!}>
+<ClientSPALayout title="Astro SPA Examples" filePath={Astro.self.moduleId!.replace(process.cwd(), `https://github.com/chrisdmacrae/astro-pwa/tree/main/packages/examples`)}>
   <main class="flex flex-col gap-4">
   <p class="text-md text-slate-500">
     Welcome to the client SPA (single page application) examples. A client-only SPA is pre-rendered at build time and supported by API routes.

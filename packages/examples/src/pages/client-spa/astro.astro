@@ -4,6 +4,6 @@ import Counter from "../../components/astro/Counter.astro";
 
 export const prerender = true
 ---
-<ClientSPALayout title="Astro demo" filePath={Astro.self.moduleId!}>
+<ClientSPALayout title="Astro demo" filePath={Astro.self.moduleId!.replace(process.cwd(), `https://github.com/chrisdmacrae/astro-pwa/tree/main/packages/examples`)}>
   <Counter />
 </ClientSPALayout>

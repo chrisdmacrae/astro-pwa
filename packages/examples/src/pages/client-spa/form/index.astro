@@ -7,6 +7,6 @@ const form = await useForm('test', { astro: Astro, fields: fields })
 
 form.submit(d => d.email)
 ---
-<ClientSPALayout title="Example client form" filePath={Astro.self.moduleId!}>
+<ClientSPALayout title="Example client form" filePath={Astro.self.moduleId!.replace(process.cwd(), `https://github.com/chrisdmacrae/astro-pwa/tree/main/packages/examples`)}>
     <Form action="/client-spa/api/forms/test" form={form} />
 </ClientSPALayout>
