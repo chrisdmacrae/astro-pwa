@@ -4,12 +4,14 @@ import { PageB } from "./PageB"
 import { Dynamic } from "./Dynamic"
 import { Home } from "./Home"
 
+export const routes = ['c', 'd']
+
 export type RouterProps = {
-  routes: string[]
+  routes?: string[]
   baseUrl: string
 }
 
-export const Router: React.FC<RouterProps> = ({ routes, baseUrl }) => {
+export const Router: React.FC<RouterProps> = ({ baseUrl }) => {
   const router = useRouter()
 
   switch (router.route) {

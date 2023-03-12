@@ -90,15 +90,17 @@ export const createForm = async <T extends AstroFormFields>(id: string, { astro,
 
     const submit = async (cb: (formData: T) => void | Promise<void>) => {
         try {
-            const submission = data
+            if (!data) {
+                return new Response(null, { status: 400 })
+            }
 
             if (fields) {
-                const validation = fields.safeParse(submission)
+                const validation = fields.safeParse(data)
 
                 if (!validation.success) return handleError("Form is not valid", validation.error.flatten())
             }
 
-            await cb(submission)
+            await cb(data)
             
             return handleSuccess()
         }

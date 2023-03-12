@@ -3,7 +3,7 @@ import ClientSPALayout from "../../../layouts/ClientSPALayout.astro";
 import { Router } from "../../../components/react/Router";
 
 export const getStaticPaths = async () => {
-    const {routes} = await import('./index.astro')
+    const {routes} = await import('../../../components/react/Router')
 
     return routes.map(route => ({ params: { slug: route }, props: { routes: routes }}))
 }
