@@ -1,0 +1,55 @@
+<form method="GET" action="/app/search" class="relative hidden sm:block" id="search">
+    <label class="sr-only" for="search"> Search</label>
+
+    <input
+        class="h-10 w-full rounded-lg border-none bg-white pl-4 pr-10 text-sm shadow-sm sm:w-56"
+        id="search"
+        name="q"
+        type="search"
+        placeholder="Search website..."
+    />
+
+    <button
+        type="button"
+        class="absolute top-1/2 right-1 -translate-y-1/2 rounded-md bg-gray-50 p-2 text-gray-600 transition hover:text-gray-700"
+    >
+        <span class="sr-only">Search</span>
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-4 w-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2"
+        >
+            <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            ></path>
+        </svg>
+    </button>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const search = document.getElementById('search')
+        const searchInput = document.querySelector('input')
+        const searchButton = search?.querySelector('button')
+        console.log(search)
+        const toggleSearch = () => {
+            searchInput?.classList.toggle('md:w-96')
+        }
+
+        searchButton?.addEventListener('click', () => {
+            const searchInput = document.querySelector('input')
+
+            if (!searchInput?.matches(':focus') && !searchInput?.value) {
+                searchInput?.focus()
+            }
+        })
+
+        searchInput?.addEventListener('focus', () => toggleSearch())
+        searchInput?.addEventListener('blur', () => toggleSearch())
+    })
+</script>

@@ -1,0 +1,184 @@
+---
+import { AstroForm, z } from "astro-pwa";
+import Form from "astro-pwa/Form.astro"
+
+export const schema = z.object({
+    first_name: z.string().nonempty(),
+    last_name: z.string().nonempty(),
+    email: z.string().email().nonempty(),
+    password: z.string().nonempty(),
+    password_confirmation: z.string().nonempty(),
+    marketing_accept: z.boolean().optional()
+})
+
+export const fields = schema.refine((data) => data.password === data.password_confirmation, {
+    message: "Passwords don't match",
+    path: ["password_confirmation"]
+  })
+
+export type Props = {
+    form: AstroForm<typeof fields>
+}
+
+const { form } = Astro.props
+---
+<Form id="login" class="mt-8 grid grid-cols-6 gap-6">
+    {form.errors && (
+        <div role="alert" class="rounded border-l-4 border-red-500 bg-red-50 p-4 col-span-6">
+            <div class="flex items-center gap-2 text-red-800">
+                <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="h-5 w-5"
+                >
+                <path
+                    fill-rule="evenodd"
+                    d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z"
+                    clip-rule="evenodd"
+                />
+                </svg>
+
+                <strong class="block font-medium">
+                  Something went wrong
+                </strong>
+            </div>
+
+            {form.errors.form && (
+                <p class="mt-2 text-sm text-red-700">
+                    {form.errors.form?.join(', ')}
+                </p>
+            )}
+            </div>
+
+    )}
+    <div class="col-span-6 sm:col-span-3">
+      <label
+        for="FirstName"
+        class="block text-sm font-medium text-gray-700"
+      >
+        First Name
+      </label>
+
+      <input
+        type="text"
+        id="FirstName"
+        name="first_name"
+        value={form.data?.first_name}
+        class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+      />
+
+      {form.errors?.fields?.first_name && <span class="text-red-500">{form.errors.fields.first_name.join(', ')}</span>}
+    </div>
+
+    <div class="col-span-6 sm:col-span-3">
+      <label
+        for="LastName"
+        class="block text-sm font-medium text-gray-700"
+      >
+        Last Name
+      </label>
+
+      <input
+        type="text"
+        id="LastName"
+        name="last_name"
+        value={form.data?.last_name}
+        class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+      />
+
+      {form.errors?.fields?.last_name && <span class="text-red-500">{form.errors.fields.last_name.join(', ')}</span>}
+    </div>
+
+    <div class="col-span-6">
+      <label for="Email" class="block text-sm font-medium text-gray-700">
+        Email
+      </label>
+
+      <input
+        type="email"
+        id="Email"
+        name="email"
+        value={form.data?.email}
+        class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+      />
+
+      {form.errors?.fields?.email && <span class="text-red-500">{form.errors.fields.email.join(', ')}</span>}
+    </div>
+
+    <div class="col-span-6 sm:col-span-3">
+      <label
+        for="Password"
+        class="block text-sm font-medium text-gray-700"
+      >
+        Password
+      </label>
+
+      <input
+        type="password"
+        id="Password"
+        name="password"
+        class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+      />
+
+      {form.errors?.fields?.password && <span class="text-red-500">{form.errors.fields.password.join(', ')}</span>}
+    </div>
+
+    <div class="col-span-6 sm:col-span-3">
+      <label
+        for="PasswordConfirmation"
+        class="block text-sm font-medium text-gray-700"
+      >
+        Password Confirmation
+      </label>
+
+      <input
+        type="password"
+        id="PasswordConfirmation"
+        name="password_confirmation"
+        class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+      />
+
+      {form.errors?.fields?.password_confirmation && <span class="text-red-500">{form.errors.fields.password_confirmation.join(', ')}</span>}
+    </div>
+
+    <div class="col-span-6">
+      <label for="MarketingAccept" class="flex gap-4">
+        <input
+          type="checkbox"
+          id="MarketingAccept"
+          name="marketing_accept"
+          class="h-5 w-5 rounded-md border-gray-200 bg-white shadow-sm"
+        />
+
+        <span class="text-sm text-gray-700">
+          I want to receive emails about events, product updates and
+          company announcements.
+        </span>
+      </label>
+    </div>
+
+    <div class="col-span-6">
+      <p class="text-sm text-gray-500">
+        By creating an account, you agree to our
+        <a href="#" class="text-gray-700 underline">
+          terms and conditions
+        </a>
+        and
+        <a href="#" class="text-gray-700 underline">privacy policy</a>.
+      </p>
+    </div>
+
+    <div class="col-span-6 sm:flex sm:items-center sm:gap-4">
+      <button
+        class="inline-block shrink-0 rounded-md border border-indigo-600 bg-indigo-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-indigo-600 focus:outline-none focus:ring active:text-indigo-500"
+      >
+        Create an account
+      </button>
+
+      <p class="mt-4 text-sm text-gray-500 sm:mt-0">
+        Already have an account?
+        <a href="/app/login" class="text-gray-700 underline">Log in</a>.
+      </p>
+    </div>
+</Form>

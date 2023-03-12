@@ -1,0 +1,21 @@
+---
+import Header from "../../../components/Header.astro";
+import Sidebar from "../../../components/Sidebar.astro";
+import AppLayout from "../../../layouts/AppLayout.astro";
+
+if (!Astro.cookies.get('session').value) {
+    return Astro.redirect('/app/login', 302)
+}
+
+const title = "Home"
+---
+<AppLayout title={title}>
+    <div class="flex flex-row">
+        <Sidebar />
+        <main class="basis-full">
+            <Header
+                heading="Manage your Billing"
+            />
+        </main>
+    </div>
+</AppLayout>

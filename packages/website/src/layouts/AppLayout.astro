@@ -1,0 +1,18 @@
+---
+import SPA from "astro-pwa/SPA.astro"
+import { createPageRoutesFromGlob } from "astro-pwa"
+import { appStore } from "../stores/app"
+import Layout from "./Layout.astro"
+
+export type Props = {
+  title: string
+}
+
+const { title } = Astro.props
+const routes = await createPageRoutesFromGlob(Astro.glob('../pages/app/**/*.astro'))
+---
+<Layout title={title}>
+  <SPA routes={routes} stores={[appStore]} output="server">
+    <slot />
+  </SPA>
+</Layout>
