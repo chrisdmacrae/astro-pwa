@@ -1,10 +1,7 @@
 ---
-import type { FormHTMLAttributes } from "react";
-
 // TODO: XSRF
-export type Props = Omit<FormHTMLAttributes<unknown>, 'role'> & {
+export type Props = astroHTML.JSX.FormHTMLAttributes & {
     id: string
-    role?: astroHTML.JSX.AriaRole | null | undefined
 }
 
 const {id, action = Astro.request.url, method = "POST", ...props } = Astro.props

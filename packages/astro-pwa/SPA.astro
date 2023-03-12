@@ -19,28 +19,23 @@ const router = createRouter({
   routes: routes
 })
 ---
-<Frame id="__astro" stores={stores} router={JSON.stringify(router.dehydrate())} output={output} {...props}>
-  <script>
-    import type { AstroFrame } from './Island.astro.__script1'
-    import { createRouter, routerStore, DehydratedRouter } from './src/routing/router'
+<script>
+  import type { AstroFrame } from './Island.astro.__script1'
+  import { createRouter, routerStore, DehydratedRouter } from './src/routing/router'
+  import { listen } from './src/routing/spa'
+  
+  const astroSpa: AstroFrame = document.getElementById('__astro')
+  if (astroSpa) {
+    const dehydratedRouter = JSON.parse(astroSpa.getAttribute('router') || '{}') as DehydratedRouter
+    const hasRouter = Object.keys(routerStore.get()).keys.length !== 0
     
-    const astroSpa: AstroFrame = document.getElementById('__astro')
-    if (astroSpa) {
-      const dehydratedRouter = JSON.parse(astroSpa.getAttribute('router') || '{}') as DehydratedRouter
-      const hasRouter = Object.keys(routerStore.get()).keys.length !== 0
-      
-      if (dehydratedRouter && !hasRouter) {
-        const router = createRouter(dehydratedRouter)
+    if (dehydratedRouter && !hasRouter) {
+      const router = createRouter(dehydratedRouter)
 
-        customElements.whenDefined('astro-frame').then(() => {
-          router.on('change', () => {
-            const astroSpa: AstroFrame = document.querySelector('#__astro')
-
-            astroSpa.readyForRouting()
-          })
-        })
-      }
+      listen(router)
     }
-  </script>
+  }
+</script>
+<Frame id="__astro" stores={stores} router={JSON.stringify(router.dehydrate())} output={output} {...props}>
   <slot />
 </Frame>
