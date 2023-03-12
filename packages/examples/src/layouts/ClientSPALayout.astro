@@ -31,10 +31,7 @@ const routes = await createPageRoutesFromGlob(Astro.glob('../pages/client-spa/**
       </section>
       <slot />
       <footer class="flex justify-center text-sm text-slate-500 pt-4">
-        {import.meta.url}
-        {Astro.self.moduleId}
-        {process.cwd()}
-        <a href={Astro.self.moduleId?.replace(import.meta.url, `https://github.com/chrisdmacrae/astro-pwa/tree/main`)}>
+        <a href={Astro.self.moduleId?.replace(process.cwd(), `https://github.com/chrisdmacrae/astro-pwa/tree/main/packages/examples`)}>
           View on Github
         </a>
       </footer>
