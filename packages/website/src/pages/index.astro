@@ -4,8 +4,8 @@ import AlphaForm, { fields } from "../components/forms/AlphaForm.astro";
 import Layout from "../layouts/Layout.astro";
 import * as shiki from 'shiki'
 
-shiki.setWasm('/shiki/dist/onigasm.wasm')
-shiki.setCDN('/shiki/')
+shiki.setWasm(process.cwd() + '/packages/website/public/shiki/dist/onigasm.wasm')
+shiki.setCDN(process.cwd() + '/packages/website/public/shiki/')
 
 const highlighter = await shiki.getHighlighter({ langs: ['astro'] })
 
@@ -206,17 +206,5 @@ if (alphaForm.submitting) {
         </div>
 
         <AlphaForm form={alphaForm} />
-
-        <script>
-            import * as shiki from 'shiki'
-
-            const highlighter = await shiki.getHighlighter({
-                theme: 'nord'
-            })
-
-            document.addEventListener("DOMContentLoaded", () => {
-                document.querySelectorAll('pre').forEach(code => highlight(code))
-            })
-        </script>
     </main>
 </Layout>
