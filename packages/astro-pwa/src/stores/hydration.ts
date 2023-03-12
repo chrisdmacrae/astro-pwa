@@ -10,8 +10,7 @@ export const hydrateServerStore = (store: Store<any>, request: Request) => {
   // Ensure the stores are "immutable" per request
   store.set(store.defaultValue)
 
-  const {data} = getClientStoreData(request)
-  
+  const {data} = getClientStoreData(request)  
   if (data) {
     const currentData = store.get()
     const routerData = data[store.name]

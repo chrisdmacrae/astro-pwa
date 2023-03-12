@@ -2,7 +2,6 @@
 import { createPageRoutesFromGlob } from "astro-pwa"
 import SPA from "astro-pwa/SPA.astro"
 import { stores } from "../stores"
-import { execSync } from 'child_process'
 import Layout from "./Layout.astro"
 
 export type Props = {
@@ -12,7 +11,6 @@ export type Props = {
 const { title } = Astro.props
 const isHome = Astro.url.pathname === '/server-spa'
 const routes = await createPageRoutesFromGlob(Astro.glob('../pages/server-spa/**/*.astro'))
-const branch = execSync('git branch --show-current').toString()
 ---
 <Layout title={title}>
   <SPA routes={routes} stores={stores} output="server" class="w-full min-h-screen gap-4 flex flex-col items-center h-full">
@@ -32,7 +30,7 @@ const branch = execSync('git branch --show-current').toString()
       </section>
       <slot />
       <footer class="flex justify-center text-sm text-slate-500 pt-4">
-        <a href={Astro.self.moduleId?.replace(process.cwd(), `https://github.com/chrisdmacrae/astro-pwa/tree/${branch}/packages/demo-examples`)}>
+        <a href={Astro.self.moduleId?.replace(process.cwd(), `https://github.com/chrisdmacrae/astro-pwa/tree/main/packages/demo-examples`)}>
           View on Github
         </a>
       </footer>

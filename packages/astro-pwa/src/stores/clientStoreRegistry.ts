@@ -21,7 +21,7 @@ export const getClientStoreRegistryStore = () => {
 export const registerStore = (store: Store<any>) => {
   if (clientRegistry) {
     const currentStores = clientRegistry.get()
-    const existingStore = currentStores.find(s => s.get().name === store.get().name)
+    const existingStore = currentStores.find(s => s.name === store.get().name)
 
     if (existingStore) {
       return existingStore

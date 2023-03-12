@@ -28,7 +28,6 @@ const astroData = { data: dehydratedStores }
 ---
 <script>
   import type { Store } from './src/stores/store'
-  import { useRouter } from "./src/routing/router"
   import { createClientStoreRegistry, getClientStoreRegistryStore } from './src/stores/clientStoreRegistry'
   import { hydrateClientStore } from './src/stores/hydration'
 

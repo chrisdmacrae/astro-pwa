@@ -63,8 +63,9 @@ export const listen = (router: Router, frame: HTMLElement = document.body) => {
 
 export const getUrl = async (path: string, frame: HTMLElement = document.body) => {
     const output = document.getElementById('__astro')?.getAttribute('output') as "server" | "static" || "static"
-    const islands = document.body.querySelectorAll('astro-frame')
-    const dehydratedStores = dehydrateStores(Array.from(islands).flatMap(island => (island as any).stores).filter(s => s !== undefined))
+    const frames = document.body.querySelectorAll('astro-frame')
+    const stores = Array.from(frames).flatMap(frame => (frame as any).stores).filter(s => s !== undefined)
+    const dehydratedStores = dehydrateStores(stores)
     const isDocument = frame == document.body
 
     if (!frame || !isDocument && !frame.id) return window.location.href = path
