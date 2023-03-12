@@ -2,10 +2,13 @@
 import { createForm } from "astro-pwa";
 import AlphaForm, { fields } from "../components/forms/AlphaForm.astro";
 import Layout from "../layouts/Layout.astro";
+import * as shiki from 'shiki'
+
+const highlighter = await shiki.getHighlighter({ langs: ['astro'] })
 
 const title = "Astro PWA Demo App";
 const alphaForm = await createForm('alpha', { astro: Astro, fields: fields })
-const code = `
+const code = highlighter.codeToHtml(`
 ---
 import { createForm } from 'astro-pwa'
 import SPA from 'astro-pwa/SPA.astro'
@@ -30,13 +33,20 @@ if (form.submitting) {
   </SPA>
 </body>
 </html>
-`
+`, { lang: 'astro'} )
 
 if (alphaForm.submitting) {
-    return alphaForm.submit(data => console.log({ data }))
+    return alphaForm.submit(data => {
+        fetch('https://formspree.io/f/xayzbbqd', {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                accept: "application/json"
+            }
+        })
+    })
 }
 ---
-
 <Layout title={title}>
     <header class="relative bg-indigo-900 text-white">
         <div class="absolute top-0 left-0 bottom-0 right-0 overflow-hidden bg-[conic-gradient(at_top_right,_var(--tw-gradient-stops))] from-black-900 via-indigo-900 to-pink-900">
@@ -100,10 +110,11 @@ if (alphaForm.submitting) {
                         </a>
                     </div>
                 </div>
-                <div class="flex flex-row items-center justify-center basis-[42rem] grow-0 lg:-mt-24 p-8 rounded-3xl overflow-hidden bg-[conic-gradient(at_top_right,_var(--tw-gradient-stops))] from-indigo-500 via-indigo-500 to-pink-400">
-                    <pre class="text-xs bg-purple-900 bg-opacity-70 rounded-2xl p-10">
-                        <code set:text={code} />                            
-                    </pre>
+                <div class="flex flex-row items-center justify-center basis-[42rem] grow-0 p-10 lg:-mt-24 rounded-3xl overflow-hidden bg-[conic-gradient(at_top_right,_var(--tw-gradient-stops))] from-indigo-500 via-indigo-500 to-pink-400">
+                    <div
+                        set:html={code} 
+                        class="text-xs bg-slate-900 bg-opacity-70 rounded-2xl p-20 lg:p-10 [&>pre]:bg-[transparent!important]"
+                    />
                 </div>
             </div>
             <div class="absolute bottom-5 left-1/2 -translate-x-1/2 lg:hidden">
@@ -192,5 +203,17 @@ if (alphaForm.submitting) {
         </div>
 
         <AlphaForm form={alphaForm} />
+
+        <script>
+            import * as shiki from 'shiki'
+
+            const highlighter = await shiki.getHighlighter({
+                theme: 'nord'
+            })
+
+            document.addEventListener("DOMContentLoaded", () => {
+                document.querySelectorAll('pre').forEach(code => highlight(code))
+            })
+        </script>
     </main>
 </Layout>
