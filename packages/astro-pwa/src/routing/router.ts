@@ -99,14 +99,16 @@ export const createRouter = (dehydratedRouter: DehydratedRouter): Router => {
   })
 
   // The router is too stupid to know what to do at init
-  router.open(dehydratedRouter?.path)
+  if (dehydratedRouter) {
+    router.open(dehydratedRouter.path)
+  }
 
   // Initialize first state of router
   const data = router.get()
   const api: Router = {
-    path: data!.path,
-    route: data!.route,
-    params: data!.params,
+    path: data?.path || dehydratedRouter.path,
+    route: data?.route || '',
+    params: data?.params || dehydratedRouter.params,
     routes: dehydratedRouter.routes.map(route => ({
       ...route,
       match: (url: string) => {

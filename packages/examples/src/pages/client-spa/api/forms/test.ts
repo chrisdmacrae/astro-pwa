@@ -1,5 +1,6 @@
 import type { APIRoute } from "astro";
 import { useForm } from "astro-pwa";
+// @ts-ignore
 import { fields } from '../../../../components/astro/Form.astro'
 
 export const post: APIRoute = async (context) => {

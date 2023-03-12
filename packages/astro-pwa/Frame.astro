@@ -58,8 +58,6 @@ const astroData = { data: dehydratedStores }
           })
         })
       }
-
-      window.addEventListener('astro:spa', this.handleRouting.bind(this))
     }
 
     static get observedAttributes() { return ['src']; }
@@ -71,38 +69,6 @@ const astroData = { data: dehydratedStores }
       this.listeners.forEach((cb, i) => {
         cb()
       })
-    }
-
-    public handleRouting() {
-      const router = useRouter()
-
-      const handleRoute = async (e: Event) => {
-        const el = e.currentTarget as HTMLAnchorElement
-
-        if (el.tagName === 'A' && el.href) {
-          const path = new URL(el.href).pathname
-          const shouldCSR = router.routes.find(route => {
-            let exp = Array.isArray(route.pattern) ? route.pattern[0]: route.pattern
-
-            if (typeof exp === typeof RegExp && new RegExp(exp).test(path)) return true
-            else if (typeof exp === 'string' && path.includes(exp)) return true
-
-            return false
-          })
-
-          if (shouldCSR) {
-            e.stopPropagation()
-            e.preventDefault()
-          }
-        }
-      }
-
-      // We handle a clicks for valid routes as a SPA route
-      this.addEventListener('click', handleRoute)
-      // Clean up handler on disconnect
-      this.listeners.push(() => this.removeEventListener('click', handleRoute))
-      // Notify that the frame is routing
-      this.setAttribute('data-routing', 'true')
     }
   }
 
