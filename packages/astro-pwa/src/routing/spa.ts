@@ -1,6 +1,6 @@
 import diff from 'micromorph'
-import { sendClientStoreData } from "../session/temporary"
-import { dehydrateStores } from "../stores/hydration"
+import { fetchWithClientStoreData } from "../session/temporary"
+import { getAllStoreData } from "../stores/hydration"
 import type { Router } from './router'
 
 export const listen = (router: Router, frame: HTMLElement = document.body) => {
@@ -63,14 +63,12 @@ export const listen = (router: Router, frame: HTMLElement = document.body) => {
 
 export const getUrl = async (path: string, frame: HTMLElement = document.body) => {
     const output = document.getElementById('__astro')?.getAttribute('output') as "server" | "static" || "static"
-    const frames = document.body.querySelectorAll('astro-frame')
-    const stores = Array.from(frames).flatMap(frame => (frame as any).stores).filter(s => s !== undefined)
-    const dehydratedStores = dehydrateStores(stores)
+    const dehydratedStores = getAllStoreData()
     const isDocument = frame == document.body
 
     if (!frame || !isDocument && !frame.id) return window.location.href = path
 
-    const page = await sendClientStoreData(path, { data: dehydratedStores, output: output })
+    const page = await fetchWithClientStoreData(path, { data: dehydratedStores, output: output })
     const body = await page.text()
     const parser = new DOMParser()
     const doc = parser.parseFromString(body, 'text/html')
@@ -80,10 +78,7 @@ export const getUrl = async (path: string, frame: HTMLElement = document.body) =
 
     diff(frame, newFrame)
     diff(document.head, doc.head)
-
-    if (frame !== document.documentElement) {
-      hydrateAstroIslands(document, doc)
-    }
+    hydrateAstroIslands(document, doc)
   }
   
   // This is nasty
@@ -119,21 +114,26 @@ export const getUrl = async (path: string, frame: HTMLElement = document.body) =
   
     let oldScripts: HTMLElement[] = []
     if (oldStyle) {
-      newScripts = Array.from(getSiblings(oldStyle).filter((node) => node.tagName === 'SCRIPT'))
+      oldScripts = Array.from(getSiblings(oldStyle).filter((node) => node.tagName === 'SCRIPT'))
     }
   
     const style = oldStyle ? oldStyle : newStyle
     if (!oldStyle && newStyle) document.body.prepend(newStyle)
     if (newScripts && style) {
       newScripts.forEach(script => {
-        const existing = oldScripts?.find(s => s.textContent === script.textContent)
-        const node = document.importNode(script)
+        const existing = oldScripts?.find(s => s.innerText === script.innerText)
+        const node = document.createElement('script')
+
+        if (script.innerText) node.innerText = script.innerText
+        Array.from(script.attributes).forEach(attr => {
+          node.setAttribute(attr.name, attr.value)
+        })
 
         if (!existing) {
           style.after(node)
         }
         else {
-          diff(existing, script)
+          existing.replaceWith(node)
         }
       })
     }

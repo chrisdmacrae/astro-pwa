@@ -33,7 +33,7 @@ const router = createRouter({
     if (dehydratedRouter && !hasRouter) {
       const router = createRouter(dehydratedRouter)
 
-      listen(router)
+      listen(router, astroSpa)
     }
   }
 </script>

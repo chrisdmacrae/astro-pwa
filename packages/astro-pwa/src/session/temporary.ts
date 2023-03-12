@@ -19,9 +19,15 @@ export const getClientStoreData = (request: AstroGlobal['request']) => {
   return JSON.parse(request.headers.get('__astro-data') || '{}') as DehydratedData
 }
 
-export const sendClientStoreData = async (href: string, dehydratedData: DehydratedData) => {
-  const isServer = dehydratedData.output === "server"
+export const fetchWithClientStoreData = async (href: string, dehydratedData: DehydratedData, init: RequestInit = {}) => {
+  const isServer = dehydratedData.output !== "static"
   const headers = isServer ? { '__astro-data': JSON.stringify(dehydratedData) } : undefined
 
-  return await fetch(href, { headers: headers })
+  return await fetch(href, { 
+    ...init,
+    headers: {
+      ...init.headers || {},
+      ...headers,  
+    }
+  })
 }
