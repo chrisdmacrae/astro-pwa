@@ -1,15 +1,13 @@
 import diff from 'micromorph'
-import { map } from 'nanostores'
 import { sendClientStoreData } from "../session/temporary"
 import { dehydrateStores } from "../stores/hydration"
 import type { Router } from './router'
 
-const spaStore = map({ back: null, forward: null })
 export const listen = (router: Router, frame: HTMLElement = document.body) => {
   if (window && 'navigation' in window && frame === document.documentElement) {
     const navigation = window.navigation as any
 
-    navigation.addEventListener('navigate', (e: any) => {
+    navigation.addEventListener('navigate', async (e: any) => {
       if (!e.canTransition || e.hashChange || e.downloadRequest !== null) {
         return;
       }
@@ -20,37 +18,38 @@ export const listen = (router: Router, frame: HTMLElement = document.body) => {
 
       if (from === to || !isValidRoute) return
 
-      getUrl(to.pathname, frame)
+      await getUrl(to.pathname, frame)
       router.go(to.pathname)
-      spaStore.setKey('back', from.pathname)
+      window.scrollTo({ top: 0 })
     })
   }
-  
-  frame.addEventListener('click', (e) => {
-    const el = e.target as HTMLAnchorElement
+  else {
+    frame.addEventListener('click', async (e) => {
+      const el = e.target as HTMLAnchorElement
 
-    if (el.nodeType !== 1) return
+      if (el.nodeType !== 1) return
 
-    const anchor: HTMLAnchorElement | null = el.tagName === 'A' ? el : el.closest('a')
+      const anchor: HTMLAnchorElement | null = el.tagName === 'A' ? el : el.closest('a')
 
-    if (!anchor) return
+      if (!anchor) return
 
-    const from = new URL(location.toString())
-    const to = new URL(anchor.href)
-    const isValidRoute = router.routes.find(route => route.match(to.pathname)) !== undefined
+      const from = new URL(location.toString())
+      const to = new URL(anchor.href)
+      const isValidRoute = router.routes.find(route => route.match(to.pathname)) !== undefined
 
-    if (from === to || !isValidRoute) return
+      if (from === to || !isValidRoute) return
 
-    e.stopPropagation()
-    e.preventDefault()
-    getUrl(to.pathname, frame)
-    router.go(to.pathname)
+      e.stopPropagation()
+      e.preventDefault()
+      await getUrl(to.pathname, frame)
+      router.go(to.pathname)
 
-    const shouldScroll = anchor.getAttribute('data-scroll') !== 'false'
-    if (shouldScroll) {
-      window.scrollTo({ top: 0 })
-    }
-  })
+      const shouldScroll = anchor.getAttribute('data-scroll') !== 'false'
+      if (shouldScroll) {
+        window.scrollTo({ top: 0 })
+      }
+    })
+  }
 
   window.addEventListener('popstate', function(event) {
     if (window.location.hash) return

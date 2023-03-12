@@ -1,7 +1,10 @@
 ---
-import ServerSPALayout from "../../../layouts/ServerSPALayout.astro";
+import ClientSPALayout from "../../../layouts/ClientSPALayout.astro";
 import { Router } from "../../../components/react/Router";
+import { routes } from './index.astro'
+
+export const prerender = true
 ---
-<ServerSPALayout title="Page A">
-  <Router client:load />
-</ServerSPALayout>
+<ClientSPALayout title="Page A">
+  <Router baseUrl="/server-spa" routes={routes} client:load />
+</ClientSPALayout>
