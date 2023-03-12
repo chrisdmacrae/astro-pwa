@@ -38,6 +38,13 @@ export const hydrateClientStore = <T = StoreValues<any>>(el: Element, store: Sto
   return store
 }
 
+export const getAllStoreData = () => {
+  const frames = document.body.querySelectorAll('astro-frame')
+  const stores = Array.from(frames).flatMap(frame => (frame as any).stores).filter(s => s !== undefined)
+  
+  return dehydrateStores(stores)
+}
+
 export const dehydrateStores = (stores: Store[]) => stores.reduce((dehydratedStores, store) => {
   dehydratedStores[store.name] = store.get()
 

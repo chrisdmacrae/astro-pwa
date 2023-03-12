@@ -6,7 +6,7 @@ export type Props = astroHTML.JSX.FormHTMLAttributes & {
 
 const {id, action = Astro.request.url, method = "POST", ...props } = Astro.props
 ---
-<form id={id} action={action} method={method} {...props}>
+<form {...props} id={id} action={action} method={method}>
     <input type="hidden" name="referrer" value={Astro.url.href} />
     <input type="hidden" name="__astro-form" value={id} />
     <slot />
