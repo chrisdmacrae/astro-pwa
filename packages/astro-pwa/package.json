@@ -1,6 +1,6 @@
 {
   "name": "astro-pwa",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "A small toolkit for building progressive web apps with Astro",
   "repository": "git@github.com:chrisdmacrae/astro-spa-playground.git",
   "main": "./index.ts",
