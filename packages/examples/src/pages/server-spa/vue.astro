@@ -2,6 +2,6 @@
 import ServerSPALayout from "../../layouts/ServerSPALayout.astro";
 import VueCounter from "../../components/vue/VueCounter.vue";
 ---
-<ServerSPALayout title="Vue Demo">
+<ServerSPALayout title="Vue Demo" filePath={Astro.self.moduleId!}>
   <VueCounter client:load />
 </ServerSPALayout>

@@ -2,6 +2,6 @@
 import ServerSPALayout from "../../../layouts/ServerSPALayout.astro";
 import { StorePage } from "../../../components/react/Store";
 ---
-<ServerSPALayout title="Store demo">
+<ServerSPALayout title="Store demo" filePath={Astro.self.moduleId!}>
   <StorePage client:load />
 </ServerSPALayout>

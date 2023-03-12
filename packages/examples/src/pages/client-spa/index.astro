@@ -41,7 +41,7 @@ const demos = [
   },
 ]
 ---
-<ClientSPALayout title="Astro SPA Examples">
+<ClientSPALayout title="Astro SPA Examples" filePath={Astro.self.moduleId!}>
   <main class="flex flex-col gap-4">
   <p class="text-md text-slate-500">
     Welcome to the client SPA (single page application) examples. A client-only SPA is pre-rendered at build time and supported by API routes.

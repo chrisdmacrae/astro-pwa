@@ -6,9 +6,10 @@ import Layout from "./Layout.astro"
 
 export type Props = {
   title: string
+  filePath: string
 }
 
-const { title } = Astro.props
+const { title, filePath } = Astro.props
 const isHome = Astro.url.pathname === '/server-spa'
 const routes = await createPageRoutesFromGlob(Astro.glob('../pages/server-spa/**/*.astro'))
 ---
@@ -30,7 +31,7 @@ const routes = await createPageRoutesFromGlob(Astro.glob('../pages/server-spa/**
       </section>
       <slot />
       <footer class="flex justify-center text-sm text-slate-500 pt-4">
-        <a href={Astro.self.moduleId?.replace(process.cwd(), `https://github.com/chrisdmacrae/astro-pwa/tree/main/packages/examples`)}>
+        <a href={filePath.replace(process.cwd(), `https://github.com/chrisdmacrae/astro-pwa/tree/main/packages/examples`)}>
           View on Github
         </a>
       </footer>

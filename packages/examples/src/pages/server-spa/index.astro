@@ -41,7 +41,7 @@ const demos = [
   },
 ]
 ---
-<ServerSPALayout title="Astro SPA Examples">
+<ServerSPALayout title="Astro SPA Examples" filePath={Astro.self.moduleId!}>
   <main class="flex flex-col gap-4">
   <p class="text-md text-slate-500">
     Welcome to the Astro SPA Examples. These live demos illustrate how to use this integration to use Astro to build

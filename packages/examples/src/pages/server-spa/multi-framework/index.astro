@@ -4,7 +4,7 @@ import Counter from "../../../components/astro/Counter.astro";
 import { ReactCounter } from "../../../components/react/ReactCounter";
 import VueCounter from "../../../components/vue/VueCounter.vue";
 ---
-<ServerSPALayout title="Multi-framework demo">
+<ServerSPALayout title="Multi-framework demo" filePath={Astro.self.moduleId!}>
   <Counter />
   <ReactCounter client:load />
   <VueCounter client:load />

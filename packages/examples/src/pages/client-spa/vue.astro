@@ -4,6 +4,6 @@ import VueCounter from "../../components/vue/VueCounter.vue";
 
 export const prerender = true
 ---
-<ClientSPALayout title="Vue Demo">
+<ClientSPALayout title="Vue Demo" filePath={Astro.self.moduleId!}>
   <VueCounter client:only="vue" />
 </ClientSPALayout>

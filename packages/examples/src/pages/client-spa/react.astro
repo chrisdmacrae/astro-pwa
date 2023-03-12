@@ -4,6 +4,6 @@ import { ReactCounter } from "../../components/react/ReactCounter";
 
 export const prerender = true
 ---
-<ClientSPALayout title="React demo">
+<ClientSPALayout title="React demo" filePath={Astro.self.moduleId!}>
   <ReactCounter client:only="react" />
 </ClientSPALayout>

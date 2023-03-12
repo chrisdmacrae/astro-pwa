@@ -4,6 +4,6 @@ import Counter from "../../components/astro/Counter.astro";
 
 export const prerender = true
 ---
-<ClientSPALayout title="Astro demo">
+<ClientSPALayout title="Astro demo" filePath={Astro.self.moduleId!}>
   <Counter />
 </ClientSPALayout>

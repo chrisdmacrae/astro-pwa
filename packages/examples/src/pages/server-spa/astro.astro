@@ -2,6 +2,6 @@
 import ServerSPALayout from "../../layouts/ServerSPALayout.astro";
 import Counter from "../../components/astro/Counter.astro";
 ---
-<ServerSPALayout title="Astro demo">
+<ServerSPALayout title="Astro demo" filePath={Astro.self.moduleId!}>
   <Counter />
 </ServerSPALayout>

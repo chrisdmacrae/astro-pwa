@@ -2,14 +2,14 @@
 import { createPageRoutesFromGlob } from "astro-pwa"
 import SPA from "astro-pwa/SPA.astro"
 import { stores } from "../stores"
-import { execSync } from 'child_process'
 import Layout from "./Layout.astro"
 
 export type Props = {
   title: string
+  filePath: string
 }
 
-const { title } = Astro.props
+const { title, filePath } = Astro.props
 const isHome = Astro.url.pathname === '/client-spa'
 const routes = await createPageRoutesFromGlob(Astro.glob('../pages/client-spa/**/*.astro'))
 ---
@@ -31,7 +31,7 @@ const routes = await createPageRoutesFromGlob(Astro.glob('../pages/client-spa/**
       </section>
       <slot />
       <footer class="flex justify-center text-sm text-slate-500 pt-4">
-        <a href={Astro.self.moduleId?.replace(process.cwd(), `https://github.com/chrisdmacrae/astro-pwa/tree/main/packages/examples`)}>
+        <a href={filePath.replace(process.cwd(), `https://github.com/chrisdmacrae/astro-pwa/tree/main/packages/examples`)}>
           View on Github
         </a>
       </footer>

@@ -6,6 +6,6 @@ export const routes = ['c', 'd']
 
 export const prerender = true
 ---
-<ClientSPALayout title="Routing Root">
+<ClientSPALayout title="Routing Root" filePath={Astro.self.moduleId!}>
   <Router baseUrl="/server-spa" routes={routes} client:load />
 </ClientSPALayout>
