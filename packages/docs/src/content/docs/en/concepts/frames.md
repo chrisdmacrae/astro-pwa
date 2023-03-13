@@ -11,7 +11,7 @@ The term "Astro Frame" refers to a section of a page that is made known to the s
 
 Think of them as "moving pictures" into the a static picture rendered by the server as your web page.
 
-They're similar but opposite to [Astro Islands](https://docs.astro.build/en/concepts/islands/) which make a section of your static page interactive on the client. Frames make your page interactive on the server.
+They're similar but opposite to [Astro Islands](https://docs.astro.build/docs/en/concepts/islands/) which make a section of your static page interactive on the client. Frames make your page interactive on the server.
 
 <div class="bg-slate-200 border border-slate-400 p-2 grid grid-cols-3 grid-rows-5 gap-2">
     <div class="col-span-3 h-20 bg-green-200 border-2 border-green-400 text-green-700 p-2 flex justify-center items-center">
@@ -31,7 +31,7 @@ They're similar but opposite to [Astro Islands](https://docs.astro.build/en/conc
     </div>
 </div>
 
-In Astro PWA, you can use Astro components or any supported UI framework to build a frame. A frame can even render an [Astro island](https://docs.astro.build/en/concepts/islands/).
+In Astro PWA, you can use Astro components or any supported UI framework to build a frame. A frame can even render an [Astro island](https://docs.astro.build/docs/en/concepts/islands/).
 
 The technique used is DOM diffing, which intelligently compares the frames on the page with new frames coming from the server, updating only the HTML that has changed.
 
@@ -76,7 +76,7 @@ at build-time or at request time, and once it's downloaded by the browser it's r
 Another benefit is security: if you don't make secret values like access tokens or personal information accessible by Javascript, it's much harder to steal. Frames delegate all
 of your important business logic to the server where you can keep secret and private information, well, secret and private.
 
-Even better, you can control how Astro frames work, whether they prevent a full-page refresh on a link click or form submit, or re-render themselves by passing a [server directive](/en/reference/server-directive). Server directives tell Astro frames how to behave according to user input.
+Even better, you can control how Astro frames work, whether they prevent a full-page refresh on a link click or form submit, or re-render themselves by passing a [server directive](/docs/en/reference/server-directive). Server directives tell Astro frames how to behave according to user input.
 
 In Astro PWA, it’s up to you as the developer to explicitly tell Astro which components on the page need exist in a Frame. Otherwise Astro will simply render the page to static
 HTML and move on with its day.

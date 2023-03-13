@@ -2,14 +2,14 @@
 title: "Stores"
 description: "Share state between server and client securely and safely with stores"
 ---
-Forms are a framework agnostic approach to sharing state across Astro components and [Astro Islands](https://docs.astro.build/en/concepts/islands/) **on the client and the server**.
+Forms are a framework agnostic approach to sharing state across Astro components and [Astro Islands](https://docs.astro.build/docs/en/concepts/islands/) **on the client and the server**.
 
 ## Why Stores?
 
 Sharing state across the server and the client is key for a web application. But the nature of Astro can make that tough for newcomers. Stores intend to do all of the
 heavy lifting for you, allowing you to focus on building your applications.
 
-On top of this, [Astro Islands](https://docs.astro.build/en/concepts/islands/) render in isolation, which means the in-framework methods of sharing state between components
+On top of this, [Astro Islands](https://docs.astro.build/docs/en/concepts/islands/) render in isolation, which means the in-framework methods of sharing state between components
 usually don't work very well. Stores eliminate this problem, making it simple to share state between Astro components and multiple islands, even when using different frameworks.
 
 ## How do they work?
@@ -17,7 +17,7 @@ usually don't work very well. Stores eliminate this problem, making it simple to
 Stores rely on the officially recommended tool for sharing state, [Nanostores](https://github.com/nanostores/nanostores). Nanostores are a framework agnostic way of sharing
 state between components.
 
-Stores expand on nanostores by making them _well-known_ and _server-ready_ by using [Frames](/en/concepts/frames). Stores make it easy to re-use nanostores across components and the server-browser boundary.
+Stores expand on nanostores by making them _well-known_ and _server-ready_ by using [Frames](/docs/en/concepts/frames). Stores make it easy to re-use nanostores across components and the server-browser boundary.
 
 To synchronize with the server, stores use a concept called _request chaining_. Every request to the server in an unbroken chain will persist the client-side state, and any changes made on the server, back with the client. This means that everytime the a page is refreshed, the state is reset.
 
@@ -80,7 +80,7 @@ Or on the client using a `script` tag:
 </html>
 ```
 
-And you can _share_ state between the client and server by using a [Frame](/en/concepts/frame):
+And you can _share_ state between the client and server by using a [Frame](/docs/en/concepts/frame):
 
 ```
 ---

@@ -21,22 +21,22 @@ You should use the MPA architecture when:
 - You can load the data you need on the server fast enough
 - You're dealing with sensitive information (like billing information).
 
-You can build MPAs with interactive content using [Frames](/en/concepts/frames), which allow you to build interactive experiences using only the server. Frames protect your
+You can build MPAs with interactive content using [Frames](/docs/en/concepts/frames), which allow you to build interactive experiences using only the server. Frames protect your
 user against XSS (Cross site scripting) and XSRF (Cross Site Forgery Requests) with zero-configuration.
 
 ## Using SPA architecture
 
-The [SPA component](/en/guides/building-with-spa) is great for perceived performance for end-users. It makes pages load without a page refresh, making your application feel snappy.
+The [SPA component](/docs/en/guides/building-with-spa) is great for perceived performance for end-users. It makes pages load without a page refresh, making your application feel snappy.
 
 You should use the SPA architecture when:
 
 - You want faster perceived performance
 - You can't load the data you need on the server fast enough; you offload this loading to the browser
 
-You also get access to client-side [routing](/en/guides/routing) when you use the [SPA component](/en/guides/building-with-spa)
+You also get access to client-side [routing](/docs/en/guides/routing) when you use the [SPA component](/docs/en/guides/building-with-spa)
 
 ## Using both architectures
 
 Nothing is stopping you from mixing and matching in a single application, that's the beauty of Astro PWA!
 
-You can have a [SPA](/en/guides/building-with-spa) that uses client-side logic for a bunch of beautiful animations, view transitions, et cetera, while using [Frames](/en/concepts/frames) to embed secure, server-rendered content into your page.
+You can have a [SPA](/docs/en/guides/building-with-spa) that uses client-side logic for a bunch of beautiful animations, view transitions, et cetera, while using [Frames](/docs/en/concepts/frames) to embed secure, server-rendered content into your page.

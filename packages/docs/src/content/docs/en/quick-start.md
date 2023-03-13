@@ -17,7 +17,7 @@ Create a project by running:
 npm create astro -- --template astro-pwa/starter-spa
 ```
 
-> **Protip**: the SPA template uses the [SPA component](/en/concepts/spa) and [Stores](/en/concepts/stores) along with [Astro Islands](https://docs.astro.build/en/concepts/islands/) to make everything possible
+> **Protip**: the SPA template uses the [SPA component](/docs/en/concepts/spa) and [Stores](/docs/en/concepts/stores) along with [Astro Islands](https://docs.astro.build/docs/en/concepts/islands/) to make everything possible
 
 ### The server starter
 
@@ -29,7 +29,7 @@ Create a project by running:
 npm create astro -- --template astro-pwa/starter-server
 ```
 
-> **Protip**: the SPA template uses the [Frame component](/en/concepts/frame) and [Stores](/en/concepts/stores) to make everything possible
+> **Protip**: the SPA template uses the [Frame component](/docs/en/concepts/frame) and [Stores](/docs/en/concepts/stores) to make everything possible
 
 ### The PWA starter
 
@@ -41,4 +41,4 @@ Create a project by running:
 npm create astro -- --template astro-pwa/starter-server
 ```
 
-> **Protip**: the SPA template uses the [SPA component](/en/concepts/spa) to make your application snappy, the [Frame component](/en/concepts/frame) to make your application secure, [Stores](/en/concepts/stores) to share state between server and client, and [Forms](/en/concepts/forms) to create secure user inputs.
+> **Protip**: the SPA template uses the [SPA component](/docs/en/concepts/spa) to make your application snappy, the [Frame component](/docs/en/concepts/frame) to make your application secure, [Stores](/docs/en/concepts/stores) to share state between server and client, and [Forms](/docs/en/concepts/forms) to create secure user inputs.

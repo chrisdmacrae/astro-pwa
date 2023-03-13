@@ -18,14 +18,14 @@ we'll kick the malicious request to the curb and ask your user to log back in!
 An astro form is a two part ensemble:
 
 - The server-side form: server-side logic that handles validating the data submitted to the server, and submitting the form to a third-party service, like a database or SaaS application
-- The client-side form: a basic HTML form rendered with the `Form` component, or a form submitted via AJAX using client-side JS or an [Astro Island](https://docs.astro.build/en/concepts/islands/)
+- The client-side form: a basic HTML form rendered with the `Form` component, or a form submitted via AJAX using client-side JS or an [Astro Island](https://docs.astro.build/docs/en/concepts/islands/)
 
 Together, the Astro Form integration makes building secure, interactive, and type-safe forms fun, easy, and simple.
 
 ## How do I use forms?
 
 There are two ways to create a form. The first is using the `Form` Astro PWA component to generate a server-rendered form that submits via a standard `POST` request. The other
-is building your own Javascript form using Vanilla JS or a framework component rendered by an [Astro Island](https://docs.astro.build/en/concepts/islands/).
+is building your own Javascript form using Vanilla JS or a framework component rendered by an [Astro Island](https://docs.astro.build/docs/en/concepts/islands/).
 
-- [Read the guide](/en/guides/building-with-forms) on using the Form component
+- [Read the guide](/docs/en/guides/building-with-forms) on using the Form component
 - A guide on building with framework components is coming soon

@@ -2,7 +2,7 @@
 title: "Building wth SPA"
 description: "A guide into using the SPA component to build single page applications"
 ---
-To learn more about SPAs (Single Page Applications), read about [SPAs vs MPAs](/en/concepts/spa).
+To learn more about SPAs (Single Page Applications), read about [SPAs vs MPAs](/docs/en/concepts/spa).
 
 ## The SPA Component
 
@@ -45,7 +45,7 @@ Now all `a` tags pointing to pages in the `app` folder wrapped with `AppLayout` 
 
 ## Global state in the SPA
 
-The SPA supports global state available to all routes in the SPA. This is achieved by creating [Stores](/en/concepts/stores) and passing them to the `SPA` component.
+The SPA supports global state available to all routes in the SPA. This is achieved by creating [Stores](/docs/en/concepts/stores) and passing them to the `SPA` component.
 
 For example, say we had two stores, `src/stores/app.js` and `src/stores/theme.js`. We can make them available by creating a `src/stores/index.js`:
 
@@ -82,4 +82,4 @@ Now these stores will be guaranteed to be available to all of your routes, _and_
 
 ### Using stores
 
-Read the guide on [sharing UI state with the server](/en/guides/sharing-state) to learn more
+Read the guide on [sharing UI state with the server](/docs/en/guides/sharing-state) to learn more

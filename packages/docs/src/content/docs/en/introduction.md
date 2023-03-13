@@ -35,7 +35,7 @@ npm create astro -- --template astro-pwa/starter-server
 ```
 -->
 
-Our [Installation guide](/en/installation) has full, step-by-step instructions for installing the Astro PWA integration by creating a new project from an existing Astro PWA GitHub repository, and for installing Astro PWA manually.
+Our [Installation guide](/docs/en/installation) has full, step-by-step instructions for installing the Astro PWA integration by creating a new project from an existing Astro PWA GitHub repository, and for installing Astro PWA manually.
 
 ## Learn more  🚀
 
