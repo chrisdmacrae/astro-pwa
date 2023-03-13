@@ -300,8 +300,8 @@ You can create a form on one page that submits to another page route, or an API 
 For example, you can create an API route to handle your form submits. For example, by creating a page at `src/pages/api/example.js`:
 
 ```
-export const post = async (context) => {
-    const form = await createForm('example', { fields: fields, astro: Astro })
+export const post = async (astro) => {
+    const form = await createForm('example', { fields: fields, astro: astro })
 
     if (form.submitting) {
         return form.submit(formData => {
