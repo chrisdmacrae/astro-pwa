@@ -6,5 +6,5 @@ import Form, { fields } from "../../../components/astro/Form.astro";
 const form = await createForm('test', { astro: Astro, fields: fields })
 ---
 <ClientSPALayout title="Example client form" filePath={Astro.self.moduleId!.replace(process.cwd(), `https://github.com/chrisdmacrae/astro-pwa/tree/main/packagess`)}>
-    <Form action="/examples/client-spa/api/forms/test" form={form} />
+    <Form action="/client-spa/api/forms/test" form={form} />
 </ClientSPALayout>

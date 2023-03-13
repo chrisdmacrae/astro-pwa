@@ -14,10 +14,9 @@ import vercel from "@astrojs/vercel/serverless";
 
 // https://astro.build/config
 export default defineConfig({
-  base: '/examples',
   integrations: [pwaIntegration(), react(), vue(), tailwind({
     applyBaseStyles: false
   })],
   output: "server",
-  adapter: vercel() // node({ mode: "standalone" })
+  adapter: vercel({ analytics: true }) // node({ mode: "standalone" })
 });
