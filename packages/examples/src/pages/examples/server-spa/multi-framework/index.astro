@@ -1,8 +1,8 @@
 ---
 import ServerSPALayout from "../../../../layouts/ServerSPALayout.astro";
-import Counter from "../../../components/astro/Counter.astro";
-import { ReactCounter } from "../../../components/react/ReactCounter";
-import VueCounter from "../../../components/vue/VueCounter.vue";
+import Counter from "../../../../components/astro/Counter.astro";
+import { ReactCounter } from "../../../../components/react/ReactCounter";
+import VueCounter from "../../../../components/vue/VueCounter.vue";
 ---
 <ServerSPALayout title="Multi-framework demo" filePath={Astro.self.moduleId!.replace(process.cwd(), `https://github.com/chrisdmacrae/astro-pwa/tree/main/packages/examples`)}>
   <Counter />
