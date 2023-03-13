@@ -1,7 +1,7 @@
 ---
 import { createForm } from "astro-pwa";
-import ServerSPALayout from "../../../../../../layouts/ServerSPALayout.astro";
-import Form, { fields } from "../../../../../../components/astro/Form.astro";
+import ServerSPALayout from "../../../../layouts/ServerSPALayout.astro";
+import Form, { fields } from "../../../../components/astro/Form.astro";
 
 const form = await createForm('test', { astro: Astro, fields: fields })
 
