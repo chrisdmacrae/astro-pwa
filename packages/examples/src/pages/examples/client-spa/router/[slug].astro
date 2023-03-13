@@ -1,0 +1,17 @@
+---
+import ClientSPALayout from "../../../../../../layouts/ClientSPALayout.astro";
+import { Router } from "../../../../../../components/react/Router";
+
+export const getStaticPaths = async () => {
+    const {routes} = await import('../../../../../../components/react/Router')
+
+    return routes.map(route => ({ params: { slug: route }, props: { routes: routes }}))
+}
+
+const { slug } = Astro.params
+const { routes } = Astro.props
+export const prerender = true
+---
+<ClientSPALayout title={`Dynamic Route: ${slug}`} filePath={Astro.self.moduleId!.replace(process.cwd(), `https://github.com/chrisdmacrae/astro-pwa/tree/main/packagess`)}>
+  <Router baseUrl="/examples/client-spa" routes={routes} client:only="react" />
+</ClientSPALayout>

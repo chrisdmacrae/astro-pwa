@@ -1,7 +1,0 @@
----
-import ServerSPALayout from "../../layouts/ServerSPALayout.astro";
-import { ReactCounter } from "../../components/react/ReactCounter";
----
-<ServerSPALayout title="React demo" filePath={Astro.self.moduleId!.replace(process.cwd(), `https://github.com/chrisdmacrae/astro-pwa/tree/main/packages`)}>
-  <ReactCounter client:load />
-</ServerSPALayout>

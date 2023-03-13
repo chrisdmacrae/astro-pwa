@@ -1,0 +1,14 @@
+---
+import { createForm } from "astro-pwa";
+import ServerSPALayout from "../../../../../../layouts/ServerSPALayout.astro";
+import { ReactForm, fields } from "../../../../../../components/react/ReactForm";
+
+const form = await createForm('test', { astro: Astro, fields: fields })
+
+if (form.submitting) {
+    return form.submit(data => console.log({ data }))
+}
+---
+<ServerSPALayout title="Example client form" filePath={Astro.self.moduleId!.replace(process.cwd(), `https://github.com/chrisdmacrae/astro-pwa/tree/main/packages`)}>
+    <ReactForm form={form} client:load />
+</ServerSPALayout>

@@ -1,0 +1,7 @@
+---
+import ServerSPALayout from "../../../../../../layouts/ServerSPALayout.astro";
+import { StorePage } from "../../../../../../components/react/Store";
+---
+<ServerSPALayout title="Store demo" filePath={Astro.self.moduleId!.replace(process.cwd(), `https://github.com/chrisdmacrae/astro-pwa/tree/main/packages`)}>
+  <StorePage client:load />
+</ServerSPALayout>

@@ -10,8 +10,8 @@ export type Props = {
 }
 
 const { title, filePath } = Astro.props
-const isHome = Astro.url.pathname === '/client-spa'
-const routes = await createPageRoutesFromGlob(Astro.glob('../pages/client-spa/**/*.astro'))
+const isHome = Astro.url.pathname === '/examples/client-spa'
+const routes = await createPageRoutesFromGlob(Astro.glob('../pages/examples/client-spa/**/*.astro'))
 ---
 <Layout title={title}>
   <SPA routes={routes} stores={stores} class="w-full min-h-screen gap-4 flex flex-col items-center h-full">
@@ -25,7 +25,7 @@ const routes = await createPageRoutesFromGlob(Astro.glob('../pages/client-spa/**
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
           </svg>
-          <a href={isHome ? "/" : "/client-spa"}>Back to list</a>
+          <a href={isHome ? "/examples/" : "/examples/client-spa"}>Back to list</a>
         </nav>
         <h3 class="font-bold text-lg">{title}</h3>
       </section>
