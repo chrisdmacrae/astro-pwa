@@ -2,11 +2,11 @@
     "rewrites": [
       {
         "source": "/examples/",
-        "destination": "https://astro-pwa-demo.vercel.app"
+        "destination": "https://astro-pwa-demo.vercel.app/examples"
       },
       {
         "source": "/examples/:path*",
-        "destination": "https://astro-pwa-demo.vercel.app/:path*"
+        "destination": "https://astro-pwa-demo.vercel.app/examples/:path*"
       },
       {
         "source": "/docs",
@@ -14,7 +14,7 @@
       },
       {
         "source": "/docs/:path*",
-        "destination": "https://astro-pwa-docs.vercel.app/:path*"
+        "destination": "https://astro-pwa-docs.vercel.app/docs/:path*"
       }
     ]
   }

@@ -1,0 +1,28 @@
+---
+import ArrowRight from "../components/ArrowRight.astro";
+import Card from "../components/Cards/Card.astro";
+
+export const prerender = true
+---
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Astro</title>
+	</head>
+	<body class="bg-zinc-100 p-10">
+		<main class="max-w-prose mx-auto flex flex-col gap-4">
+			<h1 class="text-5xl font-bold">
+				Welcome to <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-pink-400">Astro PWA</span>
+			</h1>
+
+			<Card variant="featured">
+				<p>
+					This is a weird page to deal with how janky vercel zones are... <a href="/docs/">Go to the real homepage</a>
+				</p>
+			</Card>
+		</main>
+	</body>
+</html>

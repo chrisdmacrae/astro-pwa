@@ -1,0 +1,17 @@
+---
+export interface Props {
+  as?: string
+  href?: string
+}
+
+const { as = "section", href } = Astro.props
+
+const Tag = as
+const InnerTag = href ? 'a' : 'div'
+const target = href?.startsWith('http') ? "_blank" : undefined
+---
+<Tag class="bg-white border border-purple-200 rounded-xl">
+  <InnerTag href={href} target={target} class="flex flex-col gap-2 p-4">
+    <slot />
+  </InnerTag>
+</Tag>
