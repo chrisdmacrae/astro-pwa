@@ -2,7 +2,7 @@ import type { AstroGlobal } from "astro"
 import type { z, typeToFlattenedError } from "zod"
 
 export type AstroFormOptions<T extends AstroFormFields> = {
-    astro: Pick<AstroGlobal, 'request' | 'redirect' | 'url'>
+    astro: Pick<AstroGlobal, 'request' | 'redirect' | 'url'> & { cookies: any }
     fields?: T
     redirect?: string
 }
@@ -63,6 +63,12 @@ export const createForm = async <T extends Record<string, any> | { [k: string]: 
     const isSubmitted = astro.request.headers.get('__astro-form-submitted') === 'true'
     const isSuccessful = !error && isSubmitting && isSubmitted
 
+    const session = astro.cookies.get('session').value
+
+    if (session) {
+        astro.cookies.set('session', session)
+    }
+
     const handleSuccess = async () => {
         if (redirect) return astro.redirect(redirect, 301)
 
@@ -73,6 +79,8 @@ export const createForm = async <T extends Record<string, any> | { [k: string]: 
         const response = await fetch(url.toString(), { 
             method: "GET",
             headers: {
+                ...astro.request.headers,
+                cookie: Array.from(astro.cookies.headers()).join('; '),
                 '__astro-form': id,
                 '__astro-form-submitted': 'true',
                 '__astro-form-data': JSON.stringify(data)
@@ -96,6 +104,8 @@ export const createForm = async <T extends Record<string, any> | { [k: string]: 
         const errorResponse = await fetch(url.toString(), { 
             method: "GET",
             headers: {
+                ...astro.request.headers,
+                cookie: Array.from(astro.cookies.headers()).join('; '),
                 '__astro-form': id,
                 '__astro-form-error': errorPayload,
                 '__astro-form-data': JSON.stringify(data)

@@ -64,7 +64,7 @@ export const ReactForm: React.FC<ReactFormProps> = ({ form }) => {
                         </div>
                     )}
                     </Field>
-                    <button type="submit" class="bg-indigo-500 hover:bg-indigo-400 px-4 py-2 rounded-xl text-white">Submit</button>
+                    <button type="submit" className="bg-indigo-500 hover:bg-indigo-400 px-4 py-2 rounded-xl text-white">Submit</button>
                 </form>
             )}
         </Form>

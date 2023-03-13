@@ -1,10 +1,8 @@
 ---
-const user = Astro.cookies.get('session').json()
-
 const active = (path: string, exact?: boolean) => (exact ? Astro.url.pathname === path : Astro.url.pathname.startsWith(path)) ? activeClasses : ''
 const activeClasses = 'bg-blue-50 text-blue-700 text-slate-900'
 ---
-<div class="flex h-screen w-16 flex-col justify-between border-r bg-white">
+<div class="sticky top-0 flex h-screen w-16 flex-col justify-between border-r bg-white">
     <div>
       <div class="inline-flex h-16 w-16 items-center justify-center">
         <span

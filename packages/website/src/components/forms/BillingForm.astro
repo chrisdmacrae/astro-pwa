@@ -1,0 +1,250 @@
+---
+import { AstroForm, z } from "astro-pwa";
+import Frame from "astro-pwa/Frame.astro";
+import Form from "astro-pwa/Form.astro";
+
+export const fields = z.object({
+    card_type: z.string(),
+    card_number: z.string().transform(v => parseInt(v)),
+    expiry_month: z.string().transform(v => parseInt(v)).refine(y => y.toString().length === 2, {
+        message: "Must be 2 digits"
+    }),
+    expiry_year: z.string().transform(v => parseInt(v)).refine(y => y.toString().length === 4, {
+        message: "Must be 4 digits"
+    }),
+    cvv: z.string().transform(v => parseInt(v)),
+    address_1: z.string(),
+    address_2: z.string().optional(),
+    city: z.string(),
+    state: z.string(),
+    country: z.string(),
+})
+
+export interface Props {
+    form: AstroForm<typeof fields>
+}
+
+const { form } = Astro.props
+const data = Object.keys(form.data).length > 0 ? form.data : Astro.cookies.get('session').json()
+---
+<Frame id="billing">
+    <Form id="billing_form" form={form} action="/app/billing/payment" class="flex flex-col gap-4">
+        {form.errors && (
+            <div role="alert" class="rounded border-l-4 border-red-500 bg-red-50 p-4 col-span-6">
+                <div class="flex items-center gap-2 text-red-800">
+                    <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    class="h-5 w-5"
+                    >
+                    <path
+                        fill-rule="evenodd"
+                        d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z"
+                        clip-rule="evenodd"
+                    />
+                    </svg>
+    
+                    <strong class="block font-medium">
+                      Something went wrong
+                    </strong>
+                </div>
+    
+                {form.errors.form && (
+                    <p class="mt-2 text-sm text-red-700">
+                        {form.errors.form?.join(', ')}
+                        {JSON.stringify(form.errors.fields)}
+                    </p>
+                )}
+            </div>
+        )}
+
+        <h4 class="text-uppercase text-slate-500 text-md">Credit card</h4>
+
+        <fieldset>
+            <h4 class="text-uppercase text-slate-500 text-sm">Card type</h4>
+            <div class="flex flex-row gap-4">
+                <label for="card_1" class="flex flex-row items-center gap-2 bg-zinc-50 text-zinc-900 border border-slate-200 p-6 rounded-xl col-span-2" id="subscriptions">
+                    <input type="radio" name="card_type" id="card_1" value="mastercard" checked={data?.card_type === "mastercard"} />
+                    <div>
+                        <p class="font-bold text-xl">Mastercard</p>
+                    </div>
+                </label>
+                <label for="card_2" class="flex flex-row items-center gap-2 bg-zinc-50 text-zinc-900 border border-slate-200 p-6 rounded-xl col-span-2" id="subscriptions">
+                    <input type="radio" name="card_type" id="card_2" value="visa" checked={data?.card_type === "visa"} />
+                    <div>
+                        <p class="font-bold text-xl">Visa</p>
+                    </div>
+                </label>
+                <label for="card_3" class="flex flex-row items-center gap-2 bg-zinc-50 text-zinc-900 border border-slate-200 p-6 rounded-xl col-span-2" id="subscriptions">
+                    <input type="radio" name="card_type" id="card_3" value="amex" checked={data?.card_type === "amex"} />
+                    <div>
+                        <p class="font-bold text-xl">Amex</p>
+                    </div>
+                </label>
+            </div>
+        </fieldset>
+
+        <label
+            for="card_number"
+            class="block overflow-hidden rounded-md border border-gray-200 px-3 py-2 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"
+        >
+            <span class="text-xs font-medium text-gray-700">
+                Card Number
+            </span>
+            <input
+                type="number"
+                id="card_number"
+                name="card_number"
+                placeholder="0000 0000 0000 0000"
+                pattern="^(?:(4[0-9]{12}(?:[0-9]{3})?)|(5[1-5][0-9]{14})|(6(?:011|5[0-9]{2})[0-9]{12})|(3[47][0-9]{13})|(3(?:0[0-5]|[68][0-9])[0-9]{11})|((?:2131|1800|35[0-9]{3})[0-9]{11}))$"
+                class="mt-1 w-full border-none p-0 bg-transparent focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm"
+                value={data?.card_number}
+            />
+        </label>
+
+        <div class="flex flex-row gap-4">
+            <label
+                for="expiry"
+                class="block overflow-hidden rounded-md border border-gray-200 px-3 py-2 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"
+            >
+                <span class="text-xs font-medium text-gray-700">
+                    Expiry (MM/YYYY)
+                </span>
+                <div class="flex flex-row gap-4">
+                    <input
+                        type="number"
+                        id="expiry"
+                        name="expiry_month"
+                        maxlength="2"
+                        placeholder="MM"
+                        pattern="^(?:(4[0-9]{12}(?:[0-9]{3})?)|(5[1-5][0-9]{14})|(6(?:011|5[0-9]{2})[0-9]{12})|(3[47][0-9]{13})|(3(?:0[0-5]|[68][0-9])[0-9]{11})|((?:2131|1800|35[0-9]{3})[0-9]{11}))$"
+                        class="mt-1 w-full border-none p-0 bg-transparent focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm"
+                        value={data?.expiry_month}
+                    />
+                    <input
+                        type="number"
+                        id="expiry_year"
+                        name="expiry_year"
+                        maxlength="4"
+                        placeholder="YYYY"
+                        pattern="^(?:(4[0-9]{12}(?:[0-9]{3})?)|(5[1-5][0-9]{14})|(6(?:011|5[0-9]{2})[0-9]{12})|(3[47][0-9]{13})|(3(?:0[0-5]|[68][0-9])[0-9]{11})|((?:2131|1800|35[0-9]{3})[0-9]{11}))$"
+                        class="mt-1 w-full border-none p-0 bg-transparent focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm"
+                        value={data?.expiry_year}
+                    />
+                </div>
+            </label>
+
+            <label
+                for="cvv"
+                class="block overflow-hidden rounded-md border border-gray-200 px-3 py-2 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"
+            >
+                <span class="text-xs font-medium text-gray-700">
+                    CVV
+                </span>
+                <input
+                    type="number"
+                    id="cvv"
+                    name="cvv"
+                    pattern="^(?:(4[0-9]{12}(?:[0-9]{3})?)|(5[1-5][0-9]{14})|(6(?:011|5[0-9]{2})[0-9]{12})|(3[47][0-9]{13})|(3(?:0[0-5]|[68][0-9])[0-9]{11})|((?:2131|1800|35[0-9]{3})[0-9]{11}))$"
+                    class="mt-1 w-full border-none p-0 bg-transparent focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm"
+                    value={data?.cvv}
+                />
+            </label>
+        </div>
+
+        <h4 class="text-uppercase text-slate-500 text-md mt-6">Billing address</h4>
+
+        <label
+            for="address_1"
+            class="block overflow-hidden rounded-md border border-gray-200 px-3 py-2 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"
+        >
+            <span class="text-xs font-medium text-gray-700">
+                Address 1
+            </span>
+            <input
+                type="text"
+                id="address_1"
+                name="address_1"
+                placeholder="123 Sesame St"
+                class="mt-1 w-full border-none p-0 bg-transparent focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm"
+                value={data?.address_1}
+            />
+        </label>
+        <label
+            for="address_1"
+            class="block overflow-hidden rounded-md border border-gray-200 px-3 py-2 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"
+        >
+            <span class="text-xs font-medium text-gray-700">
+                Address 2
+            </span>
+            <input
+                type="text"
+                id="address_2"
+                name="address_2"
+                placeholder="P.O. Box 42"
+                class="mt-1 w-full border-none p-0 bg-transparent focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm"
+                value={data?.address_2}
+            />
+        </label>
+        <label
+            for="city"
+            class="block overflow-hidden rounded-md border border-gray-200 px-3 py-2 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"
+        >
+            <span class="text-xs font-medium text-gray-700">
+                City
+            </span>
+            <input
+                type="text"
+                id="city"
+                name="city"
+                placeholder="New York City"
+                class="mt-1 w-full border-none p-0 bg-transparent focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm"
+                value={data?.city}
+            />
+        </label>
+        <label
+            for="state"
+            class="block overflow-hidden rounded-md border border-gray-200 px-3 py-2 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"
+        >
+            <span class="text-xs font-medium text-gray-700">
+                State
+            </span>
+            <select
+                id="state"
+                name="state"
+                class="mt-1 w-full border-none p-0 bg-transparent focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm"
+            >
+                <option selected={data?.state === undefined} disabled>Select a state/province</option>
+                <option value="ny" selected={data?.country === 'ny'}>NY</option>
+                <option value="made-up" selected={data?.country === 'made-up'}>Made up</option>
+                <option value="not-real" selected={data?.country === 'not-real'}>Not real</option>
+                <option value="party-state" selected={data?.country === 'party-state'}>Party state</option>
+            </select>
+        </label>
+        <label
+            for="country"
+            class="block overflow-hidden rounded-md border border-gray-200 px-3 py-2 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"
+        >
+            <span class="text-xs font-medium text-gray-700">
+                Country
+            </span>
+            <select
+                id="country"
+                name="country"
+                class="mt-1 w-full border-none p-0 bg-transparent focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm"
+            >
+                <option selected={data?.country === undefined} disabled>Select a country</option>
+                <option value="ca" selected={data?.country === 'ca'}>Canada</option>
+                <option value="usa" selected={data?.country === 'usa'}>United States of America</option>
+            </select>
+        </label>
+
+        <button
+            type="submit"    
+            class="shrink-0 rounded-md border border-indigo-600 bg-indigo-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-indigo-600 focus:outline-none focus:ring active:text-indigo-500"
+        >
+            Update payment method
+        </button>
+    </Form>
+</Frame>

@@ -1,0 +1,41 @@
+---
+import Header from "../../../components/Header.astro";
+import Sidebar from "../../../components/Sidebar.astro";
+import Plans, { fields } from "../../../components/forms/Plans.astro";
+import AppLayout from "../../../layouts/AppLayout.astro";
+import { createForm } from "astro-pwa";
+
+const form = await createForm('plans', { fields: fields, astro: Astro, redirect: "/app/billing" })
+
+if (form.submitting) {
+    return form.submit(data => {
+        const session = Astro.cookies.get('session').json()
+
+        session.plan = data.plan
+
+        Astro.cookies.set('session', session)
+    })
+}
+
+if (!Astro.cookies.get('session').value) {
+    return Astro.redirect('/app/login', 302)
+}
+
+const title = "Home"
+---
+<AppLayout title={title}>
+    <div class="flex flex-row">
+        <Sidebar />
+        <main class="basis-full">
+            <Header
+                heading="Manage your Billing"
+                subheading="Everything from your current subscription to your historical invoices. 🤑"
+            />
+            <section class="max-w-screen-xl mx-auto p-4 py-6">
+                <div class="flex flex-col space-y-1 bg-zinc-50 text-zinc-900 border border-slate-200 p-6 rounded-xl col-span-2" id="subscriptions">
+                    <Plans form={form} />
+                </div>  
+            </section>
+        </main>
+    </div>
+</AppLayout>

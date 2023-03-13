@@ -2,6 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 
 const title = "Page not found"
+const isApp = Astro.url.pathname.startsWith('/app')
 ---
 <Layout title={title}>
     <main class="grid h-screen px-4 bg-white place-content-center">
@@ -44,7 +45,7 @@ const title = "Page not found"
       </h1>
   
       <p class="mt-4 text-gray-500">We can't find that page.</p>
-      <a href="/app" class="mt-4 text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-pink-400">Back to dashboard</a>
+      <a href={isApp ? "/app" : "/"} class="mt-4 text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-pink-400">Back to {isApp ? "Dashboard" : "home"}</a>
     </div>
 </main>  
 </Layout>

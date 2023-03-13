@@ -11,7 +11,10 @@ import type { Store } from './src/stores/store';
 
 export interface Props {
   id: string
+  src?: string
   stores?: Store<any>[]
+  "client:isolate"?: boolean | "a" | "form"
+  "server:only"?: boolean
   [key: string]: any
 }
 

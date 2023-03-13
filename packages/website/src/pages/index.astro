@@ -9,6 +9,7 @@ import grammar from 'shiki/languages/astro.tmLanguage.json'
 shiki.setWasm(process.cwd() + '/packages/website/public/shiki/dist/onigasm.wasm')
 shiki.setCDN(process.cwd() + '/packages/website/public/shiki/')
 
+// @ts-ignore
 const highlighter = await shiki.getHighlighter({ langs: [{ id: 'astro', scopeName: 'source.astro', grammar }], theme })
 
 const title = "Astro PWA Demo App";

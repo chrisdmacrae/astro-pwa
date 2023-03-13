@@ -1,0 +1,84 @@
+---
+import { z, AstroForm } from "astro-pwa";
+import Form from "astro-pwa/Form.astro";
+import Frame from "astro-pwa/Frame.astro";
+
+export const fields = z.object({
+    plan: z.string()
+})
+
+export interface Props {
+    form: AstroForm<typeof fields>
+}
+
+const { form } = Astro.props
+const user = Astro.cookies.get('session').json()
+const plan = user?.plan
+---
+
+<Frame id="subscriptions_frame" src='/app/billing/plans'>
+    <h3 class="font-bold text-2xl">Plans</h3>
+    <h4 class="text-lg text-slate-500">Select a plan</h4>
+
+    {form.errors && (
+        <div role="alert" class="rounded border-l-4 border-red-500 bg-red-50 p-4 col-span-6">
+            <div class="flex items-center gap-2 text-red-800">
+                <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="h-5 w-5"
+                >
+                <path
+                    fill-rule="evenodd"
+                    d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z"
+                    clip-rule="evenodd"
+                />
+                </svg>
+
+                <strong class="block font-medium">
+                  Something went wrong
+                </strong>
+            </div>
+
+            {form.errors.form && (
+                <p class="mt-2 text-sm text-red-700">
+                    {form.errors.form?.join(', ')}
+                </p>
+            )}
+        </div>
+    )}
+
+    <Form id="plans" form={form} action="/app/billing/plans" class="flex flex-col gap-2">
+        <label for="plan_1" class="flex flex-row items-center gap-2 bg-zinc-50 text-zinc-900 border border-slate-200 p-6 rounded-xl col-span-2" id="subscriptions">
+            <input type="radio" name="plan" id="plan_1" value="basic" checked={plan === "basic"} />
+            <div>
+                <h5 class="font-bold text-xl">The basic plan</h5>
+                <p class="text-md text-slate-500">A basic plan that lets you do basic things</p>
+            </div>
+        </label>
+
+        <label for="plan_2" class="flex flex-row items-center gap-2 bg-zinc-50 text-zinc-900 border border-slate-200 p-6 rounded-xl col-span-2" id="subscriptions">
+            <input type="radio" name="plan" id="plan_2" value="team" checked={plan === "basic"} />
+            <div>
+                <h5 class="font-bold text-xl">The team plan</h5>
+                <p class="text-md text-slate-500">A team plan that lets you do things with your team</p>
+            </div>
+        </label>
+
+        <label for="plan_3" class="flex flex-row items-center gap-2 bg-zinc-50 text-zinc-900 border border-slate-200 p-6 rounded-xl col-span-2" id="subscriptions">
+            <input type="radio" name="plan" id="plan_3" value="enterprise" checked={plan === "basic"} />
+            <div>
+                <h5 class="font-bold text-xl">The enterprise plan</h5>
+                <p class="text-md text-slate-500">An enterprise plan that lets do all the things</p>
+            </div>
+        </label>
+
+        <button
+            type="submit"    
+            class="shrink-0 rounded-md border border-indigo-600 bg-indigo-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-indigo-600 focus:outline-none focus:ring active:text-indigo-500"
+        >
+            Upgrade
+        </button>
+    </Form>
+</Frame>
