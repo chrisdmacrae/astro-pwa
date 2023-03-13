@@ -1,0 +1,21 @@
+{
+    "rewrites": [
+      {
+        "source": "/examples/",
+        "destination": "https://example.com/examples"
+      },
+      {
+        "source": "/examples/:path*",
+        "destination": "https://example.com/:path*"
+      },
+      {
+        "source": "/docs",
+        "destination": "/docs"
+      },
+      {
+        "source": "/docs/:path*",
+        "destination": "/docs/:path*"
+      }
+    ]
+  }
+  
