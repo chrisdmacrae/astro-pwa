@@ -2,19 +2,19 @@
     "rewrites": [
       {
         "source": "/examples/",
-        "destination": "https://example.com/examples"
+        "destination": "https://astro-pwa-demo.vercel.app/examples"
       },
       {
         "source": "/examples/:path*",
-        "destination": "https://example.com/:path*"
+        "destination": "https://astro-pwa-demo.vercel.app/:path*"
       },
       {
-        "source": "/docs",
-        "destination": "/docs"
+        "source": "https://astro-pwa-docs.vercel.app/docs",
+        "destination": "https://astro-pwa-docs.vercel.app/docs"
       },
       {
-        "source": "/docs/:path*",
-        "destination": "/docs/:path*"
+        "source": "https://astro-pwa-docs.vercel.app/docs/:path*",
+        "destination": "https://astro-pwa-docs.vercel.app/docs/:path*"
       }
     ]
   }
