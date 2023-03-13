@@ -32,7 +32,7 @@ Now wrap your pages at `src/pages/app` with the layout:
 
 ```
 ---
-import AppLayout from '../layouts/AppLayout.astro
+import AppLayout from '../../layouts/AppLayout.astro
 ---
 <AppLayout>
     <h1>Hello world</h2>

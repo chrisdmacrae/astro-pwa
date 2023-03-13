@@ -72,7 +72,7 @@ Astro uses frontmatter in Markdown pages to choose layouts and pass properties t
 ---
 title: Example title
 description: Really cool docs example that uses Astro
-layout: ../../layouts/MainLayout.astro
+layout: ../../../layouts/MainLayout.astro
 ---
 
 # Page content...
