@@ -71,6 +71,4 @@ import AppLayout from '../layouts/AppLayout.astro'
 
 At this point, you have everything "plumbed" to work, but nothing really interesting...
 
-At this point you can do a variety of things, follow the tutorial that makes the most sense to you:
-
-- Coming soon...
+[Check out the documentation](https://astro-pwa-website.vercel.app/docs) to really get going!

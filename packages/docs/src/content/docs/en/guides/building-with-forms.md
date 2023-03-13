@@ -184,6 +184,46 @@ Finally we'll add field specific errors:
 </form>
 ```
 
+Finally, we'll add a success message when our form submits successfully:
+
+```
+<form id="example">
+  {form.success && (
+    <p>Thanks for signing up!</p>
+  )}
+
+  {form.errors?.message && (
+    <p><strong>{form.errors.message}</strong></p>
+  )}
+
+  {form.errors?.form && (
+    <ul>
+    {form.errors.form.map(error => (
+        <li>{error}</li>
+    ))
+    </ul>
+  )}
+
+  <label for="first_name">First name</label>
+  <input type="text" name="first_name" id="first_name" />
+  {form.errors?.fields?.first_name && (
+    <p><strong>{form.errors.fields.first_name}</strong></p>
+  )}
+
+  <label for="last_name">Last name</label>
+  <input type="text" name="last_name" id="last_name" />
+  {form.errors?.fields?.first_name && (
+    <p><strong>{form.errors.fields.last_name}</strong></p>
+  )}
+
+  <label for="email">Email</label>
+  <input type="email" name="email" id="email" />
+  {form.errors?.fields?.email && (
+    <p><strong>{form.errors.fields.email}</strong></p>
+  )}
+</form>
+```
+
 And that's our form! Now we need to add it to a page and setup the page to handle submissions. Assuming we have a page at `src/pages/index.astro`:
 
 ```
@@ -212,3 +252,41 @@ if (form.submitting) {
 ```
 
 And that's a wrap, that's your form!
+
+## Forms without a page reload
+
+You can prevent forms from reloading the page by wrapping forms in a `Frame`.
+
+Going back to our example above, having a form reload on the page instead of reloading the whole page is as simple as doing:
+
+```
+---
+import { createForm } from 'astro-pwa'
+import Frame from 'astro-pwa'
+import ExampleForm, { fields } from '../components/ExampleForm.astro'
+
+const form = await createForm('example', { fields: fields: astro: Astro })
+
+if (form.submitting) {
+  form.submit((formData) => {
+    // Do whatever you want with your form data in this function!
+    // I.e, submit to a database, a third party service, etc
+    console.log(formData)
+  })
+}
+---
+<html>
+<head>
+  <title>My Example Form</title>
+</head>
+<body>
+  <Frame id="example_frame" server:isolate>
+    <ExampleForm />
+  </Frame>
+</body>
+</html>
+```
+
+## Redirecting after a successful form submit
+
+If you want to redirect to another page on successful submit of your form, you can 
