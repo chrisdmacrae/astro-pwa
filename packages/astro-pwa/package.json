@@ -4,11 +4,11 @@
   "description": "A small toolkit for building progressive web apps with Astro",
   "repository": "git@github.com:chrisdmacrae/astro-spa-playground.git",
   "main": "./index.ts",
+  "directories": {
+    "src": "*"
+  },
   "files": [
-    "integration",
-    "routing",
-    "ssr",
-    "stores",
+    "src",
     "index.ts",
     "react.ts",
     "vue.ts",

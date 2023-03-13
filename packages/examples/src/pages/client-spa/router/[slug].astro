@@ -13,5 +13,5 @@ const { routes } = Astro.props
 export const prerender = true
 ---
 <ClientSPALayout title={`Dynamic Route: ${slug}`} filePath={Astro.self.moduleId!.replace(process.cwd(), `https://github.com/chrisdmacrae/astro-pwa/tree/main/packages/examples`)}>
-  <Router baseUrl="/client-spa" routes={routes} client:only="react" />
+  <Router baseUrl="/examples/client-spa" routes={routes} client:only="react" />
 </ClientSPALayout>

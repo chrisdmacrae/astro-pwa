@@ -19,7 +19,7 @@
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
     "astro": "^2.0.17",
-    "astro-pwa": "^0.1.0",
+    "astro-pwa": "^0.2.0",
     "final-form": "^4.20.9",
     "nanostores": "^0.7.4",
     "react": "^18.2.0",
