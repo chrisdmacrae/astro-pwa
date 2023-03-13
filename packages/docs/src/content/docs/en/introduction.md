@@ -28,12 +28,12 @@ It does this by letting you scope a directory and it's sub-directories of pages 
 - UI-agnostic: just like Astro, we support React, Preact, Svelte, Vue, Solid, Lit and more
 
 ## Start your first project
-
+<!--
 Get a new Astro project up and running locally with our Astro template:
-
 ```
 npm create astro -- --template astro-pwa/starter-server
 ```
+-->
 
 Our [Installation guide](/en/installation) has full, step-by-step instructions for installing the Astro PWA integration by creating a new project from an existing Astro PWA GitHub repository, and for installing Astro PWA manually.
 
