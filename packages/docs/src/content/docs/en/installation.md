@@ -12,7 +12,7 @@ This guide will walk you through the steps to manually install and configure a n
 
 ## Installation
 
-If you already have an existing project, skip to []
+If you already have an existing project, skip to [Install the Integration](#install-the-integration).
 
 ### Create your Astro project
 
@@ -22,7 +22,7 @@ Run the Astro CLI and follow the on-screen prompts:
 npm create astro
 ```
 
-### Install the integration
+### Install the Integration
 
 Install the integration using your terminal:
 
