@@ -18,6 +18,7 @@ To start, we'll create a form for the user to start, since all good tools start 
 Create a component for your form at `src/components/ExampleForm.astro`:
 
 ```
+---
 import { AstroForm } from 'astro-pwa'
 
 export interface Props {
@@ -25,7 +26,7 @@ export interface Props {
 }
 
 const { form } = Astro.props
-```
+---
 <form id="example">
 </form>
 ```
@@ -35,6 +36,7 @@ const { form } = Astro.props
 Right now all we've got is an empty form with an `id`. Let's add an input for `first_name`, `last_name`, and `email`:
 
 ```
+---
 import { AstroForm } from 'astro-pwa'
 
 export interface Props {
@@ -42,7 +44,7 @@ export interface Props {
 }
 
 const { form } = Astro.props
-```
+---
 <form id="example">
   <label for="first_name">First name</label>
   <input type="text" name="first_name" id="first_name" />
@@ -287,6 +289,42 @@ if (form.submitting) {
 </html>
 ```
 
+## Submitting to another page route
+
+You can create a form on one page that submits to another page route, or an API route. You do this by changing the `action` of your form:
+
+```
+<form id="example" action="/another-page">
+```
+
+For example, you can create an API route to handle your form submits. For example, by creating a page at `src/pages/api/example.js`:
+
+```
+export const post = async (context) => {
+    const form = await createForm('example', { fields: fields, astro: Astro })
+
+    if (form.submitting) {
+        return form.submit(formData => {
+            console.log(formData)
+        })
+    }
+
+    return new Response(null, { statusCode: 204 })
+}
+```
+
+And then update the `action` of your form to point to `/api/example`:
+
+```
+<form id="example" action="/api/example">
+```
+
 ## Redirecting after a successful form submit
 
-If you want to redirect to another page on successful submit of your form, you can 
+If you want to redirect to another page on successful submit of your form, you can redirect to another page by passing the `redirect` option to `createForm`:
+
+```
+import { createForm } from 'astro-pwa'
+
+const form = await createForm('example', { fields: fields, astro: Astro, redirect: "/another-page" })
+```
