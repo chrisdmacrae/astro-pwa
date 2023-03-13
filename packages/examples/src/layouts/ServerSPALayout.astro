@@ -11,7 +11,7 @@ export type Props = {
 
 const { title, filePath } = Astro.props
 const isHome = Astro.url.pathname === '/examples/server-spa'
-const routes = await createPageRoutesFromGlob(Astro.glob('../pages/server-spa/**/*.astro'))
+const routes = await createPageRoutesFromGlob(Astro.glob('../pages/examples/server-spa/**/*.astro'))
 ---
 <Layout title={title}>
   <SPA routes={routes} stores={stores} output="server" class="w-full min-h-screen gap-4 flex flex-col items-center h-full">
