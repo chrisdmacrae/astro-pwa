@@ -26,9 +26,19 @@ const sidebar = SIDEBAR[langCode];
 								const url = Astro.site?.pathname + child.link;
 								return (
 									<li class="nav-link">
-										<a href={'/docs' + url} aria-current={currentPageMatch === child.link ? 'page' : false}>
-											{child.text}
-										</a>
+										{!child.soon && (
+											<a href={'/docs' + url} aria-current={currentPageMatch === child.link ? 'page' : false}>
+												{child.text}
+											</a>
+										)}
+										{child.soon && (
+											<a href="#" class="flex flex-row gap-2">
+											  <p>{child.text}</p>
+											  <span class="whitespace-nowrap rounded-full bg-purple-100 px-2.5 py-0.5 text-sm text-purple-700">
+											    Coming soon
+											  </span>
+											</a>
+										)}
 									</li>
 								);
 							})}

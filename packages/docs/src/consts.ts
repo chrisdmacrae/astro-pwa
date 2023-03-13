@@ -32,7 +32,7 @@ export const ALGOLIA = {
 
 export type Sidebar = Record<
 	(typeof KNOWN_LANGUAGE_CODES)[number],
-	Record<string, { text: string; link: string }[]>
+	Record<string, { text: string; link: string, soon?: boolean }[]>
 >;
 export const SIDEBAR: Sidebar = {
 	en: {
@@ -51,8 +51,8 @@ export const SIDEBAR: Sidebar = {
 			{ text: 'Building a SPA', link: 'en/guides/building-with-spa' },
 			{ text: 'Building with Frames', link: 'en/guides/building-with-frames' },
 			{ text: 'Using forms', link: 'en/guides/building-with-forms' },
-			{ text: 'Sharing UI state with the server ', link: 'en/guides/sharing-state' },
-			{ text: 'Using the router ', link: 'en/guides/routing' }
+			{ text: 'Sharing UI state with the server ', link: 'en/guides/sharing-state', soon: true },
+			{ text: 'Using the router ', link: 'en/guides/routing', soon: true }
 		],
 	},
 };
