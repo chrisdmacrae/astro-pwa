@@ -10,11 +10,11 @@
       },
       {
         "source": "/docs",
-        "destination": "https://astro-pwa-docs.vercel.app/docs"
+        "destination": "https://astro-pwa-docs.vercel.app/"
       },
       {
         "source": "/docs/:path*",
-        "destination": "https://astro-pwa-docs.vercel.app/docs/:path*"
+        "destination": "https://astro-pwa-docs.vercel.app/:path*"
       }
     ]
   }
