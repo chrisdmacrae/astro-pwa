@@ -1,0 +1,9 @@
+---
+import ClientSPALayout from "../../layouts/ClientSPALayout.astro";
+import { ReactCounter } from "../../components/react/ReactCounter";
+
+export const prerender = true
+---
+<ClientSPALayout title="React demo" filePath={Astro.self.moduleId!.replace(process.cwd(), `https://github.com/chrisdmacrae/astro-pwa/tree/main/packagess`)}>
+  <ReactCounter client:only="react" />
+</ClientSPALayout>

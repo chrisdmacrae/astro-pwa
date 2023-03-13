@@ -1,0 +1,9 @@
+---
+import ClientSPALayout from "../../../layouts/ClientSPALayout.astro";
+import { Router, routes } from "../../../components/react/Router";
+
+export const prerender = true
+---
+<ClientSPALayout title="Page B" filePath={Astro.self.moduleId!.replace(process.cwd(), `https://github.com/chrisdmacrae/astro-pwa/tree/main/packagess`)}>
+  <Router baseUrl="/examples/client-spa" routes={routes} client:only="react" />
+</ClientSPALayout>

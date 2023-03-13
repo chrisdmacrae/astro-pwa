@@ -1,0 +1,9 @@
+---
+import ServerSPALayout from "../../../layouts/ServerSPALayout.astro";
+import { Router, routes } from "../../../components/react/Router";
+
+export const prerender = true
+---
+<ServerSPALayout title="Routing Root" filePath={Astro.self.moduleId!.replace(process.cwd(), `https://github.com/chrisdmacrae/astro-pwa/tree/main/packages`)}>
+  <Router baseUrl="/examples/server-spa" routes={routes} client:load />
+</ServerSPALayout>

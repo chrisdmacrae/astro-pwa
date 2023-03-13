@@ -1,9 +1,0 @@
----
-import ClientSPALayout from "../../../layouts/ClientSPALayout.astro";
-import VueCounter from "../../../components/vue/VueCounter.vue";
-
-export const prerender = true
----
-<ClientSPALayout title="Vue Demo" filePath={Astro.self.moduleId!.replace(process.cwd(), `https://github.com/chrisdmacrae/astro-pwa/tree/main/packages/examples`)}>
-  <VueCounter client:only="vue" />
-</ClientSPALayout>

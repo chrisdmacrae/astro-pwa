@@ -1,0 +1,71 @@
+---
+import ArrowRight from "../components/astro/ArrowRight.astro";
+import Card from "../components/astro/Cards/Card.astro";
+
+export const prerender = true
+---
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Astro</title>
+	</head>
+	<body class="bg-zinc-100 p-10">
+		<main class="max-w-prose mx-auto flex flex-col gap-4">
+			<h1 class="text-5xl font-bold">
+				Welcome to <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-pink-400">Astro PWA</span>
+			</h1>
+
+			<Card variant="featured">
+				<p>
+					This is a demo repo to show examples of how Astro PWA can be used to build complex applications.
+				</p>
+			</Card>
+			<ul class="grid grid-cols-1 md:grid-cols-2 gap-3">
+				<Card as="li" href="/examples/server-spa">
+					<h2 class="font-bold text-xl text-gray-700 flex gap-2 items-center">
+						Server-rendered SPA
+						<ArrowRight />
+					</h2>
+					<p class="text-gray-600">
+						A single page application that server-renders each page, keeping user state
+						in sync for the duration of the session.
+					</p>
+				</Card>
+
+				<Card as="li" href="/examples/client-spa">
+					<h2 class="font-bold text-xl text-gray-700 flex gap-2 items-center">
+						Client-rendered SPA
+						<ArrowRight />
+					</h2>
+					<p class="text-gray-600">
+						A single page application that is statically generated at build time. It client-renders each page, keeping user state
+						in sync for the duration of the session.
+					</p>
+				</Card>
+
+				<Card as="li" href="/docs">
+					<h2 class="font-bold text-xl text-gray-700 flex gap-2 items-center">
+						Documentation
+						<ArrowRight />
+					</h2>
+					<p class="text-gray-600">
+						Learn how Astro PWA works and explore the official API docs.
+					</p>
+				</Card>
+
+				<Card as="li" href="https://github.com/chrisdmacrae/astro-pwa">
+					<h2 class="font-bold text-xl text-gray-700 flex gap-2 items-center">
+						More on Github
+						<ArrowRight />
+					</h2>
+					<p class="text-gray-600">
+						Submit feedback, ask questions, and learn more on Github
+					</p>
+				</Card>
+			</ul>
+		</main>
+	</body>
+</html>

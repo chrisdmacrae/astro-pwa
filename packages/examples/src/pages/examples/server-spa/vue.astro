@@ -1,7 +1,0 @@
----
-import ServerSPALayout from "../../../layouts/ServerSPALayout.astro";
-import VueCounter from "../../../components/vue/VueCounter.vue";
----
-<ServerSPALayout title="Vue Demo" filePath={Astro.self.moduleId!.replace(process.cwd(), `https://github.com/chrisdmacrae/astro-pwa/tree/main/packages/examples`)}>
-  <VueCounter client:load />
-</ServerSPALayout>
