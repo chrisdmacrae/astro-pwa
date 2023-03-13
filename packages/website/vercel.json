@@ -9,11 +9,11 @@
         "destination": "https://astro-pwa-demo.vercel.app/:path*"
       },
       {
-        "source": "https://astro-pwa-docs.vercel.app/docs",
+        "source": "/docs",
         "destination": "https://astro-pwa-docs.vercel.app/docs"
       },
       {
-        "source": "https://astro-pwa-docs.vercel.app/docs/:path*",
+        "source": "/docs/:path*",
         "destination": "https://astro-pwa-docs.vercel.app/docs/:path*"
       }
     ]
