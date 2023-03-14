@@ -1,0 +1,18 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import SPA from 'astro-pwa/SPA.astro'
+import stores from "../stores";
+import { createPageRoutesFromGlob } from "astro-pwa";
+
+export interface Props {
+	title: string
+}
+
+const {title} = Astro.props
+const routes = await createPageRoutesFromGlob(Astro.glob('../pages/**/*.astro'))
+---
+<BaseLayout title={title}>
+	<SPA stores={stores} routes={routes}>
+		<slot />
+	</SPA>
+</BaseLayout>

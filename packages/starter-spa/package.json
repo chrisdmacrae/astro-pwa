@@ -1,0 +1,17 @@
+{
+  "name": "starter-spa",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "astro": "^2.0.18",
+    "astro-pwa": "^0.2.1",
+    "nanostores": "^0.7.4"
+  }
+}
