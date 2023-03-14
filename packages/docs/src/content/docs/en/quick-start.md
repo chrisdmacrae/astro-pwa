@@ -14,7 +14,7 @@ The SPA starter gives you a basic Astro SPA with some simple examples of sharing
 Create a project by running:
 
 ```
-npm create astro -- --template astro-pwa/starter-spa
+npm create astro -- --template chrisdmacrae/astro-pwa/packages/starter-spa
 ```
 
 > **Protip**: the SPA template uses the [SPA component](/docs/en/concepts/spa) and [Stores](/docs/en/concepts/stores) along with [Astro Islands](https://docs.astro.build/docs/en/concepts/islands/) to make everything possible
@@ -26,7 +26,7 @@ The server starter gives you a basic server-rendered application using only Astr
 Create a project by running:
 
 ```
-npm create astro -- --template astro-pwa/starter-server
+npm create astro -- --template chrisdmacrae/astro-pwa/packages/starter-server
 ```
 
 > **Protip**: the SPA template uses the [Frame component](/docs/en/concepts/frame) and [Stores](/docs/en/concepts/stores) to make everything possible
