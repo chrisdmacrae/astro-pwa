@@ -1,6 +1,6 @@
 {
   "name": "astro-pwa",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "A small toolkit for building progressive web apps with Astro",
   "repository": "git@github.com:chrisdmacrae/astro-spa-playground.git",
   "main": "./index.ts",
@@ -15,6 +15,7 @@
     "vue.ts",
     "SPA.astro",
     "Frame.astro",
+    "Form.astro",
     "Stores.astro",
     "tsconfig.json",
     "package.json"
