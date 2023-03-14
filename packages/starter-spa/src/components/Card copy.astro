@@ -10,18 +10,9 @@ const AnchorEl = href ? 'a' : 'span'
 ---
 
 <li class="link-card">
-	<AnchorEl href={href}>
-		{title && (
-			<h2>
-				{title}
-				<span>&rarr;</span>
-			</h2>
-		)}
 		<p>
-			{body}
 			<slot />
 		</p>
-	</AnchorEl>
 </li>
 <style>
 	.link-card {

@@ -1,5 +1,5 @@
-import { appStore } from "./app";
+import { counterStore } from "./counter";
 
-export const stores = [appStore]
+export const stores = [counterStore]
 
 export default stores

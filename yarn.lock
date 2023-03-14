@@ -201,6 +201,17 @@
     babel-plugin-module-resolver "^5.0.0"
     preact-render-to-string "^5.2.4"
 
+"@astrojs/preact@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@astrojs/preact/-/preact-2.1.0.tgz#b331ff4bf53d5c84bda0915f5194be72cb86ac1b"
+  integrity sha512-1AnXpnjC24/mWJyq+EN5DoWp+w9Hg/y3dwFX3728rlBhyuY573jx+4+VHuG/g0A1alzJuIAhSPtqCP0YQktUnw==
+  dependencies:
+    "@babel/core" ">=7.0.0-0 <8.0.0"
+    "@babel/plugin-transform-react-jsx" "^7.17.12"
+    "@preact/signals" "^1.1.0"
+    babel-plugin-module-resolver "^5.0.0"
+    preact-render-to-string "^5.2.4"
+
 "@astrojs/prism@^2.1.0":
   version "2.1.1"
   resolved "https://registry.npmjs.org/@astrojs/prism/-/prism-2.1.1.tgz"
@@ -212,6 +223,14 @@
   version "2.0.2"
   resolved "https://registry.npmjs.org/@astrojs/react/-/react-2.0.2.tgz"
   integrity sha512-UmQNvzJul5M/Q9aZJXnqz4z0ODZXkLuaNvgsYoKB7OdM8c2v85FsTjMZZJ7BvFo4On31jJ0rL/gwTaCeuYqmpw==
+  dependencies:
+    "@babel/core" ">=7.0.0-0 <8.0.0"
+    "@babel/plugin-transform-react-jsx" "^7.17.12"
+
+"@astrojs/react@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@astrojs/react/-/react-2.1.0.tgz#6b913baefa0d2a717bf5ff3d96ab299c7b0e4708"
+  integrity sha512-AzopsCVjsHlX1oVkgLusDRngnpJfoi03kj6c8p/K6+i/PQ3ZnVwRmJl7IgFBC2YJSbexyNxK2BmLvwkjGvQaCA==
   dependencies:
     "@babel/core" ">=7.0.0-0 <8.0.0"
     "@babel/plugin-transform-react-jsx" "^7.17.12"
@@ -816,6 +835,11 @@
     semver "^7.3.5"
     tar "^6.1.11"
 
+"@nanostores/preact@^0.3.1":
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/@nanostores/preact/-/preact-0.3.1.tgz#e5c7f58f1328fcdb57a10a0b9cd5c58c2150c5cc"
+  integrity sha512-D5lC1tNhwlVURCFJUTlnRkQ3LRNt6Sc2XHByBwgHPaKLBUPJxAaNAL7kz2dAEhge1fk9dNXAexCdepwiIFodOQ==
+
 "@nanostores/react@^0.4.1":
   version "0.4.1"
   resolved "https://registry.npmjs.org/@nanostores/react/-/react-0.4.1.tgz"
@@ -1378,14 +1402,14 @@
   resolved "https://registry.npmjs.org/@types/prop-types/-/prop-types-15.7.5.tgz"
   integrity sha512-JCB8C6SnDoQf0cNycqd/35A7MjcnK+ZTqE7judS6o7utxUCg6imJg3QK2qzHKszlTjcj2cn+NwMB2i96ubpj7w==
 
-"@types/react-dom@^18.0.0", "@types/react-dom@^18.0.11":
+"@types/react-dom@^18.0.0", "@types/react-dom@^18.0.11", "@types/react-dom@^18.0.6":
   version "18.0.11"
   resolved "https://registry.npmjs.org/@types/react-dom/-/react-dom-18.0.11.tgz"
   integrity sha512-O38bPbI2CWtgw/OoQoY+BRelw7uysmXbWvw3nLWO21H1HSh+GOlqPuXshJfjmpNlKiiSDG9cc1JZAaMmVdcTlw==
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@^18.0.28":
+"@types/react@*", "@types/react@^18.0.21", "@types/react@^18.0.28":
   version "18.0.28"
   resolved "https://registry.npmjs.org/@types/react/-/react-18.0.28.tgz"
   integrity sha512-RD0ivG1kEztNBdoAK7lekI9M+azSnitIn85h4iOiaLjaTrMjzslhaqCGaI4IyCJ1RljWiLCEu4jyrLLgqxBTew==
@@ -5745,7 +5769,7 @@ preact-render-to-string@^5.2.4:
   dependencies:
     pretty-format "^3.8.0"
 
-preact@^10.7.3:
+preact@^10.6.5, preact@^10.7.3:
   version "10.13.1"
   resolved "https://registry.npmjs.org/preact/-/preact-10.13.1.tgz"
   integrity sha512-KyoXVDU5OqTpG9LXlB3+y639JAGzl8JSBXLn1J9HTSB3gbKcuInga7bZnXLlxmK94ntTs1EFeZp0lrja2AuBYQ==
@@ -5885,7 +5909,7 @@ range-parser@~1.2.1:
   resolved "https://registry.npmjs.org/range-parser/-/range-parser-1.2.1.tgz"
   integrity sha512-Hrgsx+orqoygnmhFbKaHE6c296J+HTAQXoxEF6gNupROmmGJRoyzfG3ccAveqCBrwr/2yxQ5BVd/GTl5agOwSg==
 
-react-dom@^18.1.0, react-dom@^18.2.0:
+react-dom@^18.0.0, react-dom@^18.1.0, react-dom@^18.2.0:
   version "18.2.0"
   resolved "https://registry.npmjs.org/react-dom/-/react-dom-18.2.0.tgz"
   integrity sha512-6IMTriUmvsjHUjNtEDudZfuDQUoWXVxKHhlEGSk81n4YFS+r/Kl99wXiwlVXtPBtJenozv2P+hxDsw9eA7Xo6g==
@@ -5900,7 +5924,7 @@ react-final-form@^6.5.9:
   dependencies:
     "@babel/runtime" "^7.15.4"
 
-react@^18.1.0, react@^18.2.0:
+react@^18.0.0, react@^18.1.0, react@^18.2.0:
   version "18.2.0"
   resolved "https://registry.npmjs.org/react/-/react-18.2.0.tgz"
   integrity sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==

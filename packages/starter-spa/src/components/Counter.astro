@@ -1,0 +1,65 @@
+---
+import { counterStore } from '../stores/counter'
+---
+<div class="counter">
+  <h2>A counter in Astro, sharing global state</h2>
+  <div class="controls">
+    <button data-subtract>-</button>
+    <pre data-count>{counterStore.get().count}</pre>
+    <button data-add>+</button>
+  </div>
+</div>
+
+<script>
+  import { useStore, useRouter } from 'astro-pwa'
+  import { counterStore, add, subtract } from '../stores/counter'
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const router = useRouter()
+
+    router.on('change', () => {
+      const store = useStore(counterStore)
+      const countEl = window.document.querySelector('[data-count]')
+      store.subscribe(({ count }) => {
+        if (countEl) countEl.textContent = count.toString()
+      })
+
+      const subtractEl = window.document.querySelector('[data-subtract]')
+      if (subtractEl) subtractEl.addEventListener('click', subtract)
+
+      const addEl = window.document.querySelector('[data-add]')
+      if (addEl) addEl.addEventListener('click', add)
+    })
+  })
+</script>
+
+<style>
+  .counter h2 {
+    font-size: 1.25rem;
+  }
+
+  .controls {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    justify-content: center;
+  }
+
+  .controls > button:first-child {
+    border-radius: 1rem;
+    background-color: #bbf7d0;
+    border: 1px solid #4ade80;
+    padding: 1rem;
+    color: #15803d;
+    cursor: pointer;
+  }
+
+  .controls > button:last-child {
+    border-radius: 1rem;
+    background-color: #bbf7d0;
+    border: 1px solid #4ade80;
+    padding: 1rem;
+    color: #15803d;
+    cursor: pointer;
+  }
+</style>

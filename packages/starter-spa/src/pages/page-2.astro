@@ -1,6 +1,10 @@
 ---
 import SPALayout from '../layouts/SPALayout.astro';
 import Card from '../components/Card.astro';
+import { createForm } from 'astro-pwa';
+import ExampleForm, { fields } from '../components/ExampleForm.astro';
+import Counter from '../components/Counter.astro';
+import PreactCounter from '../components/PreactCounter';
 
 const form = await createForm('example', { fields: fields, astro: Astro })
 
@@ -17,13 +21,20 @@ if (form.submitting) {
 			<strong>Code challenge:</strong> update the title of this page in <code>src/pages/page-2</code>.
 		</p>
 
-		<Card
-			title="An example form"
-		>
-			<ExampleForm form={form} />
-		</Card>
-
 		<ul role="list">
+			<Card
+				title="An example form"
+			>
+				<ExampleForm form={form} />
+			</Card>
+
+			<Card>
+				<div class="counters">
+					<Counter />
+					<PreactCounter client:visible />
+				</div>
+			</Card>
+
 			<Card
 				href="/"
 				title="Back to the homepage"
@@ -38,6 +49,11 @@ if (form.submitting) {
 		margin: auto;
 		padding: 1.5rem;
 		max-width: 60ch;
+	}
+	ul {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
 	}
 	h1 {
 		font-size: 3rem;
@@ -72,5 +88,11 @@ if (form.submitting) {
 	}
 	ul {
 		padding: 0;
+	}
+	.counters {
+		display: flex;
+		flex-direction: column;
+		text-align: center;
+		gap: 2rem;
 	}
 </style>

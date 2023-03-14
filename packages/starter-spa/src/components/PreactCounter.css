@@ -1,0 +1,28 @@
+.counter h2 {
+  font-size: 1.25rem;
+}
+
+.controls {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.controls > button:first-child {
+  border-radius: 1rem;
+  background-color: #bbf7d0;
+  border: 1px solid #4ade80;
+  padding: 1rem;
+  color: #15803d;
+  cursor: pointer;
+}
+
+.controls > button:last-child {
+  border-radius: 1rem;
+  background-color: #bbf7d0;
+  border: 1px solid #4ade80;
+  padding: 1rem;
+  color: #15803d;
+  cursor: pointer;
+}
