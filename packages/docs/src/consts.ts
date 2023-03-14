@@ -38,7 +38,7 @@ export const SIDEBAR: Sidebar = {
 	en: {
 		'Start here': [
 			{ text: 'Introduction', link: 'en/introduction' },
-			// { text: 'Quick start', link: 'en/quick-start' },
+			{ text: 'Quick start', link: 'en/quick-start' },
 			{ text: 'Installation', link: 'en/installation' },
 		],
 		'Core concepts': [
@@ -48,11 +48,16 @@ export const SIDEBAR: Sidebar = {
 			{ text: 'Stores', link: 'en/concepts/stores' },
 		],
 		'Guides': [
-			{ text: 'Building a SPA', link: 'en/guides/building-with-spa' },
 			{ text: 'Building with Frames', link: 'en/guides/building-with-frames' },
 			{ text: 'Using forms', link: 'en/guides/building-with-forms' },
 			{ text: 'Sharing UI state with the server ', link: 'en/guides/sharing-state', soon: true },
 			{ text: 'Using the router ', link: 'en/guides/routing', soon: true }
+			{ text: 'Building a SPA', link: 'en/guides/building-with-spa' },
+			{ text: 'Building a SPA with React', link: 'en/guides/building-with-spa', soon: true },
+			{ text: 'Building a SPA with Preact', link: 'en/guides/building-with-spa', soon: true },
+			{ text: 'Building a SPA with Vue', link: 'en/guides/building-with-spa', soon: true },
+			{ text: 'Building a SPA with Svelte', link: 'en/guides/building-with-spa', soon: true },
+			{ text: 'Building a SPA with Solid', link: 'en/guides/building-with-spa', soon: true },
 		],
 	},
 };

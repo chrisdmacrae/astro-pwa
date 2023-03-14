@@ -14,7 +14,7 @@ export const listen = (router: Router, frame: HTMLElement = document.body) => {
       
       const from = new URL(location.toString())
       const to = new URL(e.destination.url)
-      const isValidRoute = router.routes.find(route => route.match(to.pathname)) !== undefined
+      const isValidRoute = router.routes.find(route => route.match(to.pathname)) !== undefined && to.origin === window.location.origin
 
       if (from === to || !isValidRoute) return
 
@@ -35,7 +35,7 @@ export const listen = (router: Router, frame: HTMLElement = document.body) => {
 
       const from = new URL(location.toString())
       const to = new URL(anchor.href)
-      const isValidRoute = router.routes.find(route => route.match(to.pathname)) !== undefined
+      const isValidRoute = router.routes.find(route => route.match(to.pathname)) !== undefined && to.origin === window.location.origin
 
       if (from === to || !isValidRoute || to.hash) return
 

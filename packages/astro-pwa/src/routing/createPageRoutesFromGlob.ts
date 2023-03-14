@@ -1,7 +1,7 @@
 import type { AstroGlobal } from "astro"
 import type { Route } from "./router"
 
-export const createPageRoutesFromGlob = async (pages: ReturnType<AstroGlobal['glob']>): Promise<Route[]> => {
+export const createPageRoutesFromGlob = async (pages: ReturnType<AstroGlobal['glob']>): Promise<Omit<Route, 'match'>[]> => {
   if (!pages) return []
 
   const pageInstances = await pages

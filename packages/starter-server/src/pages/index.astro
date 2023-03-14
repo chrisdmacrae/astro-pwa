@@ -1,23 +1,23 @@
 ---
-import SPALayout from '../layouts/SPALayout.astro';
+import Layout from '../layouts/Layout.astro';
 import Card from '../components/Card.astro';
 ---
 
-<SPALayout title="Welcome to Astro.">
+<Layout title="Welcome to Astro.">
 	<main>
-		<h1><span class="text-gradient">Astro PWA</span> SPA Starter</h1>
+		<h1><span class="text-gradient">Astro PWA</span> Server Starter</h1>
 		<p class="instructions">
 			To get started, open the directory <code>src/pages</code> in your project.<br />
-			<strong>Check it out:</strong> head to the <a href="/page-2">second page</a> to see the server routing in action!
+			<strong>Check it out:</strong> head to the <a href="/page-2">second page</a> to see a form in action!
 		</p>
 		<ul role="list" class="link-card-grid">
 			<Card
-				href="https://astro-pwa-website.vercel.app/docs/en/introduction"
+				href="https://astro-pwa-website.vercel.app/docs"
 				title="Documentation"
 				body="Learn how Astro PWA works and explore the docs."
 			/>
 			<Card
-				href="https://astro-pwa-website.vercel.app/examples"
+				href="https://astro-pwa-website.vercel.app/docs"
 				title="Examples"
 				body="See live examples of Astro PWA in action and explore the code on Github."
 			/>
@@ -33,9 +33,9 @@ import Card from '../components/Card.astro';
 			/>
 		</ul>
 	</main>
-</SPALayout>
+</Layout>
 
-<style>
+<style is:global>
 	main {
 		margin: auto;
 		padding: 1.5rem;

@@ -1,0 +1,110 @@
+---
+import { AstroForm, z } from "astro-pwa";
+import Form from 'astro-pwa/Form.astro';
+
+export const fields = z.object({
+  first_name: z.string(),
+  last_name: z.string(),
+  email: z.string().email()
+})
+
+export interface Props {
+  form: AstroForm<typeof fields>
+}
+
+const { form } = Astro.props
+---
+<Form id="example">
+  {form.successful && (
+    <div role="alert" class="success">
+      We received your submission!
+    </div>
+  )}
+
+  {form.errors?.message && (
+    <div role="alert" class="error">
+      Something went wrong  
+    </div>
+  )}
+
+  {form.errors?.form && (
+    <ul class="form-errors">
+      {form.errors.form.map(error => {
+        <li>{error}</li>
+      })}
+    </ul>
+  )}
+
+  <label for="first_name">First name</label>
+  <input type="text" name="first_name" id="first_name" placeholder="Enter your first name" value={!form.successful ? form.data?.first_name : undefined} />
+  {form.errors?.fields?.first_name && (
+    <div role="alert" class="field-error">{form.errors.fields.first_name}</div>
+  )}
+
+  <label for="last_name">Last name</label>
+  <input type="text" name="last_name" id="last_name" placeholder="Enter your first name" value={!form.successful ? form.data?.last_name : undefined} />
+  {form.errors?.fields?.last_name && (
+    <div role="alert" class="field-error">{form.errors.fields.last_name}</div>
+  )}
+
+  <label for="email">Email</label>
+  <input type="email" name="email" id="email" placeholder="Enter your first name" value={!form.successful ? form.data?.email : undefined} />
+  {form.errors?.fields?.email && (
+    <div role="alert" class="field-error">{form.errors.fields.email}</div>
+  )}
+
+  <button type="submit">Submit</button>
+</Form>
+
+<style>
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .success {
+    background-color: #bbf7d0;
+    border-left: 2px solid #4ade80;
+    padding: 1rem 2rem;
+    color: #15803d;
+  }
+
+  .error {
+    background-color: #fecaca;
+    border-left: 2px solid #f87171;
+    padding: 1rem 2rem;
+    color: #dc2626;
+  }
+
+  label {
+    font-size: 1rem;
+  }
+
+  input {
+    appearance: none;
+    border: 1px solid #d4d4d8;
+    background-color: #f4f4f5;
+    padding: 1rem 2rem;
+    border-radius: 1rem;
+    color: #18181b;
+  }
+
+  .field-error {
+    font-size: 0.75rem;
+    color: #dc2626;
+  }
+
+  button {
+    appearance: none;
+    background-color: #22c55e;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 1rem;
+    color: white;
+  }
+
+  button :is(:hover, :focus-within) {
+    background-color: #16a34a;
+  }
+</style>
