@@ -51,7 +51,7 @@ export const SIDEBAR: Sidebar = {
 			{ text: 'Building with Frames', link: 'en/guides/building-with-frames' },
 			{ text: 'Using forms', link: 'en/guides/building-with-forms' },
 			{ text: 'Sharing UI state with the server ', link: 'en/guides/sharing-state', soon: true },
-			{ text: 'Using the router ', link: 'en/guides/routing', soon: true }
+			{ text: 'Using the router ', link: 'en/guides/routing', soon: true },
 			{ text: 'Building a SPA', link: 'en/guides/building-with-spa' },
 			{ text: 'Building a SPA with React', link: 'en/guides/building-with-spa', soon: true },
 			{ text: 'Building a SPA with Preact', link: 'en/guides/building-with-spa', soon: true },
