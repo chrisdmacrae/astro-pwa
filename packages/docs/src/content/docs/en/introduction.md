@@ -41,6 +41,6 @@ Our [Installation guide](/docs/en/installation) has full, step-by-step instructi
 
 See examples of the key use cases of Astro PWA
 
-- [Add a single page application (SPA)](/docs/en/guides/building-a-spa) to your Astro site
+- [Add a single page application (SPA)](/docs/en/guides/building-with-spa) to your Astro site
 - Make [interactive islands of server-side code](/docs/en/guides/building-with-frames) with Frames
-- Build [type-safe, server validated Forms](/docs/en/guides/using-forms)
+- Build [type-safe, server validated Forms](/docs/en/guides/building-with-forms)
