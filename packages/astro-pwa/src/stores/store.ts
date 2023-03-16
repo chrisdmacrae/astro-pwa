@@ -1,5 +1,5 @@
 import type { MapStore, Store as NanoStore, WritableAtom } from 'nanostores'
-import { registerStore } from './clientStoreRegistry'
+import { registerStore } from './storeRegistry'
 
 type AstroStoreData<T = any> = {
   name: string
@@ -14,8 +14,8 @@ export const createStore = <T extends StoreValues = any>(name: string, store: T 
   return { ...store, name, defaultValue: store.get() } as Store<T>
 }
 
-export const useStore = <T extends StoreValues>(store: Store<T>) => {
-  registerStore(store)
+export const useStore = <T extends StoreValues>(store: Store<T>, frameId?: string) => {
+  registerStore(store, frameId)
 
   return store
 }

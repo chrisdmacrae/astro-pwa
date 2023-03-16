@@ -1,7 +1,8 @@
 import type { Store } from '../stores/store'
-import { getClientStoreRegistryStore } from '../stores/clientStoreRegistry'
 import { dehydrateStores, hydrateClientStore } from '../stores/hydration'
 import { fetchWithClientStoreData } from '../session/temporary'
+import { createStoreRegistry, getStoreRegistryStore } from '../stores/storeRegistry'
+import { useRouter } from '../routing/router'
 
 export class AstroFrame extends HTMLElement {
   public src: string = window.location.href
@@ -10,14 +11,17 @@ export class AstroFrame extends HTMLElement {
 
   constructor() {
     super()
+
+    createStoreRegistry(this.id)
   }
 
   public connectedCallback() {
-    const registry = getClientStoreRegistryStore()
-
-    if (registry) {
-      registry.listen(stores => {
-        const myStores = this.getAttribute('stores')?.split(',') || []
+    const registry = getStoreRegistryStore()
+    const router = useRouter()
+    const updateStores = () => {
+      this.listeners.push(registry!.listen(frames => {
+        const stores = frames[this.id]
+        const myStores = this.getAttribute('stores')?.split(', ') || []
 
         stores.forEach(store => {
           if (myStores.includes(store.name) && !this.stores.includes(store)) {
@@ -26,7 +30,13 @@ export class AstroFrame extends HTMLElement {
             this.stores.push(store)
           }
         })
-      })
+      }))
+    }
+
+    if (registry) {
+      updateStores()
+
+      if (router) this.listeners.push(router.on('change', updateStores))
     }
 
     const src = this.getAttribute('src')

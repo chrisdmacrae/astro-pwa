@@ -11,8 +11,6 @@ if (form.submitting) {
     return form.submit(data => {
         let session = Astro.cookies.get('session').json()
 
-        console.log(session, data)
-
         session = { ...session, ...data }
 
         Astro.cookies.set('session', session)

@@ -1,12 +1,12 @@
-import { useEffect } from "react";
+import { useMemo } from "react";
 import { useStore as useNanoStore } from "@nanostores/react"
 import { Store, StoreValues, useStore as useAstroStore } from './src/stores/store'
 import { routerStore } from "./src/routing/router"
 
-export const useStore = <T extends StoreValues = any>(store: Store<T>) => {
-  useEffect(() => {
-    useAstroStore(store)
-  }, [])
+export const useStore = <T extends StoreValues = any>(store: Store<T>, frameId?: string) => {
+  useMemo(() => {
+    useAstroStore(store, frameId)
+  }, [store, frameId])
 
   return useNanoStore(store) as T
 }

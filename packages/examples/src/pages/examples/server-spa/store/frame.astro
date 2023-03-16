@@ -1,0 +1,12 @@
+---
+import Frame from 'astro-pwa/Frame.astro'
+import { FrameStorePage } from '../../../../components/react/FrameStore';
+import ServerSPALayout from "../../../../layouts/ServerSPALayout.astro";
+---
+<ServerSPALayout title="Store demo" filePath={Astro.self.moduleId!.replace(process.cwd(), `https://github.com/chrisdmacrae/astro-pwa/tree/main/packages`)}>
+  <Frame id="frame_store_frame">
+    <Frame id="frame_store_frame_2">
+      <FrameStorePage client:load />
+    </Frame>
+  </Frame>
+</ServerSPALayout>

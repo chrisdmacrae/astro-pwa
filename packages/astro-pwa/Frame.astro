@@ -5,39 +5,39 @@
 // It will also serialize the data for a given frame into the frame
 // To allow for server-side persistence and hydration
 
-import { dehydrateStores } from './src/stores/hydration';
-import { hydrateServerStore } from './src/stores/hydration';
+import { dehydrateStores, hydrateServerStore } from './src/stores/hydration';
 import type { Store } from './src/stores/store';
+import { createStoreRegistry, getStoresFromRegistry } from './src/stores/storeRegistry';
 
 export interface Props {
   id: string
   src?: string
-  stores?: Store<any>[]
-  "client:isolate"?: boolean | "a" | "form"
-  "server:only"?: boolean
+  stores?: Store[]
+  "server:isolate"?: boolean | "a" | "form"
   [key: string]: any
 }
 
-const { id, stores = [], ...props } = Astro.props
+const { id, stores: stores = [], ...props } = Astro.props
 
-if (stores) {
-  stores.forEach(store => {
-    hydrateServerStore(store, Astro.request)
-  })
-}
+// Prepare for render
+createStoreRegistry(id)
+const slotContent = await Astro.slots.render('default')
 
-const dehydratedStores = dehydrateStores(stores)
-const astroData = { data: dehydratedStores }
+// Collect all stores
+const registeredStores = getStoresFromRegistry(id)
+const allStores = [...registeredStores, ...stores]
+allStores.forEach(store => hydrateServerStore(id, store, Astro.request))
+
+// Prepare frame for client
+const storeNames = allStores.map(store => store.name).join(', ')
+const dehydratedStores = dehydrateStores(allStores)
+const astroData = JSON.stringify({ data: dehydratedStores })
 ---
 <script>
   import { AstroFrame } from './src/frames/frame'
-  import { createClientStoreRegistry } from './src/stores/clientStoreRegistry'
-
-  createClientStoreRegistry()
 
   customElements.define('astro-frame', AstroFrame)
 </script>
-<astro-frame id={id} stores={stores.map(store => store.name)} {...props}>
-  <script type="application/json" set:html={JSON.stringify(astroData)} data-astro />
-  <slot />
+<astro-frame id={id} stores={storeNames} data={astroData} {...props}>
+  <Fragment set:html={slotContent} />
 </astro-frame>

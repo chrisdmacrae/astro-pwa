@@ -1,11 +1,12 @@
 ---
 import { createRouter, Route } from './src/routing/router';
-import type { Store } from './src/stores/store';
+import { getAstroData } from './src/session/temporary';
 import Frame from './Frame.astro';
+import type { Store } from './src/stores/store';
 
 export interface Props {
   routes: Route[]
-  stores?: Store<any>[]
+  stores: Store[]
   output?: "server" | "static"
   [key: string]: any
 }
@@ -18,6 +19,9 @@ const router = createRouter({
   params: Astro.params,
   routes: routes
 })
+
+// Prepare SPA data
+const {data} = getAstroData(Astro.request)
 ---
 <script>
   // @ts-ignore
@@ -37,6 +41,6 @@ const router = createRouter({
     }
   }
 </script>
-<Frame id="__astro" stores={stores} router={JSON.stringify(router.dehydrate())} output={output} {...props}>
+<Frame id="__astro" stores={stores} router={JSON.stringify(router.dehydrate())} output={output} data={JSON.stringify(data)} {...props}>
   <slot />
 </Frame>
