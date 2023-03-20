@@ -6,7 +6,7 @@ To learn more about the concept of Astro Frames, read about [Frames](/docs/en/co
 
 ## The Frame Component
 
-The `Frame` component allows you to build interactive elements with very little Javascript. 2kb to be exact!
+The `Frame` component allows you to build interactive elements with very little JavaScript. 2kb to be exact!
 
 It can be used one of three scenarios:
 
@@ -46,7 +46,7 @@ const { on } = useStore(toggleStore)
 <input type="checkbox" name="toggle" value={on} />
 ```
 
-Now we'll add some basic Javascript using a `<script>` tag to synchronize the toggle store with the checkbox on the client:
+Now we'll add some basic JavaScript using a `<script>` tag to synchronize the toggle store with the checkbox on the client:
 
 ```
 ---
