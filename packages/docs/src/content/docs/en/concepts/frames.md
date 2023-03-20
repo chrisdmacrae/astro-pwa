@@ -70,10 +70,10 @@ This keeps every application fast by default by **shipping less than 2kb of clie
 
 ## What are the benefits of Frames?
 
-The biggest benefit of Frames is performance. You don't need to ship extra Javascript to make an interactive application. All of your website is converted into static HTML, either
+The biggest benefit of Frames is performance. You don't need to ship extra JavaScript to make an interactive application. All of your website is converted into static HTML, either
 at build-time or at request time, and once it's downloaded by the browser it's ready to go. JavaScript is one of the slowest assets that you can load per-byte, so every byte counts.
 
-Another benefit is security: if you don't make secret values like access tokens or personal information accessible by Javascript, it's much harder to steal. Frames delegate all
+Another benefit is security: if you don't make secret values like access tokens or personal information accessible by JavaScript, it's much harder to steal. Frames delegate all
 of your important business logic to the server where you can keep secret and private information, well, secret and private.
 
 Even better, you can control how Astro frames work, whether they prevent a full-page refresh on a link click or form submit, or re-render themselves by passing a [server directive](/docs/en/reference/server-directive). Server directives tell Astro frames how to behave according to user input.
