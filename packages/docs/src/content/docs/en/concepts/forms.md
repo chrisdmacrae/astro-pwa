@@ -25,7 +25,7 @@ Together, the Astro Form integration makes building secure, interactive, and typ
 ## How do I use forms?
 
 There are two ways to create a form. The first is using the `Form` Astro PWA component to generate a server-rendered form that submits via a standard `POST` request. The other
-is building your own Javascript form using Vanilla JS or a framework component rendered by an [Astro Island](https://docs.astro.build/docs/en/concepts/islands/).
+is building your own JavaScript form using Vanilla JS or a framework component rendered by an [Astro Island](https://docs.astro.build/docs/en/concepts/islands/).
 
 - [Read the guide](/docs/en/guides/building-with-forms) on using the Form component
 - A guide on building with framework components is coming soon
