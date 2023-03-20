@@ -2,7 +2,7 @@
 title: "Stores"
 description: "Share state between server and client securely and safely with stores"
 ---
-Forms are a framework agnostic approach to sharing state across Astro components and [Astro Islands](https://docs.astro.build/docs/en/concepts/islands/) **on the client and the server**.
+Stores are a framework agnostic approach to sharing state across Astro components and [Astro Islands](https://docs.astro.build/docs/en/concepts/islands/) **on the client and the server**.
 
 ## Why Stores?
 
